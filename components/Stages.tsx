@@ -20,7 +20,7 @@ const Stages: React.FC = () => {
           <div className="flex flex-col-reverse md:flex-row items-center gap-12 md:gap-20">
             <div className="w-full md:w-1/2 flex flex-col items-start md:items-end">
                <Pill text="Solve fundamental math problems" />
-               <Pill text="Guage your overall math proficiency" />
+               <Pill text="Gauge your overall math proficiency" />
                <Pill text="Move on to the preliminary stage" />
             </div>
             <div className="w-full md:w-1/2">
@@ -69,9 +69,9 @@ const Stages: React.FC = () => {
               </p>
             </div>
             <div className="w-full md:w-1/2 flex flex-col items-start">
-              <Pill text="First Prize – #250,000" />
-              <Pill text="Second Prize – #150,000" />
-              <Pill text="Third Prize – #100,000" />
+              <Pill text="First Prize – ₦250,000" />
+              <Pill text="Second Prize – ₦150,000" />
+              <Pill text="Third Prize – ₦100,000" />
             </div>
           </div>
 

@@ -11,24 +11,29 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-             {/* Text Logo based on design */}
-             <a href="#" className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center text-white font-serif font-bold text-xl">V</div>
-                <span className="font-bold text-2xl text-brand-blue tracking-tight">VERBOHEIT</span>
+             <a href="#" className="flex items-center gap-3">
+                {/* Concentric Circle Icon */}
+                <div className="w-10 h-10 rounded-full border-2 border-brand-blue flex items-center justify-center p-0.5 relative">
+                    <div className="w-full h-full rounded-full border border-brand-blue/30 flex items-center justify-center">
+                        <div className="w-2 h-2 rounded-full bg-brand-blue"></div>
+                    </div>
+                    <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-brand-blue rounded-full"></div>
+                </div>
+                <span className="font-bold text-2xl text-brand-blue tracking-tight font-serif">VERBOHEIT</span>
              </a>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8 items-center">
-            <a href="#about" className="text-gray-600 hover:text-brand-blue font-medium text-sm">About the competition</a>
-            <a href="#stages" className="text-gray-600 hover:text-brand-blue font-medium text-sm">Competition stages</a>
-            <a href="#footer" className="text-gray-600 hover:text-brand-blue font-medium text-sm">Contact us</a>
+            <a href="#about" className="text-gray-900 hover:text-brand-blue font-medium text-sm">About the competition</a>
+            <a href="#stages" className="text-gray-900 hover:text-brand-blue font-medium text-sm">Competition stages</a>
+            <a href="#footer" className="text-gray-900 hover:text-brand-blue font-medium text-sm">Contact us</a>
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
             <a href="#" className="text-brand-blue font-bold text-sm hover:underline">Become a sponsor</a>
-            <Button href="#" variant="primary" className="px-8 py-2 text-sm">Register</Button>
+            <Button href="#" variant="primary" className="px-8 py-2.5 text-sm">Register</Button>
           </div>
 
           {/* Mobile menu button */}
