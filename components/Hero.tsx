@@ -7,16 +7,16 @@ const Hero: React.FC = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://picsum.photos/1920/1080?grayscale&blur=2" 
+          src="/assets/hero.svg" 
           alt="Students learning" 
           className="w-full h-full object-cover opacity-40"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/90 to-brand-blue/40 mix-blend-multiply"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/0 mix-blend-multiply"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 lg:py-40">
         <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-6">
+          <h1 className="font-serif font-bold text-[56px] leading-[68px] tracking-[-0.02em] mb-6">
             Showcase your math skills <br />
             for a chance to win <br />
             amazing prizes
@@ -26,17 +26,28 @@ const Hero: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <Button href="#" variant="primary" className="bg-brand-blue border border-white/20 shadow-lg hover:bg-brand-blue/90">
+            <Button 
+              href="https://portal.verboheit.org/register" 
+              variant="primary" 
+              // className="bg-brand-blue border border-white/20 shadow-lg hover:bg-brand-blue/90 font-bold text-[16px] leading-[145%] tracking-normal" 
+              // style={{fontFamily: 'Helvetica, sans-serif'}}
+            >
               Register as a candidate
             </Button>
-            <Button href="#" variant="outline">
+            <Button href="https://portal.verboheit.org/register/staff" variant="outline">
               Become a volunteer
             </Button>
           </div>
           
-          <div className="flex items-center gap-4 text-sm text-gray-300">
-            <span className="uppercase tracking-widest text-xs font-semibold">Or</span>
-            <a href="#" className="font-semibold text-white hover:underline decoration-2 underline-offset-4">
+          {/* Divider with OR */}
+          <div className="flex items-center gap-1 mb-6 max-w-md">
+            <div className="flex-1 h-[1px] bg-gray-400"></div>
+            <span className="text-gray-300 text-md font-normal px-2">Or</span>
+            <div className="flex-1 h-[1px] bg-gray-400"></div>
+          </div>
+            
+          <div className="text-sm text-gray-300">
+            <a href="mailto:verboheitmlc@gmail.com" className="font-semibold text-white hover:underline decoration-10 underline-offset-4">
               Become a sponsor
             </a>
           </div>

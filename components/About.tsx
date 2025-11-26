@@ -12,7 +12,7 @@ const About: React.FC = () => {
                  {/* The Card Container */}
                  <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl border-8 border-white overflow-hidden">
                     <img 
-                        src="https://picsum.photos/600/800?random=1" 
+                        src="/assets/tosin.png" 
                         alt="Competition collage" 
                         className="w-full h-full object-cover" 
                     />
@@ -27,12 +27,15 @@ const About: React.FC = () => {
 
           {/* Right Side: Content */}
           <div className="w-full lg:w-1/2">
-            <div className="inline-block px-4 py-1.5 bg-brand-accent rounded-full text-brand-blue text-xs font-bold tracking-wide uppercase mb-6">
-              About the competition
+            <div className="inline-block w-[229px] h-[44px] px-6 py-3 bg-brand-accent rounded-[100px] text-brand-blue text-xs font-bold tracking-wide uppercase mb-6">
+              <center>
+                <span style={{fontFamily: 'Helvetica, sans-serif'}}>
+                  About the competition
+                </span>
+              </center>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight font-serif">
-              Verboheit Mathematics League <br className="hidden md:block"/>
-              Competition for <span className="text-brand-blue">Senior <br className="hidden md:block"/>
+            <h2 className="font-black text-[38px] leading-[48px] tracking-[-0.02em] text-gray-900 mb-6" style={{fontFamily: 'Segoe UI, sans-serif'}}>
+              Verboheit Mathematics League Competition for <br className="hidden md:block"/> <span className="text-brand-blue">Senior
               Secondary Students</span>
             </h2>
             

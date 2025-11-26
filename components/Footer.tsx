@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linkedin, Twitter } from 'lucide-react';
+import { Linkedin, Instagram, Facebook } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
           <div>
             <h2 className="text-4xl font-bold mb-8">Want to learn <br /> more?</h2>
             <div className="space-y-4">
-              <p className="text-xl">08060837331</p>
+              <p className="text-xl">+234-806-0837-331</p>
               <a href="mailto:verboheitconsulting@gmail.com" className="text-xl hover:text-gray-300 transition-colors block">
                 verboheitconsulting@gmail.com
               </a>
@@ -26,11 +26,14 @@ const Footer: React.FC = () => {
               Lekki Phase 1
             </address>
             <div className="flex space-x-4">
-              <a href="#" className="bg-blue-600 p-2 rounded-sm hover:bg-blue-500 transition-colors">
+              <a href="https://www.linkedin.com/company/verboheit/" className="bg-[#0A66C2] p-2 rounded-sm hover:bg-[#004182] transition-colors">
                 <Linkedin size={20} className="text-white" />
               </a>
-              <a href="#" className="bg-sky-500 p-2 rounded-sm hover:bg-sky-400 transition-colors">
-                <Twitter size={20} className="text-white" />
+              <a href="https://www.instagram.com/verboheit_maths_competition/" className="bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] p-2 rounded-sm hover:opacity-90 transition-opacity">
+                <Instagram size={20} className="text-white" />
+              </a>
+              <a href="https://www.facebook.com/p/Verboheit-Mathematics-League-Competition-61567079554764/" className="bg-[#1877F2] p-2 rounded-sm hover:bg-[#0C63D4] transition-colors">
+                <Facebook size={20} className="text-white" />
               </a>
             </div>
           </div>
@@ -39,7 +42,7 @@ const Footer: React.FC = () => {
 
         {/* Copyright */}
         <div className="border-t border-gray-800 pt-8 text-sm text-gray-500">
-          <p>&copy; Verboheit Consulting. All Rights Reserved 2023.</p>
+          <p>&copy; Verboheit Consulting. All Rights Reserved 2025.</p>
         </div>
       </div>
     </footer>

@@ -11,13 +11,10 @@ const TeacherAward: React.FC = () => {
             <div className="relative transform md:-rotate-3 max-w-sm mx-auto">
                <div className="absolute inset-0 bg-brand-blue/10 transform translate-x-3 translate-y-3 rounded-xl"></div>
                <img 
-                 src="https://picsum.photos/400/500?random=4" 
+                 src="../assets/vmlc_kaji.svg" 
                  alt="Teacher award collage" 
                  className="relative z-10 rounded-xl shadow-xl w-full"
                />
-               <div className="absolute -bottom-6 -left-6 z-20 bg-white p-2 rounded-lg shadow-lg transform rotate-6 hidden md:block">
-                  <img src="https://picsum.photos/150/150?random=5" alt="Detail" className="w-24 h-24 object-cover rounded" />
-               </div>
             </div>
           </div>
 

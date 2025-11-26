@@ -12,7 +12,7 @@ const Partners: React.FC = () => {
         {/* Wide Banner Image */}
         <div className="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-16 shadow-lg">
            <img 
-             src="https://picsum.photos/1200/400?random=3" 
+             src="../assets/partner_collage.svg" 
              alt="Winners holding checks" 
              className="w-full h-full object-cover"
            />
@@ -27,7 +27,7 @@ const Partners: React.FC = () => {
             <p className="text-gray-600 mb-8 leading-relaxed">
               We believe in the power of partnerships to transform education. By sponsoring our Senior Secondary School Maths Competition, you have the opportunity to contribute to the future of young minds in Nigeria. Your support will not only showcase your commitment to education and community development but also shape the next generation of leaders and problem solvers.
             </p>
-            <Button href="#" variant="primary" className="bg-brand-blue text-white">Become a Sponsor</Button>
+            <Button href="mailto:verboheitmlc@gmail.com" variant="primary" className="bg-brand-blue text-white">Become a Sponsor</Button>
           </div>
 
           {/* Become a Volunteer */}
@@ -36,7 +36,7 @@ const Partners: React.FC = () => {
             <p className="text-gray-600 mb-8 leading-relaxed">
               Are you an enthusiastic undergraduate looking to enhance your skills beyond the classroom? Are you eager to develop your project management capabilities and make a meaningful difference in the lives of school students in Nigeria?
             </p>
-            <Button href="#" variant="primary" className="bg-brand-blue text-white">Volunteer now</Button>
+            <Button href="portal.verboheit.org/register/staff" variant="primary" className="bg-brand-blue text-white">Volunteer now</Button>
           </div>
 
         </div>
