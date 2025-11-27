@@ -13,7 +13,7 @@ const Partners: React.FC = () => {
         <div className="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-16 shadow-lg">
            <img 
              src="../assets/partner_collage.svg" 
-             alt="Winners holding checks" 
+             alt="Collage of candidates, volunteers, and the founder" 
              className="w-full h-full object-cover"
            />
         </div>

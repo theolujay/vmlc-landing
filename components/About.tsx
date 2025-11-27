@@ -13,7 +13,7 @@ const About: React.FC = () => {
                  <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl border-8 border-white overflow-hidden">
                     <img 
                         src="/assets/tosin.png" 
-                        alt="Competition collage" 
+                        alt="Tosin Ojo, Founder" 
                         className="w-full h-full object-cover" 
                     />
                     {/* Overlay to hint at it being a collage or photo */}

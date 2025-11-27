@@ -12,7 +12,7 @@ const TeacherAward: React.FC = () => {
                <div className="absolute inset-0 bg-brand-blue/10 transform translate-x-3 translate-y-3 rounded-xl"></div>
                <img 
                  src="../assets/vmlc_kaji.svg" 
-                 alt="Teacher award collage" 
+                 alt="Student and Teacher at a VMLC ceremony" 
                  className="relative z-10 rounded-xl shadow-xl w-full"
                />
             </div>
