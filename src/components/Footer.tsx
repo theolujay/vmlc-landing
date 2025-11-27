@@ -12,10 +12,15 @@ const Footer: React.FC = () => {
               Want to learn <br /> more?
             </h2>
             <div className="space-y-4">
-              <p className="text-xl">+234-80-6083-7331</p>
+              <a
+                href="https://wa.me/+2348060837331"
+                className="text-xl hover:text-gray-300 transition-colors block underline decoration-gray-600 hover:decoration-gray-300 underline-offset-4"
+              >
+                <p className="text-xl">+234-80-6083-7331</p>
+              </a>
               <a
                 href="mailto:verboheitconsulting@gmail.com"
-                className="text-xl hover:text-gray-300 transition-colors block"
+                className="text-xl hover:text-gray-300 transition-colors block underline decoration-gray-600 hover:decoration-gray-300 underline-offset-4"
               >
                 verboheitconsulting@gmail.com
               </a>
