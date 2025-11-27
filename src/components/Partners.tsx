@@ -47,7 +47,7 @@ const Partners: React.FC = () => {
               meaningful difference in the lives of school students in Nigeria?
             </p>
             <Button
-              href="portal.verboheit.org/register/staff"
+              href="https://portal.verboheit.org/register/staff"
               variant="primary"
               className="bg-brand-blue text-white"
             >
