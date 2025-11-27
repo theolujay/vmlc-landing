@@ -33,7 +33,7 @@ const Header: React.FC = () => {
             <a href="#" className="text-brand-blue font-bold text-md hover:underline">
               Become a sponsor
             </a>
-            <Button href="#" variant="primary" className="px-6 py-2.5 font-bold text-md">
+            <Button href="https://portal.verboheit.org/register" variant="primary" className="px-6 py-2.5 font-bold text-md">
               Register
             </Button>
           </div>
