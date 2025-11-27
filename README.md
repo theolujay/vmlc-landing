@@ -1,6 +1,6 @@
 # Verboheit Mathematics League Competition - Landing Page
 
-This project is the landing page for the Verboheit Mathematics League Competition, a mathematics competition for senior secondary school students.
+This project is the landing page for the Verboheit Mathematics League Competition, an annual event for senior secondary school students.
 
 ## Getting Started
 
