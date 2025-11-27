@@ -1,20 +1,50 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Verboheit Mathematics League Competition - Landing Page
 
-# Run and deploy your AI Studio app
+This project is the landing page for the Verboheit Mathematics League Competition, a mathematics competition for senior secondary school students.
 
-This contains everything you need to run your app locally.
+## Getting Started
 
-View your app in AI Studio: https://ai.studio/apps/drive/1JAnZDIE6WZqqcJrLZbzzqYGY2jmt6Eyh
+Follow these instructions to get a local copy of the project up and running for development purposes.
 
-## Run Locally
+### Prerequisites
 
-**Prerequisites:**  Node.js
+You need to have Node.js and npm (or a compatible package manager) installed on your system.
 
+### Installation
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+1.  Clone the repository:
+    ```sh
+    git clone <repository-url>
+    ```
+2.  Navigate to the project directory:
+    ```sh
+    cd vmlc-landing-ui
+    ```
+3.  Install the dependencies:
+    ```sh
+    npm install
+    ```
+
+### Running the Development Server
+
+To run the app in development mode, use the following command. This will start a local development server.
+
+```sh
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) (or the address shown in your terminal) to view it in the browser. The page will reload if you make edits.
+
+## Building for Production
+
+To create a production-ready build of the application, run the following command:
+
+```sh
+npm run build
+```
+
+This command bundles the application and outputs the static files to the `dist/` directory.
+
+## Deployment
+
+To deploy this application, upload the contents of the `dist/` directory to your web server or static hosting provider. This directory contains the optimized, static assets for your site.
