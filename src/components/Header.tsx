@@ -30,7 +30,7 @@ const Header: React.FC = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-6">
-            <a href="#" className="text-brand-blue font-bold text-md hover:underline">
+            <a href="mailto:verboheitmlc@gmail.com" className="text-brand-blue font-bold text-md hover:underline">
               Become a sponsor
             </a>
             <Button href="https://portal.verboheit.org/register" variant="primary" className="px-6 py-2.5 font-bold text-md">
