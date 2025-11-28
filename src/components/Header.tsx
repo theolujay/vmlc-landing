@@ -5,7 +5,8 @@ import Logo from './Logo';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const portalUrl = import.meta.env.VITE_PORTAL_URL;
+  const email = import.meta.env.VITE_EMAIL;
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,10 +31,10 @@ const Header: React.FC = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-6">
-            <a href="mailto:verboheitmlc@gmail.com" className="text-brand-blue font-bold text-md hover:underline">
+            <a href={`mailto:${email}`} className="text-brand-blue font-bold text-md hover:underline">
               Become a sponsor
             </a>
-            <Button href="https://portal.verboheit.org/register" variant="primary" className="px-6 py-2.5 font-bold text-md">
+            <Button href={`${portalUrl}/register`} variant="primary" className="px-6 py-2.5 font-bold text-md">
               Register
             </Button>
           </div>
@@ -74,7 +75,7 @@ const Header: React.FC = () => {
             </a>
             <div className="mt-4 w-full flex flex-col gap-3 px-3">
               <Button
-                href="mailto:verboheitmlc@gmail.com"
+                href={`mailto:${email}`}
                 variant="ghost"
                 fullWidth
                 className="justify-center border border-brand-blue"
@@ -82,7 +83,7 @@ const Header: React.FC = () => {
                 Become a sponsor
               </Button>
               <Button
-                href="https://portal.verboheit.org/register"
+                href={`${portalUrl}/register`}
                 variant="primary"
                 fullWidth
                 className="justify-center"

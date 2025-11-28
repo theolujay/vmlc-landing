@@ -2,6 +2,8 @@ import React from 'react';
 import Button from './ui/Button';
 
 const Partners: React.FC = () => {
+  const portalUrl = import.meta.env.VITE_PORTAL_URL
+  const email = import.meta.env.VITE_EMAIL
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,7 +32,7 @@ const Partners: React.FC = () => {
               of leaders and problem solvers.
             </p>
             <Button
-              href="mailto:verboheitmlc@gmail.com"
+              href={`mailto:${email}`}
               variant="primary"
               className="bg-brand-blue text-white"
             >
@@ -47,7 +49,7 @@ const Partners: React.FC = () => {
               meaningful difference in the lives of school students in Nigeria?
             </p>
             <Button
-              href="https://portal.verboheit.org/register/staff"
+              href={`${portalUrl}/register/staff`}
               variant="primary"
               className="bg-brand-blue text-white"
             >

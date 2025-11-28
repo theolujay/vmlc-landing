@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - "dev"
-
 jobs:
   merge-branch:
     runs-on: ubuntu-24.04
@@ -18,4 +17,12 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_ref: 'dev'
           target_branch: 'main'
+          commit_message_template: '[Automated] Merged {source_ref} into {target_branch}'
+          
+      - uses: actions/checkout@v4
+      - uses: everlytic/branch-merge@1.1.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_ref: 'dev'
+          target_branch: 'release'
           commit_message_template: '[Automated] Merged {source_ref} into {target_branch}'

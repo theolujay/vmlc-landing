@@ -2,6 +2,8 @@ import React from 'react';
 import Button from './ui/Button';
 
 const Hero: React.FC = () => {
+  const portalUrl = import.meta.env.VITE_PORTAL_URL
+  const email = import.meta.env.VITE_EMAIL
   return (
     <section className="relative bg-gray-900 text-white overflow-hidden">
       {/* Background Image with Overlay */}
@@ -27,14 +29,12 @@ const Hero: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <Button
-              href="https://portal.verboheit.org/register"
+              href={`${portalUrl}/register`}
               variant="primary"
-              // className="bg-brand-blue border border-white/20 shadow-lg hover:bg-brand-blue/90 font-bold text-[16px] leading-[145%] tracking-normal"
-              // style={{fontFamily: 'Helvetica, sans-serif'}}
             >
               Register as a candidate
             </Button>
-            <Button href="https://portal.verboheit.org/register/staff" variant="outline">
+            <Button href={`${portalUrl}/register/staff`} variant="outline">
               Become a volunteer
             </Button>
           </div>
@@ -48,7 +48,7 @@ const Hero: React.FC = () => {
 
           <div className="text-sm text-gray-300">
             <a
-              href="mailto:verboheitmlc@gmail.com"
+              href={`mailto:${email}`}
               className="font-semibold text-white hover:underline decoration-10 underline-offset-4"
             >
               Become a sponsor
@@ -56,8 +56,6 @@ const Hero: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Decorative background elements from PDF (faint checks/shapes) - Simplified as css gradient above */}
     </section>
   );
 };
