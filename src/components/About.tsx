@@ -25,14 +25,21 @@ const About: React.FC = () => {
             <br></br>
 
             {/* Caption Block */}
-            <div className="w-full max-w-sm bg-white px-6 py-3 rounded-lg shadow-lg border border-gray-200">
-              <div className="text-center font-[Segoe_UI,sans-serif] space-y-0.5">
-                <p className="text-gray-800 font-bold text-base">Tosin Ojo,</p>
-                <p className="text-gray-700 font-medium text-sm">
-                  Founder, Verboheit Mathematics League Competition
-                </p>
+            <a
+              href="https://www.linkedin.com/in/oluwatosin-ojo-cfa-13a93929/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full max-w-sm bg-white px-6 py-3 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl hover:border-brand-blue transition-all"
+            >
+              <div className="w-full max-w-sm bg-white px-6 py-3 rounded-lg shadow-lg border border-gray-200">
+                <div className="text-center font-[Segoe_UI,sans-serif] space-y-0.5">
+                  <p className="text-gray-800 font-bold text-base">Tosin Ojo,</p>
+                  <p className="text-gray-700 font-medium text-sm">
+                    Founder, Verboheit Mathematics League Competition
+                  </p>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
           {/* Right Side: Content */}
           <div className="w-full lg:w-1/2">
