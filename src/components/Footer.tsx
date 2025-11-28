@@ -2,6 +2,9 @@ import React from 'react';
 import { Linkedin, Instagram, Facebook } from 'lucide-react';
 
 const Footer: React.FC = () => {
+  const email = import.meta.env.VITE_EMAIL;
+  const phone = import.meta.env.VITE_PHONE;
+  const cleanPhone = phone.replace(/-/g, '');
   return (
     <footer id="footer" className="bg-black text-white pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,16 +16,16 @@ const Footer: React.FC = () => {
             </h2>
             <div className="space-y-4">
               <a
-                href="https://wa.me/+2348060837331"
+                href={`https://wa.me/${cleanPhone}`}
                 className="text-xl hover:text-gray-300 transition-colors block underline decoration-gray-600 hover:decoration-gray-300 underline-offset-4"
               >
-                <p className="text-xl">+234-80-6083-7331</p>
+                <p className="text-xl">{phone}</p>
               </a>
               <a
-                href="mailto:verboheitconsulting@gmail.com"
+                href={`mailto:${email}`}
                 className="text-xl hover:text-gray-300 transition-colors block underline decoration-gray-600 hover:decoration-gray-300 underline-offset-4"
               >
-                verboheitconsulting@gmail.com
+                {email}
               </a>
             </div>
           </div>
@@ -59,7 +62,7 @@ const Footer: React.FC = () => {
 
         {/* Copyright */}
         <div className="border-t border-gray-800 pt-8 text-sm text-gray-500">
-          <p>&copy; Verboheit Consulting. All Rights Reserved 2025.</p>
+          <p>&copy; Verboheit Consulting. All Rights Reserved {new Date().getFullYear()}.</p>
         </div>
       </div>
     </footer>
