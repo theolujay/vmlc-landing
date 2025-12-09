@@ -32,11 +32,6 @@ const Footer: React.FC = () => {
 
           {/* Address & Social */}
           <div className="flex flex-col justify-end items-start md:items-end">
-            <address className="not-italic text-lg text-gray-300 mb-6 text-left md:text-right">
-              47 Castle and Temple Drive,
-              <br />
-              Lekki Phase 1
-            </address>
             <div className="flex space-x-4">
               <a
                 href="https://www.linkedin.com/company/verboheit/"
