@@ -9,7 +9,7 @@ const Register: React.FC = () => {
   const [message, setMessage] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [candidateData, setCandidateData] = useState({
+  const initialCandidateData = {
     first_name: '',
     last_name: '',
     email: '',
@@ -20,9 +20,9 @@ const Register: React.FC = () => {
     state: 'Lagos',
     document_type: 'NIN',
     user_consent_given: false,
-  });
+  };
 
-  const [volunteerData, setVolunteerData] = useState({
+  const initialVolunteerData = {
     first_name: '',
     last_name: '',
     email: '',
@@ -31,8 +31,10 @@ const Register: React.FC = () => {
     state: '',
     document_type: 'NIN',
     user_consent_given: false,
-  });
+  };
 
+  const [candidateData, setCandidateData] = useState(initialCandidateData);
+  const [volunteerData, setVolunteerData] = useState(initialVolunteerData);
   const [documentFile, setDocumentFile] = useState<File | null>(null);
 
   const handleCandidateChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -59,64 +61,38 @@ const Register: React.FC = () => {
     setMessage('');
 
     const apiKey = import.meta.env.VITE_API_KEY;
-    const baseUrl = import.meta.env.VITE_PORTAL_URL || ''; 
+    const baseUrl = (import.meta.env.VITE_PORTAL_URL || '').replace(/\/$/, '');
 
     try {
-      let response;
-      let userData: any
-      if (userType === 'candidate') {
-        userData = candidateData;
-      } else {
-        userData = volunteerData
-      }
-        const formData = new FormData();
-        formData.append('user_type', userType);
-        Object.entries(userData).forEach(([key, value]) => {
-          formData.append(key, value.toString());
-        });
-        if (documentFile) {
-          formData.append('document', documentFile);
-        }
+      const formData = new FormData();
+      formData.append('user_type', userType);
+      
+      const userData = userType === 'candidate' ? candidateData : volunteerData;
+      
+      Object.entries(userData).forEach(([key, value]) => {
+        formData.append(key, value.toString());
+      });
 
-        response = await fetch(`${baseUrl}/register/`, {
-          method: 'POST',
-          headers: {
-            'x-api-key': apiKey,
-          },
-          body: formData,
-        });
+      if (documentFile) {
+        formData.append('document', documentFile);
+      }
+
+      const response = await fetch(`${baseUrl}/register/`, {
+        method: 'POST',
+        headers: {
+          'x-api-key': apiKey,
+        },
+        body: formData,
+      });
 
       if (response.ok) {
         setStatus('success');
         setMessage(`Registration successful as a ${userType}!`);
         // Reset forms
-        if (userType === 'candidate') {
-          setCandidateData({
-            first_name: '',
-            last_name: '',
-            email: '',
-            phone_number: '',
-            school_name: '',
-            school_type: 'public',
-            current_class: 'SS1',
-            state: 'Lagos',
-            document_type: 'NIN',
-            user_consent_given: true,
-          });
-          setDocumentFile(null);
-          if (fileInputRef.current) fileInputRef.current.value = '';
-        } else {
-          setVolunteerData({
-            first_name: '',
-            last_name: '',
-            email: '',
-            phone_number: '',
-            occupation: '',
-            state: '',
-            document_type: 'NIN',
-            user_consent_given: true,
-          });
-        }
+        setCandidateData(initialCandidateData);
+        setVolunteerData(initialVolunteerData);
+        setDocumentFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
       } else {
         const errorData = await response.json().catch(() => ({}));
         setStatus('error');
@@ -135,9 +111,6 @@ const Register: React.FC = () => {
     <div className="py-20 bg-gray-50 min-h-screen animate-fade-in">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          {/* <div className="inline-block px-4 py-2 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
-            Welcome
-          </div> */}
           <h1 className="font-black text-4xl md:text-5xl text-gray-900 mb-6" style={{ fontFamily: 'Segoe UI, sans-serif' }}>
             Register <span className="text-brand-blue">Today</span>
           </h1>
@@ -252,7 +225,7 @@ const Register: React.FC = () => {
                         value={candidateData.school_name}
                         onChange={handleCandidateChange}
                         className={inputClasses}
-                        placeholder="Federal Government College, Ijanikin"
+                        placeholder="Federal Government College Ijanikin"
                       />
                     </div>
 
