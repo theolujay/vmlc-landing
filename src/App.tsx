@@ -1,25 +1,26 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import About from './components/About';
-import Stages from './components/Stages';
-import Partners from './components/Partners';
-import TeacherAward from './components/TeacherAward';
 import Footer from './components/Footer';
+import Home from './pages/Home';
+import FAQs from './pages/FAQs';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-800">
-      <Header />
-      <main>
-        <Hero />
-        <About />
-        <Stages />
-        <Partners />
-        <TeacherAward />
-      </main>
-      <Footer />
-    </div>
+    <Router>
+      <ScrollToTop />
+      <div className="min-h-screen bg-white font-sans text-slate-800">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/faqs" element={<FAQs />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
