@@ -24,7 +24,8 @@ const PreRegister: React.FC = () => {
 
     try {
       const apiKey = import.meta.env.VITE_PRE_REGISTER_API_KEY;
-      const response = await fetch('/pre-register', {
+      const baseUrl = (import.meta.env.VITE_PORTAL_URL || '').replace(/\/$/, '');
+      const response = await fetch(`${baseUrl}/pre-register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

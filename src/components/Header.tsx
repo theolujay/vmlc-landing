@@ -38,9 +38,9 @@ const Header: React.FC = () => {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center space-x-3 xl:space-x-6">
-            <a href={`mailto:${email}`} className="text-brand-blue font-bold text-sm xl:text-base hover:underline">
-              Become a sponsor
-            </a>
+            <Link to="/support-us" className="text-brand-blue font-bold text-sm xl:text-base hover:underline">
+              Support Us
+            </Link>
             <Button to="/register" variant="primary" className="px-4 py-2 text-sm xl:px-6 xl:py-2.5 xl:text-base font-bold">
               Register
             </Button>
@@ -104,13 +104,13 @@ const Header: React.FC = () => {
           </Link>
           <div className="mt-4 w-full flex flex-col gap-3 px-3">
             <Button
-              href={`mailto:${email}`}
+              to="/support-us"
               variant="ghost"
               fullWidth
               className="justify-center border border-brand-blue"
               onClick={() => setIsMenuOpen(false)}
             >
-              Become a sponsor
+              Support Us
             </Button>
             <Button
               to="/register"
@@ -129,3 +129,4 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+

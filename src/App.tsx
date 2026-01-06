@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import FAQs from './pages/FAQs';
 import PreRegister from './pages/PreRegister';
 import Register from './pages/Register';
+import SupportUs from './pages/SupportUs';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/pre-register" element={<PreRegister />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/support-us" element={<SupportUs />} />
           </Routes>
         </main>
         <Footer />
