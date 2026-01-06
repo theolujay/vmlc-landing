@@ -41,7 +41,7 @@ const Header: React.FC = () => {
             <a href={`mailto:${email}`} className="text-brand-blue font-bold text-sm xl:text-base hover:underline">
               Become a sponsor
             </a>
-            <Button href={`${portalUrl}/register`} variant="primary" className="px-4 py-2 text-sm xl:px-6 xl:py-2.5 xl:text-base font-bold">
+            <Button to="/register" variant="primary" className="px-4 py-2 text-sm xl:px-6 xl:py-2.5 xl:text-base font-bold">
               Register
             </Button>
           </div>
@@ -107,10 +107,11 @@ const Header: React.FC = () => {
                 Become a sponsor
               </Button>
               <Button
-                href={`${portalUrl}/register`}
+                to="/register"
                 variant="primary"
                 fullWidth
                 className="justify-center"
+                onClick={() => setIsMenuOpen(false)}
               >
                 Register
               </Button>
