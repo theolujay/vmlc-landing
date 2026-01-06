@@ -19,7 +19,7 @@ const Register: React.FC = () => {
     current_class: 'SS1',
     state: 'Lagos',
     document_type: 'NIN',
-    auto_generate_password: true,
+    user_consent_given: false,
   });
 
   const [volunteerData, setVolunteerData] = useState({
@@ -28,7 +28,9 @@ const Register: React.FC = () => {
     email: '',
     phone_number: '',
     occupation: '',
-    auto_generate_password: true,
+    state: '',
+    document_type: 'NIN',
+    user_consent_given: false,
   });
 
   const [documentFile, setDocumentFile] = useState<File | null>(null);
@@ -61,32 +63,28 @@ const Register: React.FC = () => {
 
     try {
       let response;
+      let userData: any
       if (userType === 'candidate') {
+        userData = candidateData;
+      } else {
+        userData = volunteerData
+      }
         const formData = new FormData();
-        Object.entries(candidateData).forEach(([key, value]) => {
+        formData.append('user_type', userType);
+        Object.entries(userData).forEach(([key, value]) => {
           formData.append(key, value.toString());
         });
         if (documentFile) {
           formData.append('document', documentFile);
         }
 
-        response = await fetch(`${baseUrl}/register/candidate/`, {
+        response = await fetch(`${baseUrl}/register/`, {
           method: 'POST',
           headers: {
             'x-api-key': apiKey,
           },
           body: formData,
         });
-      } else {
-        response = await fetch(`${baseUrl}/register/staff/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-          },
-          body: JSON.stringify(volunteerData),
-        });
-      }
 
       if (response.ok) {
         setStatus('success');
@@ -103,7 +101,7 @@ const Register: React.FC = () => {
             current_class: 'SS1',
             state: 'Lagos',
             document_type: 'NIN',
-            auto_generate_password: true,
+            // user_consent_given: true,
           });
           setDocumentFile(null);
           if (fileInputRef.current) fileInputRef.current.value = '';
@@ -114,17 +112,19 @@ const Register: React.FC = () => {
             email: '',
             phone_number: '',
             occupation: '',
-            auto_generate_password: true,
+            state: '',
+            document_type: 'NIN',
+            // user_consent_given: true,
           });
         }
       } else {
         const errorData = await response.json().catch(() => ({}));
         setStatus('error');
-        setMessage(errorData.message || 'Something went wrong. Please try again.');
+        setMessage(errorData.message || "Something went wrong. Please try again.");
       }
     } catch (err) {
       setStatus('error');
-      setMessage('Failed to connect to the server. Please check your internet connection.');
+      setMessage("Something's off. Please check your internet");
     }
   };
 
@@ -252,7 +252,7 @@ const Register: React.FC = () => {
                         value={candidateData.school_name}
                         onChange={handleCandidateChange}
                         className={inputClasses}
-                        placeholder="Your School Name"
+                        placeholder="Federal Government College, Ijanikin"
                       />
                     </div>
 
@@ -303,63 +303,80 @@ const Register: React.FC = () => {
                           <option value="Abuja">Abuja</option>
                         </select>
                       </div>
-                      <div>
-                        <label htmlFor="document_type" className={labelClasses}>Document Type</label>
-                        <select
-                          id="document_type"
-                          name="document_type"
-                          value={candidateData.document_type}
-                          onChange={handleCandidateChange}
-                          className={inputClasses}
-                        >
-                          <option value="NIN">NIN</option>
-                          <option value="school result">School Result</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="document" className={labelClasses}>Document Upload</label>
-                      <input
-                        type="file"
-                        id="document"
-                        name="document"
-                        required
-                        ref={fileInputRef}
-                        onChange={handleFileChange}
-                        className={`${inputClasses} file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-accent file:text-brand-blue hover:file:bg-blue-200`}
-                        accept=".pdf,.jpg,.jpeg,.png"
-                      />
-                      <p className="mt-2 text-xs text-gray-500">Accepted formats: PDF, JPG, PNG (Max 5MB)</p>
                     </div>
                   </>
                 ) : (
-                  <div>
-                    <label htmlFor="occupation" className={labelClasses}>Occupation</label>
-                    <input
-                      type="text"
-                      id="occupation"
-                      name="occupation"
-                      required
-                      value={volunteerData.occupation}
-                      onChange={handleVolunteerChange}
-                      className={inputClasses}
-                      placeholder="Teacher, Engineer, etc."
-                    />
-                  </div>
+                  <>
+                    <div>
+                      <label htmlFor="occupation" className={labelClasses}>Occupation</label>
+                      <input
+                        type="text"
+                        id="occupation"
+                        name="occupation"
+                        required
+                        value={volunteerData.occupation}
+                        onChange={handleVolunteerChange}
+                        className={inputClasses}
+                        placeholder="Teacher, Engineer, etc."
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="state" className={labelClasses}>State</label>
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        required
+                        value={volunteerData.state}
+                        onChange={handleVolunteerChange}
+                        className={inputClasses}
+                        placeholder="Where are you currently?"
+                      />
+                    </div>
+                  </>
                 )}
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="document_type" className={labelClasses}>Document Type</label>
+                    <select
+                      id="document_type"
+                      name="document_type"
+                      value={userType === 'candidate' ? candidateData.document_type : volunteerData.document_type}
+                      onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
+                      className={inputClasses}
+                    >
+                      <option value="NIN">NIN</option>
+                      <option value="school result">School Result</option>
+                    </select>
+                  </div>
+                </div>
+
+                  <div>
+                    <label htmlFor="document" className={labelClasses}>Document Upload</label>
+                    <input
+                      type="file"
+                      id="document"
+                      name="document"
+                      required
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      className={`${inputClasses} file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-accent file:text-brand-blue hover:file:bg-blue-200`}
+                      accept=".pdf,.jpg,.jpeg,.png"
+                    />
+                    <p className="mt-2 text-xs text-gray-500">Accepted formats: PDF, JPG, PNG (Max 5MB)</p>
+                  </div>
                 <div className="flex items-center space-x-3 bg-blue-50 p-4 rounded-2xl">
                   <input
                     type="checkbox"
-                    id="auto_generate_password"
-                    name="auto_generate_password"
-                    checked={userType === 'candidate' ? candidateData.auto_generate_password : volunteerData.auto_generate_password}
+                    id="user_consent_given"
+                    name="user_consent_given"
+                    checked={userType === 'candidate' ? candidateData.user_consent_given : volunteerData.user_consent_given}
                     onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
                     className="w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
                   />
-                  <label htmlFor="auto_generate_password" className="text-sm font-medium text-brand-blue">
-                    Send me a generated password
+                  <label htmlFor="user_consent_given" className="text-sm font-medium text-brand-blue">
+                    By selecting "Register", you're confirming that you have read and agreed to Verboheit MLC's Terms & Conditions and Privacy Policy.
                   </label>
                 </div>
 
@@ -373,7 +390,7 @@ const Register: React.FC = () => {
                   type="submit"
                   variant="primary"
                   fullWidth
-                  disabled={status === 'loading'}
+                  disabled={status === 'loading' || !(userType === 'candidate' ? candidateData.user_consent_given : volunteerData.user_consent_given)}
                   className={status === 'loading' ? 'opacity-70 cursor-not-allowed' : 'py-4 shadow-lg shadow-blue-200'}
                 >
                   {status === 'loading' ? (

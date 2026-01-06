@@ -57,7 +57,7 @@ const PreRegister: React.FC = () => {
     <div className="py-20 bg-white min-h-[60vh] animate-fade-in">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          {/* <div className="inline-block px-4 py-2 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
+          {/* <div className="inline-block px-1 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
             <span style={{ fontFamily: 'Helvetica, sans-serif' }}>Get Involved</span>
           </div> */}
           <h1

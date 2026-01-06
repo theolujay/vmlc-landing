@@ -21,7 +21,7 @@ const Button: React.FC<ButtonProps> = ({
     ghost: 'text-brand-blue hover:bg-blue-50 focus:ring-brand-blue', // Used for footer or text links mainly
   };
 
-  const combinedClassName = `${baseStyles} ${variants[variant]} ${fullWidth ? 'w-full' : ''} ${className}`;
+  const combinedClassName = `${baseStyles} ${variants[variant]} ${fullWidth ? 'w-full' : ''} ${props.disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`;
 
   if (to) {
     return (
