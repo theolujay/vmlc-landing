@@ -25,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({
 
   if (to) {
     return (
-      <Link to={to} className={combinedClassName}>
+      <Link to={to} className={combinedClassName} {...(props as any)}>
         {children}
       </Link>
     );
@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({
 
   if (href) {
     return (
-      <a href={href} className={combinedClassName}>
+      <a href={href} className={combinedClassName} {...(props as any)}>
         {children}
       </a>
     );

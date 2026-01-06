@@ -103,6 +103,7 @@ const Header: React.FC = () => {
                 variant="ghost"
                 fullWidth
                 className="justify-center border border-brand-blue"
+                onClick={() => setIsMenuOpen(false)}
               >
                 Become a sponsor
               </Button>
