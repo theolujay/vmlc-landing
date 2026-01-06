@@ -101,7 +101,7 @@ const Register: React.FC = () => {
             current_class: 'SS1',
             state: 'Lagos',
             document_type: 'NIN',
-            // user_consent_given: true,
+            user_consent_given: true,
           });
           setDocumentFile(null);
           if (fileInputRef.current) fileInputRef.current.value = '';
@@ -114,7 +114,7 @@ const Register: React.FC = () => {
             occupation: '',
             state: '',
             document_type: 'NIN',
-            // user_consent_given: true,
+            user_consent_given: true,
           });
         }
       } else {
