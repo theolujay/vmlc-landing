@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
             >
               Register as a candidate
             </Button>
-            <Button to="/register" variant="outline">
+            <Button to="/register?type=volunteer" variant="outline">
               Become a volunteer
             </Button>
           </div>

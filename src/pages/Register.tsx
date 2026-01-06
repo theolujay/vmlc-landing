@@ -1,13 +1,24 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Button from '../components/ui/Button';
 
 type UserType = 'candidate' | 'volunteer';
 
 const Register: React.FC = () => {
-  const [userType, setUserType] = useState<UserType>('candidate');
+  const [searchParams] = useSearchParams();
+  const initialType = (searchParams.get('type') as UserType) === 'volunteer' ? 'volunteer' : 'candidate';
+  const [userType, setUserType] = useState<UserType>(initialType);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Sync userType if query param changes (optional but good for UX)
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type === 'volunteer' || type === 'candidate') {
+      setUserType(type as UserType);
+    }
+  }, [searchParams]);
 
   const initialCandidateData = {
     first_name: '',
