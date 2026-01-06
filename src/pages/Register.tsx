@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import Button from '../components/ui/Button';
+import { Link, useSearchParams } from 'react-router-dom';
 
 type UserType = 'candidate' | 'volunteer';
 
@@ -360,7 +360,7 @@ const Register: React.FC = () => {
                     className="w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
                   />
                   <label htmlFor="user_consent_given" className="text-sm font-medium text-brand-blue">
-                    By selecting "Register", you're confirming that you have read and agreed to Verboheit MLC's <a href="/VMLC T&C.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-800">Terms & Conditions</a> and <a href="/VMLC Privacy Policy.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-800">Privacy Policy</a>.
+                    By selecting "Register", you're confirming that you have read and agreed to Verboheit MLC's <Link to="/terms-and-conditions" target="_blank" className="underline hover:text-blue-800">Terms & Conditions</Link> and <Link to="/privacy-policy" target="_blank" className="underline hover:text-blue-800">Privacy Policy</Link>.
                   </label>
                 </div>
 

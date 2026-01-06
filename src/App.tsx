@@ -7,6 +7,8 @@ import FAQs from './pages/FAQs';
 import PreRegister from './pages/PreRegister';
 import Register from './pages/Register';
 import SupportUs from './pages/SupportUs';
+import TermsAndConditions from './pages/TermsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
             <Route path="/pre-register" element={<PreRegister />} />
             <Route path="/register" element={<Register />} />
             <Route path="/support-us" element={<SupportUs />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Routes>
         </main>
         <Footer />
