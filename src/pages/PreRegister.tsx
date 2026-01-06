@@ -137,7 +137,7 @@ const PreRegister: React.FC = () => {
 
               <div>
                 <label htmlFor="user_type" className="block text-sm font-semibold text-gray-700 mb-2">
-                  I want to be involved as a
+                  I want to become a
                 </label>
                 <select
                   id="user_type"
