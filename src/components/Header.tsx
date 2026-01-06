@@ -20,13 +20,16 @@ const Header: React.FC = () => {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex space-x-4 xl:space-x-8 items-center">
             <Link to="/#about" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
-              About the competition
+              About
             </Link>
             <Link to="/#stages" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
-              Competition stages
+              Stages
             </Link>
             <Link to="/faqs" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
               FAQs
+            </Link>
+            <Link to="/pre-register" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
+              Pre-register
             </Link>
             <Link to="/#footer" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
               Contact us
@@ -38,7 +41,7 @@ const Header: React.FC = () => {
             <a href={`mailto:${email}`} className="text-brand-blue font-bold text-sm xl:text-base hover:underline">
               Become a sponsor
             </a>
-            <Button href={`${portalUrl}/register`} variant="primary" className="px-4 py-2 text-sm xl:px-6 xl:py-2.5 xl:text-base font-bold">
+            <Button to="/register" variant="primary" className="px-4 py-2 text-sm xl:px-6 xl:py-2.5 xl:text-base font-bold">
               Register
             </Button>
           </div>
@@ -81,6 +84,13 @@ const Header: React.FC = () => {
               FAQs
             </Link>
             <Link
+              to="/pre-register"
+              onClick={() => setIsMenuOpen(false)}
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
+            >
+              Pre-register
+            </Link>
+            <Link
               to="/#footer"
               onClick={() => setIsMenuOpen(false)}
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
@@ -97,10 +107,11 @@ const Header: React.FC = () => {
                 Become a sponsor
               </Button>
               <Button
-                href={`${portalUrl}/register`}
+                to="/register"
                 variant="primary"
                 fullWidth
                 className="justify-center"
+                onClick={() => setIsMenuOpen(false)}
               >
                 Register
               </Button>
