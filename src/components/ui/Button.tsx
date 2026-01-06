@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ButtonProps } from '../../types';
 
 const Button: React.FC<ButtonProps> = ({
@@ -7,6 +8,7 @@ const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   className = '',
   href,
+  to,
   ...props
 }) => {
   const baseStyles =
@@ -20,6 +22,14 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const combinedClassName = `${baseStyles} ${variants[variant]} ${fullWidth ? 'w-full' : ''} ${className}`;
+
+  if (to) {
+    return (
+      <Link to={to} className={combinedClassName}>
+        {children}
+      </Link>
+    );
+  }
 
   if (href) {
     return (

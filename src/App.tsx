@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import FAQs from './pages/FAQs';
+import PreRegister from './pages/PreRegister';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/faqs" element={<FAQs />} />
+            <Route path="/pre-register" element={<PreRegister />} />
           </Routes>
         </main>
         <Footer />
