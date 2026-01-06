@@ -242,36 +242,6 @@ const Register: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label htmlFor="school_type" className={labelClasses}>School Type</label>
-                        <select
-                          id="school_type"
-                          name="school_type"
-                          value={candidateData.school_type}
-                          onChange={handleCandidateChange}
-                          className={inputClasses}
-                        >
-                          <option value="public">Public</option>
-                          <option value="private">Private</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label htmlFor="current_class" className={labelClasses}>Current Class</label>
-                        <select
-                          id="current_class"
-                          name="current_class"
-                          value={candidateData.current_class}
-                          onChange={handleCandidateChange}
-                          className={inputClasses}
-                        >
-                          <option value="SS1">SS1</option>
-                          <option value="SS2">SS2</option>
-                          <option value="SS3">SS3</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
                         <label htmlFor="state" className={labelClasses}>State</label>
                         <select
                           id="state"
@@ -287,54 +257,99 @@ const Register: React.FC = () => {
                           <option value="Abuja">Abuja</option>
                         </select>
                       </div>
+                      <div>
+                        <label htmlFor="school_type" className={labelClasses}>School Type</label>
+                        <select
+                          id="school_type"
+                          name="school_type"
+                          value={candidateData.school_type}
+                          onChange={handleCandidateChange}
+                          className={inputClasses}
+                        >
+                          <option value="public">Public</option>
+                          <option value="private">Private</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="current_class" className={labelClasses}>Current Class</label>
+                        <select
+                          id="current_class"
+                          name="current_class"
+                          value={candidateData.current_class}
+                          onChange={handleCandidateChange}
+                          className={inputClasses}
+                        >
+                          <option value="SS1">SS1</option>
+                          <option value="SS2">SS2</option>
+                          <option value="SS3">SS3</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label htmlFor="document_type" className={labelClasses}>Document Type</label>
+                        <select
+                          id="document_type"
+                          name="document_type"
+                          value={candidateData.document_type}
+                          onChange={handleCandidateChange}
+                          className={inputClasses}
+                        >
+                          <option value="NIN">NIN</option>
+                          <option value="school result">School Result</option>
+                        </select>
+                      </div>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div>
-                      <label htmlFor="occupation" className={labelClasses}>Occupation</label>
-                      <input
-                        type="text"
-                        id="occupation"
-                        name="occupation"
-                        required
-                        value={volunteerData.occupation}
-                        onChange={handleVolunteerChange}
-                        className={inputClasses}
-                        placeholder="Teacher, Engineer, etc."
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="occupation" className={labelClasses}>Occupation</label>
+                        <input
+                          type="text"
+                          id="occupation"
+                          name="occupation"
+                          required
+                          value={volunteerData.occupation}
+                          onChange={handleVolunteerChange}
+                          className={inputClasses}
+                          placeholder="Teacher, Engineer, etc."
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="state" className={labelClasses}>State</label>
+                        <input
+                          type="text"
+                          id="state"
+                          name="state"
+                          required
+                          value={volunteerData.state}
+                          onChange={handleVolunteerChange}
+                          className={inputClasses}
+                          placeholder="Where are you currently?"
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <label htmlFor="state" className={labelClasses}>State</label>
-                      <input
-                        type="text"
-                        id="state"
-                        name="state"
-                        required
-                        value={volunteerData.state}
-                        onChange={handleVolunteerChange}
-                        className={inputClasses}
-                        placeholder="Where are you currently?"
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="document_type" className={labelClasses}>Document Type</label>
+                        <select
+                          id="document_type"
+                          name="document_type"
+                          value={volunteerData.document_type}
+                          onChange={handleVolunteerChange}
+                          className={inputClasses}
+                        >
+                          <option value="NIN">NIN</option>
+                          <option value="passport">Passport</option>
+                          <option value="drivers license">Drivers' License</option>
+                        </select>
+                      </div>
                     </div>
                   </>
                 )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="document_type" className={labelClasses}>Document Type</label>
-                    <select
-                      id="document_type"
-                      name="document_type"
-                      value={userType === 'candidate' ? candidateData.document_type : volunteerData.document_type}
-                      onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
-                      className={inputClasses}
-                    >
-                      <option value="NIN">NIN</option>
-                      <option value="school result">School Result</option>
-                    </select>
-                  </div>
-                </div>
 
                   <div>
                     <label htmlFor="document" className={labelClasses}>Document Upload</label>
