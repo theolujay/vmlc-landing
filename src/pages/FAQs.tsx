@@ -10,7 +10,7 @@ const faqs = [
     question: 'How do I register?',
     answer: (
       <span>
-        To register visit:{' '}
+        To register, visit:{' '}
         <a
           href="https://portal.verboheit.org/register"
           target="_blank"
