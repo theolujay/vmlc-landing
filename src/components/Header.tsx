@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Button from './ui/Button';
 import Logo from './Logo';
 
@@ -12,35 +13,38 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <a href="/">
+          <Link to="/">
             <Logo />
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8 items-center">
-            <a href="#about" className="text-gray-900 hover:text-brand-blue font-medium text-md">
+          <nav className="hidden lg:flex space-x-4 xl:space-x-8 items-center">
+            <Link to="/#about" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
               About the competition
-            </a>
-            <a href="#stages" className="text-gray-900 hover:text-brand-blue font-medium text-md">
+            </Link>
+            <Link to="/#stages" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
               Competition stages
-            </a>
-            <a href="#footer" className="text-gray-900 hover:text-brand-blue font-medium text-md">
+            </Link>
+            <Link to="/faqs" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
+              FAQs
+            </Link>
+            <Link to="/#footer" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
               Contact us
-            </a>
+            </Link>
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center space-x-6">
-            <a href={`mailto:${email}`} className="text-brand-blue font-bold text-md hover:underline">
+          <div className="hidden lg:flex items-center space-x-3 xl:space-x-6">
+            <a href={`mailto:${email}`} className="text-brand-blue font-bold text-sm xl:text-base hover:underline">
               Become a sponsor
             </a>
-            <Button href={`${portalUrl}/register`} variant="primary" className="px-6 py-2.5 font-bold text-md">
+            <Button href={`${portalUrl}/register`} variant="primary" className="px-4 py-2 text-sm xl:px-6 xl:py-2.5 xl:text-base font-bold">
               Register
             </Button>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-500 hover:text-brand-blue focus:outline-none"
@@ -53,26 +57,36 @@ const Header: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+        <div className="lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
-            <a
-              href="#about"
+            <Link
+              to="/#about"
+              onClick={() => setIsMenuOpen(false)}
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
             >
               About the competition
-            </a>
-            <a
-              href="#stages"
+            </Link>
+            <Link
+              to="/#stages"
+              onClick={() => setIsMenuOpen(false)}
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
             >
               Competition stages
-            </a>
-            <a
-              href="#footer"
+            </Link>
+            <Link
+              to="/faqs"
+              onClick={() => setIsMenuOpen(false)}
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
+            >
+              FAQs
+            </Link>
+            <Link
+              to="/#footer"
+              onClick={() => setIsMenuOpen(false)}
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
             >
               Contact us
-            </a>
+            </Link>
             <div className="mt-4 w-full flex flex-col gap-3 px-3">
               <Button
                 href={`mailto:${email}`}

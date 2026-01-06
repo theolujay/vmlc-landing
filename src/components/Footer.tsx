@@ -2,8 +2,8 @@ import React from 'react';
 import { Linkedin, Instagram, Facebook } from 'lucide-react';
 
 const Footer: React.FC = () => {
-  const email = import.meta.env.VITE_EMAIL;
-  const phone = import.meta.env.VITE_PHONE;
+  const email = import.meta.env.VITE_EMAIL || '';
+  const phone = import.meta.env.VITE_PHONE || '';
   const cleanPhone = phone.replace(/-/g, '');
   return (
     <footer id="footer" className="bg-black text-white pt-20 pb-10">
