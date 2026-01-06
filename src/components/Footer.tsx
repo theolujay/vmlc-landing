@@ -1,5 +1,6 @@
 import React from 'react';
 import { Linkedin, Instagram, Facebook } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   const email = import.meta.env.VITE_EMAIL || '';
@@ -21,12 +22,12 @@ const Footer: React.FC = () => {
               >
                 <p className="text-xl">{phone}</p>
               </a>
-              <a
-                href={`mailto:${email}`}
+              <Link
+                to="/support-us"
                 className="text-xl hover:text-gray-300 transition-colors block underline decoration-gray-600 hover:decoration-gray-300 underline-offset-4"
               >
                 {email}
-              </a>
+              </Link>
             </div>
           </div>
 
