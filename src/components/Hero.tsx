@@ -29,12 +29,12 @@ const Hero: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <Button
-              href={`${portalUrl}/register`}
+              to="/register"
               variant="primary"
             >
               Register as a candidate
             </Button>
-            <Button href={`${portalUrl}/register/staff`} variant="outline">
+            <Button to="/register" variant="outline">
               Become a volunteer
             </Button>
           </div>
