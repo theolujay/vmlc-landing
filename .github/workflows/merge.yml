@@ -1,28 +1,73 @@
-name: Staging Pipeline
+name: Deploy Pipeline
 
 on:
   push:
     branches:
       - "dev"
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+    types:
+      - closed
+
 jobs:
-  merge-branch:
+  merge-dev-to-release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
     runs-on: ubuntu-24.04
     permissions:
       contents: write
       packages: write
     steps:
       - uses: actions/checkout@v4
-      - uses: everlytic/branch-merge@1.1.5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_ref: 'dev'
-          target_branch: 'main'
-          commit_message_template: '[Automated] Merged {source_ref} into {target_branch}'
-          
-      - uses: actions/checkout@v4
-      - uses: everlytic/branch-merge@1.1.5
+      - name: Merge dev to release (staging)
+        uses: everlytic/branch-merge@1.1.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_ref: 'dev'
           target_branch: 'release'
+          commit_message_template: '[Automated] Merged {source_ref} into {target_branch}'
+
+  check-trigger:
+    runs-on: ubuntu-24.04
+    outputs:
+      deploy_prod: ${{ steps.check.outputs.deploy_prod }}
+    steps:
+      - name: Check production deployment conditions
+        id: check
+        run: |
+          # Deploy if:
+          # 1. PR merged from 'release' branch to 'main'
+          # 2. Direct push to 'main'
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            if [ "${{ github.event.pull_request.merged }}" == "true" ] && [ "${{ github.event.pull_request.head.ref }}" == "release" ]; then
+              echo "deploy_prod=true" >> "$GITHUB_OUTPUT"
+              echo "Deployment triggered by merged PR from release branch"
+            else
+              echo "deploy_prod=false" >> "$GITHUB_OUTPUT"
+              echo "Skipping: PR not merged or not from release branch"
+            fi
+          elif [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "deploy_prod=true" >> "$GITHUB_OUTPUT"
+            echo "Deployment triggered by push to main"
+          else
+            echo "deploy_prod=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping: Deployment conditions not met"
+          fi
+
+  merge-release-to-main:
+    runs-on: ubuntu-24.04
+    needs: check-trigger
+    if: needs.check-trigger.outputs.deploy_prod == 'true'
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to production
+        uses: everlytic/branch-merge@1.1.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_ref: 'release'
+          target_branch: 'main'
           commit_message_template: '[Automated] Merged {source_ref} into {target_branch}'
