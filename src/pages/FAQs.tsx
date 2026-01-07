@@ -70,7 +70,7 @@ const faqs = [
         <p>Yes, there will be 4 major prizes:</p>
         <ul className="list-disc pl-5 space-y-2">
           <li>
-            Top 3 in the final will receive 250k, 150k and 100k each for first, second and third.
+            Top 3 in the final will receive ₦250k, ₦150k and ₦100k each for first, second and third.
           </li>
           <li>
             <span className="font-bold text-gray-900">Dipo Olomofe Prize:</span> The best performing
