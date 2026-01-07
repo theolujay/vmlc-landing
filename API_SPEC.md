@@ -42,7 +42,7 @@ Registers a new user as either a **Candidate** or a **Volunteer**.
 | `phone_number`| `string` | Phone number (e.g., `+234...`). |
 | `document` | `file` | ID or Result upload (Max 5MB). |
 | `document_type`| `string` | `NIN` or `school result` (Candidate) / `NIN`, `passport`, or `drivers license` (Volunteer). |
-| `user_consent_given` | `string` | `"true"` or `"false"` (Boolean sent as string in FormData). |
+| `consent` | `string` | `"true"` or `"false"` (Boolean sent as string in FormData). |
 
 #### Candidate-Specific Fields (Required if `user_type` is `candidate`)
 | Key | Type | Description |
@@ -94,7 +94,7 @@ Lead collection for interested participants.
 | `full_name` | `string` | User's full name. |
 | `email` | `string` | Valid email address. |
 | `phone_number` | `string` | Contact phone. |
-| `user_type` | `string` | `candidate` or `volunteer`. |
+| `interest_type` | `string` | `candidate` or `volunteer`. |
 
 ---
 

@@ -30,7 +30,7 @@ const Register: React.FC = () => {
     current_class: 'SS1',
     state: 'Lagos',
     document_type: 'NIN',
-    user_consent_given: false,
+    consent: false,
   };
 
   const initialVolunteerData = {
@@ -41,7 +41,7 @@ const Register: React.FC = () => {
     occupation: '',
     state: '',
     document_type: 'NIN',
-    user_consent_given: false,
+    consent: false,
   };
 
   const [candidateData, setCandidateData] = useState(initialCandidateData);
@@ -368,13 +368,13 @@ const Register: React.FC = () => {
                 <div className="flex items-center space-x-3 bg-blue-50 p-4 rounded-2xl">
                   <input
                     type="checkbox"
-                    id="user_consent_given"
-                    name="user_consent_given"
-                    checked={userType === 'candidate' ? candidateData.user_consent_given : volunteerData.user_consent_given}
+                    id="consent"
+                    name="consent"
+                    checked={userType === 'candidate' ? candidateData.consent : volunteerData.consent}
                     onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
                     className="w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
                   />
-                  <label htmlFor="user_consent_given" className="text-sm font-medium text-brand-blue">
+                  <label htmlFor="consent" className="text-sm font-medium text-brand-blue">
                     By selecting "Register", you're confirming that you have read and agreed to Verboheit MLC's <Link to="/terms-and-conditions" target="_blank" className="underline hover:text-blue-800">Terms & Conditions</Link> and <Link to="/privacy-policy" target="_blank" className="underline hover:text-blue-800">Privacy Policy</Link>.
                   </label>
                 </div>
@@ -389,7 +389,7 @@ const Register: React.FC = () => {
                   type="submit"
                   variant="primary"
                   fullWidth
-                  disabled={status === 'loading' || !(userType === 'candidate' ? candidateData.user_consent_given : volunteerData.user_consent_given)}
+                  disabled={status === 'loading' || !(userType === 'candidate' ? candidateData.consent : volunteerData.consent)}
                   className={status === 'loading' ? 'opacity-70 cursor-not-allowed' : 'py-4 shadow-lg shadow-blue-200'}
                 >
                   {status === 'loading' ? (

@@ -21,5 +21,5 @@ export interface PreRegisterData {
   full_name: string;
   email: string;
   phone_number: string;
-  user_type: 'candidate' | 'volunteer';
+  interest_type: 'candidate' | 'volunteer';
 }
