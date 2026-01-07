@@ -68,7 +68,7 @@ const PreRegister: React.FC = () => {
             Pre-register <span className="text-brand-blue">Now</span>
           </h1>
           <p className="text-xl text-gray-600">
-            Receive updates about registering for the Verboheit Mathematics League Competition.
+            Recieve updates about registering for the Verboheit Mathematics League Competition.
           </p>
         </div>
 
@@ -100,7 +100,7 @@ const PreRegister: React.FC = () => {
                   value={formData.full_name}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
-                  placeholder="First Name"
+                  placeholder="Jane Doe"
                 />
               </div>
 
@@ -116,7 +116,7 @@ const PreRegister: React.FC = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
-                  placeholder="john.doe@example.com"
+                  placeholder="jane.doe@example.com"
                 />
               </div>
 

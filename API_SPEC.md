@@ -77,6 +77,7 @@ For sponsorships, partnerships, and other forms of support.
 | `support_type` | `string` | `financial`, `partnership`, `media`, `mentorship`, or `other`. |
 | `phone_number`| `string` | (Optional) Contact phone. |
 | `message` | `string` | Detailed inquiry message. |
+| `consent` | `boolean` | `true` or `false`. |
 
 ---
 

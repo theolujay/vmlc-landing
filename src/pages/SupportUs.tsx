@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
+import { Link } from 'react-router-dom';
 
 type SupportType = 'financial' | 'partnership' | 'media' | 'mentorship' | 'other';
 
@@ -10,6 +11,7 @@ interface SupportFormData {
   support_type: SupportType;
   phone_number?: string;
   message: string;
+  consent: boolean;
 }
 
 const SupportUs: React.FC = () => {
@@ -20,13 +22,15 @@ const SupportUs: React.FC = () => {
     support_type: 'financial',
     phone_number: '',
     message: '',
+    consent: false,
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setFormData((prev) => ({ ...prev, [name]: val }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,6 +61,7 @@ const SupportUs: React.FC = () => {
           support_type: 'financial',
           phone_number: '',
           message: '',
+          consent: false,
         });
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -187,6 +192,20 @@ const SupportUs: React.FC = () => {
                 ></textarea>
               </div>
 
+              <div className="flex items-center space-x-3 bg-blue-50 p-4 rounded-2xl">
+                <input
+                  type="checkbox"
+                  id="consent"
+                  name="consent"
+                  checked={formData.consent}
+                  onChange={handleChange}
+                  className="w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
+                />
+                <label htmlFor="consent" className="text-sm font-medium text-brand-blue">
+                  I give consent to be contacted based on my type of support.
+                </label>
+              </div>
+
               {status === 'error' && (
                 <div className="p-4 bg-red-50 text-red-700 rounded-2xl text-sm font-medium border border-red-100">
                   {message}
@@ -197,7 +216,7 @@ const SupportUs: React.FC = () => {
                 type="submit"
                 variant="primary"
                 fullWidth
-                disabled={status === 'loading'}
+                disabled={status === 'loading' || !formData.consent}
                 className={status === 'loading' ? 'opacity-70 cursor-not-allowed' : 'py-4 shadow-lg shadow-blue-200'}
               >
                 {status === 'loading' ? 'Sending...' : 'Send Inquiry'}
