@@ -202,7 +202,7 @@ const SupportUs: React.FC = () => {
                   className="w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
                 />
                 <label htmlFor="consent" className="text-sm font-medium text-brand-blue">
-                  I give consent to be contacted based on my type of support.
+                  I consent to be contacted by the Verboheit team regarding my support inquiry.
                 </label>
               </div>
 
