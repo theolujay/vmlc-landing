@@ -100,7 +100,7 @@ const Register: React.FC = () => {
 
     if (!phoneRegex.test(userData.phone_number)) {
       setStatus('error');
-      setMessage('Please enter a valid Nigerian phone number (+234 followed by 10 digits).');
+      setMessage('Please enter a valid phone number (+234xxxxxxxxxx).');
       return;
     }
 
@@ -129,7 +129,7 @@ const Register: React.FC = () => {
 
       if (response.ok) {
         setStatus('success');
-        setMessage(`Registration successful as a ${userType}!`);
+        setMessage(`Registration successful as a ${userType}.\nWe sent you an email.`);
         // Reset forms
         setCandidateData(initialCandidateData);
         setVolunteerData(initialVolunteerData);
@@ -172,7 +172,7 @@ const Register: React.FC = () => {
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Success!</h2>
               <p className="text-lg text-gray-600 mb-8">{message}</p>
               <Button onClick={() => setStatus('idle')} variant="primary">
-                Register Another Person
+                Register another person
               </Button>
             </div>
           ) : (
