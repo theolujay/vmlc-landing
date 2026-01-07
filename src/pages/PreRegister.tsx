@@ -22,10 +22,26 @@ const PreRegister: React.FC = () => {
     setStatus('loading');
     setMessage('');
 
+    // Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\+234\d{10}$/;
+
+    if (!emailRegex.test(formData.email)) {
+      setStatus('error');
+      setMessage('Please enter a valid email address.');
+      return;
+    }
+
+    if (!phoneRegex.test(formData.phone_number)) {
+      setStatus('error');
+      setMessage('Please enter a valid Nigerian phone number (+234 followed by 10 digits).');
+      return;
+    }
+
     try {
-      const apiKey = import.meta.env.VITE_PRE_REGISTER_API_KEY;
-      const baseUrl = (import.meta.env.VITE_PORTAL_URL || '').replace(/\/$/, '');
-      const response = await fetch(`${baseUrl}/pre-register`, {
+      const apiKey = import.meta.env.VITE_API_KEY;
+      const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+      const response = await fetch(`${baseApiUrl}/pre-register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
