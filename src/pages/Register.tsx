@@ -86,14 +86,30 @@ const Register: React.FC = () => {
     setStatus('loading');
     setMessage('');
 
+    const userData = userType === 'candidate' ? candidateData : volunteerData;
+
+    // Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\+234\d{10}$/;
+
+    if (!emailRegex.test(userData.email)) {
+      setStatus('error');
+      setMessage('Please enter a valid email address.');
+      return;
+    }
+
+    if (!phoneRegex.test(userData.phone_number)) {
+      setStatus('error');
+      setMessage('Please enter a valid Nigerian phone number (+234 followed by 10 digits).');
+      return;
+    }
+
     const apiKey = import.meta.env.VITE_API_KEY;
     const baseUrl = (import.meta.env.VITE_PORTAL_URL || '').replace(/\/$/, '');
 
     try {
       const formData = new FormData();
       formData.append('user_type', userType);
-      
-      const userData = userType === 'candidate' ? candidateData : volunteerData;
       
       Object.entries(userData).forEach(([key, value]) => {
         formData.append(key, value.toString());

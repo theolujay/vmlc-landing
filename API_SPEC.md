@@ -18,7 +18,7 @@ Requests require an API key passed in the `x-api-key` header.
 | :--- | :--- | :--- |
 | `/register/` | `VITE_API_KEY` | `x-api-key` |
 | `/support-us/` | `VITE_API_KEY` | `x-api-key` |
-| `/pre-register` | `VITE_PRE_REGISTER_API_KEY` | `x-api-key` |
+| `/pre-register` | `VITE_API_KEY` | `x-api-key` |
 
 ---
 
