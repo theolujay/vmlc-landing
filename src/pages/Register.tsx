@@ -4,6 +4,8 @@ import { Link, useSearchParams } from 'react-router-dom';
 
 type UserType = 'candidate' | 'volunteer';
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 const Register: React.FC = () => {
   const [searchParams] = useSearchParams();
   const initialType = (searchParams.get('type') as UserType) === 'volunteer' ? 'volunteer' : 'candidate';
@@ -61,8 +63,21 @@ const Register: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setDocumentFile(e.target.files[0]);
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > MAX_FILE_SIZE) {
+        setStatus('error');
+        setMessage('File size exceeds 5MB limit. Please upload a smaller file.');
+        setDocumentFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      } else {
+        setDocumentFile(file);
+        // Clear error if it was a file size error
+        if (status === 'error' && message.includes('File size')) {
+          setStatus('idle');
+          setMessage('');
+        }
+      }
     }
   };
 
@@ -88,7 +103,7 @@ const Register: React.FC = () => {
         formData.append('document', documentFile);
       }
 
-      const response = await fetch(`${baseUrl}/register/`, {
+      const response = await fetch(`${baseUrl}/v2/register/`, {
         method: 'POST',
         headers: {
           'x-api-key': apiKey,
