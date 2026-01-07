@@ -7,7 +7,7 @@ const PreRegister: React.FC = () => {
     full_name: '',
     email: '',
     phone_number: '',
-    user_type: 'candidate',
+    interest_type: 'candidate',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
@@ -41,7 +41,7 @@ const PreRegister: React.FC = () => {
           full_name: '',
           email: '',
           phone_number: '',
-          user_type: 'candidate',
+          interest_type: 'candidate',
         });
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -137,13 +137,13 @@ const PreRegister: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="user_type" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="interest_type" className="block text-sm font-semibold text-gray-700 mb-2">
                   I want to become a
                 </label>
                 <select
-                  id="user_type"
-                  name="user_type"
-                  value={formData.user_type}
+                  id="interest_type"
+                  name="interest_type"
+                  value={formData.interest_type}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all bg-white"
                 >
