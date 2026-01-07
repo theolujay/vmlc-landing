@@ -39,10 +39,10 @@ const SupportUs: React.FC = () => {
     setMessage('');
 
     const apiKey = import.meta.env.VITE_API_KEY;
-    const baseUrl = (import.meta.env.VITE_PORTAL_URL || '').replace(/\/$/, '');
+    const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
     try {
-      const response = await fetch(`${baseUrl}/support-us/`, {
+      const response = await fetch(`${baseApiUrl}/support-us/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

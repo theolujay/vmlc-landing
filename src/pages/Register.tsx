@@ -105,7 +105,7 @@ const Register: React.FC = () => {
     }
 
     const apiKey = import.meta.env.VITE_API_KEY;
-    const baseUrl = (import.meta.env.VITE_PORTAL_URL || '').replace(/\/$/, '');
+    const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
     try {
       const formData = new FormData();
@@ -119,7 +119,7 @@ const Register: React.FC = () => {
         formData.append('document', documentFile);
       }
 
-      const response = await fetch(`${baseUrl}/v2/register/`, {
+      const response = await fetch(`${baseApiUrl}/v2/register/`, {
         method: 'POST',
         headers: {
           'x-api-key': apiKey,
