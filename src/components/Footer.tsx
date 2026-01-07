@@ -28,6 +28,12 @@ const Footer: React.FC = () => {
               >
                 {email}
               </Link>
+              <Link
+                to="/faqs"
+                className="text-xl hover:text-gray-300 transition-colors block underline decoration-gray-600 hover:decoration-gray-300 underline-offset-4 text-brand-blue font-semibold"
+              >
+                Check our FAQs
+              </Link>
             </div>
           </div>
 
