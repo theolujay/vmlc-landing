@@ -186,7 +186,7 @@ const Register: React.FC = () => {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <div className="inline-block px-2 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
-            <span style={{ fontFamily: 'Helvetica, sans-serif' }}>We are live</span>
+            <span style={{ fontFamily: 'Helvetica, sans-serif' }}>We are live!</span>
           </div>
           <h1 className="font-black text-4xl md:text-5xl text-gray-900 mb-6" style={{ fontFamily: 'Segoe UI, sans-serif' }}>
             Register <span className="text-brand-blue">Today</span>
