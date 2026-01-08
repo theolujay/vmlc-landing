@@ -3,6 +3,7 @@ interface ImportMetaEnv {
     readonly VITE_EMAIL: string;
     readonly VITE_PHONE: string;
     readonly VITE_API_KEY: string;
+    readonly VITE_PRE_REGISTER_API_KEY: string;
     readonly VITE_API_URL: string;
 }
 

@@ -25,10 +25,7 @@ export const extractErrorMessage = (errorData: any): string => {
     if (Array.isArray(errorData[key]) && errorData[key].length > 0) {
       const errorMsg = errorData[key][0];
       if (typeof errorMsg === 'string') {
-        // Format: "Email: A user with this email already exists."
-        const fieldName = key.replace(/_/g, ' ');
-        const formattedField = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
-        return `${formattedField}: ${errorMsg}`;
+        return errorMsg;
       }
     }
   }
