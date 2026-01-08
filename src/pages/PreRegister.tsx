@@ -41,7 +41,7 @@ const PreRegister: React.FC = () => {
     try {
       const apiKey = import.meta.env.VITE_API_KEY;
       const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
-      const response = await fetch(`${baseApiUrl}/pre-register`, {
+      const response = await fetch(`${baseApiUrl}/v2/pre-register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const PreRegister: React.FC = () => {
 
       if (response.ok) {
         setStatus('success');
-        setMessage('Thank you for pre-registering!');
+        setMessage('Please check your email');
         setFormData({
           full_name: '',
           email: '',
@@ -74,9 +74,9 @@ const PreRegister: React.FC = () => {
     <div className="py-20 bg-white min-h-[60vh] animate-fade-in">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          {/* <div className="inline-block px-1 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
+          <div className="inline-block px-2 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
             <span style={{ fontFamily: 'Helvetica, sans-serif' }}>Get Involved</span>
-          </div> */}
+          </div>
           <h1
             className="font-black text-4xl md:text-5xl text-gray-900 mb-6"
             style={{ fontFamily: 'Segoe UI, sans-serif' }}
@@ -96,10 +96,10 @@ const PreRegister: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Registration Successful!</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Successful!</h2>
               <p className="text-gray-600 mb-6">{message}</p>
               <Button onClick={() => setStatus('idle')} variant="primary">
-                Register Another
+                Register another
               </Button>
             </div>
           ) : (

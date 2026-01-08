@@ -14,6 +14,36 @@ const Register: React.FC = () => {
   const [message, setMessage] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [regStatus, setRegStatus] = useState<{
+    is_candidate_reg_open: boolean;
+    is_staff_reg_open: boolean;
+    support_email: string;
+  } | null>(null);
+  const [fetchingRegStatus, setFetchingRegStatus] = useState(true);
+
+  useEffect(() => {
+    const fetchRegStatus = async () => {
+      try {
+        const apiKey = import.meta.env.VITE_API_KEY;
+        const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+        const response = await fetch(`${baseApiUrl}/v1/registration`, {
+          headers: {
+            'x-api-key': apiKey,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setRegStatus(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch registration status', error);
+      } finally {
+        setFetchingRegStatus(false);
+      }
+    };
+    fetchRegStatus();
+  }, []);
+
   // Sync userType if query param changes (optional but good for UX)
   useEffect(() => {
     const type = searchParams.get('type');
@@ -153,6 +183,9 @@ const Register: React.FC = () => {
     <div className="py-20 bg-gray-50 min-h-screen animate-fade-in">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
+          <div className="inline-block px-2 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
+            <span style={{ fontFamily: 'Helvetica, sans-serif' }}>Let's Begin</span>
+          </div>
           <h1 className="font-black text-4xl md:text-5xl text-gray-900 mb-6" style={{ fontFamily: 'Segoe UI, sans-serif' }}>
             Register <span className="text-brand-blue">Today</span>
           </h1>
@@ -196,7 +229,27 @@ const Register: React.FC = () => {
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              {fetchingRegStatus ? (
+                <div className="flex justify-center py-12">
+                  <svg className="animate-spin h-10 w-10 text-brand-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </div>
+              ) : regStatus && ((userType === 'candidate' && !regStatus.is_candidate_reg_open) || (userType === 'volunteer' && !regStatus.is_staff_reg_open)) ? (
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Oops!</h2>
+                  <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
+                    {userType === 'candidate' ? 'Candidate' : 'Volunteer'} registration is currently not open. Please reach out to <a href={`mailto:${regStatus.support_email}`} className="text-brand-blue font-semibold hover:underline">{regStatus.support_email}</a> if you have inquiries
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="first_name" className={labelClasses}>First Name</label>
@@ -434,12 +487,13 @@ const Register: React.FC = () => {
                   ) : `Register as ${userType.charAt(0).toUpperCase() + userType.slice(1)}`}
                 </Button>
               </form>
-            </>
-          )}
-        </div>
+            )}
+          </>
+        )}
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Register;
