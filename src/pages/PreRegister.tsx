@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { PreRegisterData } from '../types';
+import { extractErrorMessage } from '../utils/api';
 
 const PreRegister: React.FC = () => {
   const [formData, setFormData] = useState<PreRegisterData>({
@@ -50,9 +51,11 @@ const PreRegister: React.FC = () => {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json().catch(() => ({}));
+
       if (response.ok) {
         setStatus('success');
-        setMessage('Please check your email');
+        setMessage(data.message || 'Please check your email');
         setFormData({
           full_name: '',
           email: '',
@@ -60,9 +63,8 @@ const PreRegister: React.FC = () => {
           interest_type: 'candidate',
         });
       } else {
-        const errorData = await response.json().catch(() => ({}));
         setStatus('error');
-        setMessage(errorData.message || 'Something went wrong. Please try again.');
+        setMessage(extractErrorMessage(data));
       }
     } catch (err) {
       setStatus('error');
@@ -181,7 +183,7 @@ const PreRegister: React.FC = () => {
                 disabled={status === 'loading'}
                 className={status === 'loading' ? 'opacity-70 cursor-not-allowed' : ''}
               >
-                {status === 'loading' ? 'Submitting...' : 'Pre-register Now'}
+                {status === 'loading' ? 'Submitting...' : 'Submit'}
               </Button>
             </form>
           )}
