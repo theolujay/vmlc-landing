@@ -25,6 +25,13 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
     return () => stopCamera();
   }, [isOpen]);
 
+  // Re-attach stream to video element when retaking (since video element is re-mounted)
+  useEffect(() => {
+    if (isOpen && !capturedImage && stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [isOpen, capturedImage, stream]);
+
   const startCamera = async () => {
     setCapturedImage(null);
     setError('');
@@ -110,13 +117,13 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" role="dialog" aria-modal="true">
       <div className="bg-white rounded-3xl p-6 w-full max-w-lg shadow-2xl overflow-hidden relative">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">Facial Verification</h2>
+        {/* <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Facial Verification</h2> */}
         
         {!error ? (
            <>
              {!capturedImage ? (
-                <div className="space-y-4">
-                    <div className="relative aspect-video bg-gray-100 rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center">
+                <div className="space-y-6">
+                    <div className="relative aspect-square max-w-[280px] mx-auto bg-gray-100 rounded-full overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center shadow-inner">
                         <video 
                             ref={videoRef} 
                             autoPlay 
@@ -133,22 +140,21 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
                             <li>Ensure good lighting on your face</li>
                             <li>Remove face coverings (glasses/masks) if possible</li>
                             <li>Face the camera directly</li>
-                            <li>No filters or screenshots</li>
                         </ul>
                     </div>
 
-                    <div className="flex justify-center space-x-4 mt-4">
+                    <div className="flex justify-center space-x-4">
                          <Button variant="ghost" onClick={onClose}>Cancel</Button>
                          <Button onClick={handleCapture} disabled={isCapturing}>Capture Photo</Button>
                     </div>
                 </div>
              ) : (
-                <div className="space-y-4">
-                    <div className="relative aspect-video bg-gray-100 rounded-2xl overflow-hidden border-2 border-brand-blue">
+                <div className="space-y-6">
+                    <div className="relative aspect-square max-w-[280px] mx-auto bg-gray-100 rounded-full overflow-hidden border-2 border-brand-blue shadow-lg">
                          <img src={capturedImage} alt="Captured" className="w-full h-full object-cover transform scale-x-[-1]" />
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-3 sm:space-y-0 mt-4">
+                    <div className="flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-3 sm:space-y-0">
                         <Button variant="ghost" onClick={handleRetake}>Retake Photo</Button>
                         <Button onClick={handleConfirm}>Confirm & Use Photo</Button>
                     </div>
