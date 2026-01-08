@@ -35,7 +35,7 @@ const Stages: React.FC = () => {
                 Initial screening test
               </h3>
               <p className="text-gray-600 text-lg leading-relaxed">
-                Think you've got what it takes to ace the first hurdle? Take the test and lock in
+                Think you&apos;ve got what it takes to ace the first hurdle? Take the test and lock in
                 your spot in the league. Show us your math mojo and get ready for an epic ride!
               </p>
             </div>
@@ -82,7 +82,7 @@ const Stages: React.FC = () => {
                 The Knockout stage
               </h3>
               <p className="text-gray-600 text-lg leading-relaxed">
-                Knock 'Em Out in the Final Showdown – It's game on! Brace yourself for the ultimate
+                Knock &apos;Em Out in the Final Showdown – It&apos;s game on! Brace yourself for the ultimate
                 face-off. Show off your math skills in the grand showdown and claim the crown. Ready
                 to become the ultimate math champ?
               </p>

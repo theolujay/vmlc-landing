@@ -57,8 +57,8 @@ const About: React.FC = () => {
             <div className="space-y-6 text-gray-600 leading-relaxed text-lg">
               <p>
                 Verboheit Mathematics League Competition is a mathematics competition for secondary
-                school students, in senior secondary schools. Verboheit's mathematics league
-                competition is inspired by our founder's background. She completed her secondary
+                school students, in senior secondary schools. Verboheit&apos;s mathematics league
+                competition is inspired by our founder&apos;s background. She completed her secondary
                 school education at a Jakande school in Lagos State, twenty four years ago.
               </p>
               <p>
