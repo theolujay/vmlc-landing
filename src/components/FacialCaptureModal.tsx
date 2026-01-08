@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Button from './ui/Button';
+import { loadFaceDetectionModels, detectFace } from '../utils/faceDetection';
 
 interface FacialCaptureModalProps {
   isOpen: boolean;
@@ -15,35 +16,67 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
   const [error, setError] = useState<string>('');
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isCapturing, setIsCapturing] = useState(false);
+  
+  // Face Detection State
+  const [isModelLoading, setIsModelLoading] = useState(true);
+  const [isFaceDetected, setIsFaceDetected] = useState(false);
+  const detectionIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const initModels = async () => {
+      await loadFaceDetectionModels();
+      setIsModelLoading(false);
+    };
+    initModels();
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
       startCamera();
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
     } else {
       stopCamera();
-      document.body.style.overflow = 'unset'; // Restore background scrolling
+      document.body.style.overflow = 'unset';
     }
-    // Cleanup: Ensure stream is stopped and scroll is restored when component unmounts
     return () => {
         stopCamera();
         document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
 
-  // Re-attach stream to video element when retaking (since video element is re-mounted)
   useEffect(() => {
     if (isOpen && !capturedImage && stream && videoRef.current) {
       videoRef.current.srcObject = stream;
+      startFaceDetection();
+    } else {
+        stopFaceDetection();
     }
   }, [isOpen, capturedImage, stream]);
+
+  const startFaceDetection = () => {
+    if (detectionIntervalRef.current) clearInterval(detectionIntervalRef.current);
+    
+    detectionIntervalRef.current = setInterval(async () => {
+        if (videoRef.current && videoRef.current.readyState === 4) { // HAVE_ENOUGH_DATA
+            const detected = await detectFace(videoRef.current);
+            setIsFaceDetected(detected);
+        }
+    }, 500); // Check every 500ms
+  };
+
+  const stopFaceDetection = () => {
+    if (detectionIntervalRef.current) {
+        clearInterval(detectionIntervalRef.current);
+        detectionIntervalRef.current = null;
+    }
+    setIsFaceDetected(false);
+  };
 
   const startCamera = async () => {
     setCapturedImage(null);
     setError('');
     setIsCapturing(true);
 
-    // Requirement: Provide fallback for devices without camera support
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         setError('Camera API is not supported on this device or browser. Please try a different device.');
         setIsCapturing(false);
@@ -51,7 +84,6 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
     }
 
     try {
-      // Requirement: Use device's front-facing camera
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user' },
         audio: false,
@@ -62,7 +94,6 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
       }
     } catch (err) {
       console.error("Camera access denied:", err);
-      // Requirement: clear, human-readable error message
       setError('Camera access denied. Please allow camera permissions in your browser settings to continue.');
     } finally {
         setIsCapturing(false);
@@ -70,6 +101,7 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
   };
 
   const stopCamera = () => {
+    stopFaceDetection();
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
       setStream(null);
@@ -87,9 +119,9 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
         canvas.height = video.videoHeight;
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         
-        // Capture still image (JPEG)
         const imageUrl = canvas.toDataURL('image/jpeg', 0.8);
         setCapturedImage(imageUrl);
+        stopFaceDetection();
       }
     }
   };
@@ -100,13 +132,11 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
 
   const handleConfirm = () => {
     if (capturedImage) {
-        // Convert base64 to File object
         fetch(capturedImage)
             .then(res => res.blob())
             .then(blob => {
                 const file = new File([blob], "face_capture.jpg", { type: "image/jpeg" });
                 
-                // Requirement: Max size 5MB
                 if (file.size > 5 * 1024 * 1024) {
                     setError("Image is too large (max 5MB). Please retake.");
                     return;
@@ -122,7 +152,6 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
 
   return createPortal(
     <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm overflow-hidden" role="dialog" aria-modal="true">
-      {/* Background overlay click-to-close (optional but standard) */}
       <div className="absolute inset-0 -z-10" onClick={onClose} />
       
       <div className="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl relative max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200 flex flex-col">
@@ -130,7 +159,9 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
            <>
              {!capturedImage ? (
                 <div className="space-y-6">
-                    <div className="relative aspect-square max-w-[280px] mx-auto bg-gray-100 rounded-full overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center shadow-inner">
+                    <div className={`relative aspect-square max-w-[280px] mx-auto bg-gray-100 rounded-full overflow-hidden border-4 flex items-center justify-center shadow-inner transition-colors duration-300 ${
+                        isFaceDetected ? 'border-green-500' : 'border-gray-300 border-dashed'
+                    }`}>
                         <video 
                             ref={videoRef} 
                             autoPlay 
@@ -139,6 +170,22 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
                             muted
                         />
                          {isCapturing && <div className="absolute inset-0 flex items-center justify-center bg-white/50"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-blue"></div></div>}
+                         
+                         {/* Face Detection Status Indicator */}
+                         {!isModelLoading && !isCapturing && (
+                             <div className={`absolute bottom-4 px-3 py-1 rounded-full text-xs font-bold shadow-sm transition-all duration-300 ${
+                                 isFaceDetected 
+                                    ? 'bg-green-100 text-green-700 opacity-90' 
+                                    : 'bg-yellow-100 text-yellow-700 opacity-90 animate-pulse'
+                             }`}>
+                                 {isFaceDetected ? 'Face Detected' : 'Position Face in Circle'}
+                             </div>
+                         )}
+                         {isModelLoading && (
+                             <div className="absolute top-4 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold opacity-90">
+                                 Loading AI...
+                             </div>
+                         )}
                     </div>
                     
                     <div className="bg-blue-50 p-4 rounded-xl text-sm text-blue-800">
@@ -152,7 +199,13 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
 
                     <div className="flex justify-center space-x-4">
                          <Button variant="ghost" onClick={onClose}>Cancel</Button>
-                         <Button onClick={handleCapture} disabled={isCapturing}>Capture Photo</Button>
+                         <Button 
+                            onClick={handleCapture} 
+                            disabled={isCapturing || isModelLoading || !isFaceDetected}
+                            className={`${!isFaceDetected ? 'opacity-50 cursor-not-allowed' : ''}`}
+                         >
+                            Capture Photo
+                         </Button>
                     </div>
                 </div>
              ) : (
