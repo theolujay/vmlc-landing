@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Button from './ui/Button';
 
 interface FacialCaptureModalProps {
@@ -18,11 +19,16 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
   useEffect(() => {
     if (isOpen) {
       startCamera();
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
     } else {
       stopCamera();
+      document.body.style.overflow = 'unset'; // Restore background scrolling
     }
-    // Cleanup: Ensure stream is stopped when component unmounts
-    return () => stopCamera();
+    // Cleanup: Ensure stream is stopped and scroll is restored when component unmounts
+    return () => {
+        stopCamera();
+        document.body.style.overflow = 'unset';
+    };
   }, [isOpen]);
 
   // Re-attach stream to video element when retaking (since video element is re-mounted)
@@ -114,11 +120,12 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" role="dialog" aria-modal="true">
-      <div className="bg-white rounded-3xl p-6 w-full max-w-lg shadow-2xl overflow-hidden relative">
-        {/* <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Facial Verification</h2> */}
-        
+  return createPortal(
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm overflow-hidden" role="dialog" aria-modal="true">
+      {/* Background overlay click-to-close (optional but standard) */}
+      <div className="absolute inset-0 -z-10" onClick={onClose} />
+      
+      <div className="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl relative max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200 flex flex-col">
         {!error ? (
            <>
              {!capturedImage ? (
@@ -180,7 +187,8 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
         {/* Hidden Canvas for capture */}
         <canvas ref={canvasRef} className="hidden" />
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

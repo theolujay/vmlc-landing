@@ -41,6 +41,7 @@ const PrivacyPolicy: React.FC = () => {
             <p className="mb-4 text-gray-600 leading-relaxed">We use your information to:</p>
             <ul className="list-disc pl-12 space-y-2 text-gray-600 leading-relaxed">
               <li>Register and verify your account and identity.</li>
+              <li>Use your facial image strictly for identity verification and to ensure competition integrity.</li>
               <li>Manage your participation in the competition.</li>
               <li>Communicate updates and results.</li>
               <li>Improve the platform experience.</li>

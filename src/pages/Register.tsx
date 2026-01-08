@@ -538,19 +538,6 @@ const Register: React.FC = () => {
                         By selecting "Register", you're confirming that you have read and agreed to Verboheit MLC's <Link to="/terms-and-conditions" target="_blank" className="underline hover:text-blue-800">Terms & Conditions</Link> and <Link to="/privacy-policy" target="_blank" className="underline hover:text-blue-800">Privacy Policy</Link>.
                     </label>
                   </div>
-                  
-                  {/* Facial Capture Consent */}
-                  <div className="flex items-start space-x-3">
-                     <input
-                        type="checkbox"
-                        id="facial_consent"
-                        required
-                        className="mt-1 w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
-                     />
-                     <label htmlFor="facial_consent" className="text-sm font-medium text-brand-blue">
-                        I consent to the capture and use of my facial image for identity verification purposes related to this competition.
-                     </label>
-                  </div>
                 </div>
 
                 {status === 'error' && (
