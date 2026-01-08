@@ -6,8 +6,7 @@ import Logo from './Logo';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const portalUrl = import.meta.env.VITE_PORTAL_URL;
-  const email = import.meta.env.VITE_EMAIL;
+  
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -463,7 +463,7 @@ const Register: React.FC = () => {
                         >
                           <option value="NIN">NIN</option>
                           <option value="passport">Passport</option>
-                          <option value="drivers license">Drivers' License</option>
+                          <option value="drivers license">Drivers&apos; License</option>
                         </select>
                       </div>
                     </div>
@@ -535,7 +535,7 @@ const Register: React.FC = () => {
                         className="mt-1 w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
                     />
                     <label htmlFor="consent" className="text-sm font-medium text-brand-blue">
-                        By selecting "Register", you're confirming that you have read and agreed to Verboheit MLC's <Link to="/terms-and-conditions" target="_blank" className="underline hover:text-blue-800">Terms & Conditions</Link> and <Link to="/privacy-policy" target="_blank" className="underline hover:text-blue-800">Privacy Policy</Link>.
+                        By selecting &quot;Register&quot;, you&apos;re confirming that you have read and agreed to Verboheit MLC&apos;s <Link to="/terms-and-conditions" target="_blank" className="underline hover:text-blue-800">Terms & Conditions</Link> and <Link to="/privacy-policy" target="_blank" className="underline hover:text-blue-800">Privacy Policy</Link>.
                     </label>
                   </div>
                 </div>

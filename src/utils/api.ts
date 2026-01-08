@@ -2,6 +2,7 @@
  * Extracts a user-friendly error message from an API error response.
  * Handles both general detail/message fields and Django-style field-specific errors.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const extractErrorMessage = (errorData: any): string => {
   if (!errorData || typeof errorData !== 'object') {
     return 'Something went wrong. Please try again.';
