@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Button from '../components/ui/Button';
 import { Link, useSearchParams } from 'react-router-dom';
 import { extractErrorMessage } from '../utils/api';
+import { validateEmail, validatePhoneNumber } from '../utils/validation';
 
 type UserType = 'candidate' | 'volunteer';
 
@@ -120,16 +121,13 @@ const Register: React.FC = () => {
     const userData = userType === 'candidate' ? candidateData : volunteerData;
 
     // Validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\d{11}$/;
-
-    if (!emailRegex.test(userData.email)) {
+    if (!validateEmail(userData.email)) {
       setStatus('error');
       setMessage('Please enter a valid email address.');
       return;
     }
 
-    if (!phoneRegex.test(userData.phone_number)) {
+    if (!validatePhoneNumber(userData.phone_number)) {
       setStatus('error');
       setMessage('Please enter a valid phone number (091-XXXX-XXXX).');
       return;
@@ -172,7 +170,7 @@ const Register: React.FC = () => {
         setStatus('error');
         setMessage(extractErrorMessage(data));
       }
-    } catch (err) {
+    } catch {
       setStatus('error');
       setMessage("Something's off. Please check your internet");
     }
