@@ -469,50 +469,6 @@ const Register: React.FC = () => {
                     </div>
                   </>
                 )}
-
-                {/* Facial Capture Section */}
-                <div>
-                    <label className={labelClasses}>Facial Verification</label>
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                        <Button 
-                            type="button" 
-                            onClick={() => setIsModalOpen(true)}
-                            variant="outline"
-                            className="text-brand-blue border-brand-blue hover:bg-blue-50"
-                        >
-                            <span className="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                {capturedImage ? 'Retake Photo' : 'Capture Face'}
-                            </span>
-                        </Button>
-                        
-                        {capturedPreview && (
-                            <div className="relative">
-                                <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-brand-blue shadow-md">
-                                    <img src={capturedPreview} alt="Face Preview" className="h-full w-full object-cover" />
-                                </div>
-                                <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1 border-2 border-white">
-                                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </div>
-                            </div>
-                        )}
-                        
-                        {capturedImage && <span className="text-sm text-green-600 font-medium self-center">Photo captured successfully</span>}
-                    </div>
-                     <p className="mt-2 text-xs text-gray-500">Required for identity verification. Please ensure your face is clearly visible.</p>
-                </div>
-
-                <FacialCaptureModal 
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    onConfirm={handleFaceCaptureConfirm}
-                />
-
                   <div>
                     <label htmlFor="document" className={labelClasses}>Document Upload</label>
                     <input
@@ -527,6 +483,46 @@ const Register: React.FC = () => {
                     />
                     <p className="mt-2 text-xs text-gray-500">Accepted formats: PDF, JPG, PNG (Max 5MB)</p>
                   </div>
+
+                {/* Facial Capture Section */}
+                <div>
+                    <label className={labelClasses}>Facial Verification</label>
+                    <div className={`${inputClasses} flex items-center justify-between py-2 h-[58px]`}>
+                        <div className="flex items-center">
+                            <button 
+                                type="button" 
+                                onClick={() => setIsModalOpen(true)}
+                                className="mr-4 py-2 px-4 rounded-full border-0 text-sm font-semibold bg-brand-accent text-brand-blue hover:bg-blue-200 transition-colors focus:outline-none"
+                            >
+                                {capturedImage ? 'Recapture' : 'Capture'}
+                            </button>
+                            <span className={`text-sm truncate ${capturedImage ? 'text-green-600 font-medium' : 'text-gray-400'}`}>
+                                {capturedImage ? 'Photo captured successfully' : 'No photo taken'}
+                            </span>
+                        </div>
+                        
+                        {capturedPreview && (
+                            <div className="flex-shrink-0 relative">
+                                <div className="h-10 w-10 rounded-full overflow-hidden border border-brand-blue shadow-sm">
+                                    <img src={capturedPreview} alt="Face Preview" className="h-full w-full object-cover" />
+                                </div>
+                                <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-0.5 border border-white">
+                                    <svg className="w-2 h-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                     <p className="mt-2 text-xs text-gray-500">Required for identity verification. Please ensure your face is clearly visible.</p>
+                </div>
+
+                <FacialCaptureModal 
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    onConfirm={handleFaceCaptureConfirm}
+                />
+
                 <div className="space-y-4 bg-blue-50 p-4 rounded-2xl">
                   {/* Terms & Privacy Consent */}
                   <div className="flex items-start space-x-3">
