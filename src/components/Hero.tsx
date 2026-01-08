@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from './ui/Button';
 
 const Hero: React.FC = () => {
@@ -34,7 +35,7 @@ const Hero: React.FC = () => {
             >
               Register as a candidate
             </Button>
-            <Button to="/register" variant="outline">
+            <Button to="/register?type=volunteer" variant="outline">
               Become a volunteer
             </Button>
           </div>
@@ -47,12 +48,12 @@ const Hero: React.FC = () => {
           </div>
 
           <div className="text-sm text-gray-300">
-            <a
-              href={`mailto:${email}`}
+            <Link
+              to="/support-us"
               className="font-semibold text-white hover:underline decoration-10 underline-offset-4"
             >
-              Become a sponsor
-            </a>
+              Support Us
+            </Link>
           </div>
         </div>
       </div>

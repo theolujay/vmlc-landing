@@ -1,13 +1,58 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Button from '../components/ui/Button';
+import { Link, useSearchParams } from 'react-router-dom';
+import { extractErrorMessage } from '../utils/api';
+import { validateEmail, validatePhoneNumber } from '../utils/validation';
 
 type UserType = 'candidate' | 'volunteer';
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 const Register: React.FC = () => {
-  const [userType, setUserType] = useState<UserType>('candidate');
+  const [searchParams] = useSearchParams();
+  const initialType = (searchParams.get('type') as UserType) === 'volunteer' ? 'volunteer' : 'candidate';
+  const [userType, setUserType] = useState<UserType>(initialType);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [regStatus, setRegStatus] = useState<{
+    is_candidate_reg_open: boolean;
+    is_staff_reg_open: boolean;
+    support_email: string;
+  } | null>(null);
+  const [fetchingRegStatus, setFetchingRegStatus] = useState(true);
+
+  useEffect(() => {
+    const fetchRegStatus = async () => {
+      try {
+        const apiKey = import.meta.env.VITE_API_KEY;
+        const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+        const response = await fetch(`${baseApiUrl}/v1/registration`, {
+          headers: {
+            'x-api-key': apiKey,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setRegStatus(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch registration status', error);
+      } finally {
+        setFetchingRegStatus(false);
+      }
+    };
+    fetchRegStatus();
+  }, []);
+
+  // Sync userType if query param changes (optional but good for UX)
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type === 'volunteer' || type === 'candidate') {
+      setUserType(type as UserType);
+    }
+  }, [searchParams]);
 
   const initialCandidateData = {
     first_name: '',
@@ -19,7 +64,7 @@ const Register: React.FC = () => {
     current_class: 'SS1',
     state: 'Lagos',
     document_type: 'NIN',
-    user_consent_given: false,
+    consent: false,
   };
 
   const initialVolunteerData = {
@@ -30,7 +75,7 @@ const Register: React.FC = () => {
     occupation: '',
     state: '',
     document_type: 'NIN',
-    user_consent_given: false,
+    consent: false,
   };
 
   const [candidateData, setCandidateData] = useState(initialCandidateData);
@@ -50,8 +95,21 @@ const Register: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setDocumentFile(e.target.files[0]);
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > MAX_FILE_SIZE) {
+        setStatus('error');
+        setMessage('File size exceeds 5MB limit. Please upload a smaller file.');
+        setDocumentFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      } else {
+        setDocumentFile(file);
+        // Clear error if it was a file size error
+        if (status === 'error' && message.includes('File size')) {
+          setStatus('idle');
+          setMessage('');
+        }
+      }
     }
   };
 
@@ -60,14 +118,27 @@ const Register: React.FC = () => {
     setStatus('loading');
     setMessage('');
 
+    const userData = userType === 'candidate' ? candidateData : volunteerData;
+
+    // Validation
+    if (!validateEmail(userData.email)) {
+      setStatus('error');
+      setMessage('Please enter a valid email address.');
+      return;
+    }
+
+    if (!validatePhoneNumber(userData.phone_number)) {
+      setStatus('error');
+      setMessage('Please enter a valid phone number (091-XXXX-XXXX).');
+      return;
+    }
+
     const apiKey = import.meta.env.VITE_API_KEY;
-    const baseUrl = (import.meta.env.VITE_PORTAL_URL || '').replace(/\/$/, '');
+    const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
     try {
       const formData = new FormData();
       formData.append('user_type', userType);
-      
-      const userData = userType === 'candidate' ? candidateData : volunteerData;
       
       Object.entries(userData).forEach(([key, value]) => {
         formData.append(key, value.toString());
@@ -77,7 +148,7 @@ const Register: React.FC = () => {
         formData.append('document', documentFile);
       }
 
-      const response = await fetch(`${baseUrl}/register/`, {
+      const response = await fetch(`${baseApiUrl}/v2/register/`, {
         method: 'POST',
         headers: {
           'x-api-key': apiKey,
@@ -85,20 +156,21 @@ const Register: React.FC = () => {
         body: formData,
       });
 
+      const data = await response.json().catch(() => ({}));
+
       if (response.ok) {
         setStatus('success');
-        setMessage(`Registration successful as a ${userType}!`);
+        setMessage(data.message || `Registration successful as a ${userType}.\nWe sent you an email.`);
         // Reset forms
         setCandidateData(initialCandidateData);
         setVolunteerData(initialVolunteerData);
         setDocumentFile(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
       } else {
-        const errorData = await response.json().catch(() => ({}));
         setStatus('error');
-        setMessage(errorData.message || "Something went wrong. Please try again.");
+        setMessage(extractErrorMessage(data));
       }
-    } catch (err) {
+    } catch {
       setStatus('error');
       setMessage("Something's off. Please check your internet");
     }
@@ -111,6 +183,9 @@ const Register: React.FC = () => {
     <div className="py-20 bg-gray-50 min-h-screen animate-fade-in">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
+          <div className="inline-block px-2 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
+            <span style={{ fontFamily: 'Helvetica, sans-serif' }}>We are live!</span>
+          </div>
           <h1 className="font-black text-4xl md:text-5xl text-gray-900 mb-6" style={{ fontFamily: 'Segoe UI, sans-serif' }}>
             Register <span className="text-brand-blue">Today</span>
           </h1>
@@ -130,7 +205,7 @@ const Register: React.FC = () => {
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Success!</h2>
               <p className="text-lg text-gray-600 mb-8">{message}</p>
               <Button onClick={() => setStatus('idle')} variant="primary">
-                Register Another Person
+                Register another person
               </Button>
             </div>
           ) : (
@@ -154,7 +229,27 @@ const Register: React.FC = () => {
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              {fetchingRegStatus ? (
+                <div className="flex justify-center py-12">
+                  <svg className="animate-spin h-10 w-10 text-brand-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </div>
+              ) : regStatus && ((userType === 'candidate' && !regStatus.is_candidate_reg_open) || (userType === 'volunteer' && !regStatus.is_staff_reg_open)) ? (
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Oops!</h2>
+                  <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
+                    {userType === 'candidate' ? 'Candidate' : 'Volunteer'} registration is currently not open. Please reach out to <a href={`mailto:${regStatus.support_email}`} className="text-brand-blue font-semibold hover:underline">{regStatus.support_email}</a> if you have inquiries
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="first_name" className={labelClasses}>First Name</label>
@@ -208,7 +303,7 @@ const Register: React.FC = () => {
                       value={userType === 'candidate' ? candidateData.phone_number : volunteerData.phone_number}
                       onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
                       className={inputClasses}
-                      placeholder="+234..."
+                      placeholder="091-XXXX-XXXX"
                     />
                   </div>
                 </div>
@@ -231,36 +326,6 @@ const Register: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label htmlFor="school_type" className={labelClasses}>School Type</label>
-                        <select
-                          id="school_type"
-                          name="school_type"
-                          value={candidateData.school_type}
-                          onChange={handleCandidateChange}
-                          className={inputClasses}
-                        >
-                          <option value="public">Public</option>
-                          <option value="private">Private</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label htmlFor="current_class" className={labelClasses}>Current Class</label>
-                        <select
-                          id="current_class"
-                          name="current_class"
-                          value={candidateData.current_class}
-                          onChange={handleCandidateChange}
-                          className={inputClasses}
-                        >
-                          <option value="SS1">SS1</option>
-                          <option value="SS2">SS2</option>
-                          <option value="SS3">SS3</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
                         <label htmlFor="state" className={labelClasses}>State</label>
                         <select
                           id="state"
@@ -276,54 +341,99 @@ const Register: React.FC = () => {
                           <option value="Abuja">Abuja</option>
                         </select>
                       </div>
+                      <div>
+                        <label htmlFor="school_type" className={labelClasses}>School Type</label>
+                        <select
+                          id="school_type"
+                          name="school_type"
+                          value={candidateData.school_type}
+                          onChange={handleCandidateChange}
+                          className={inputClasses}
+                        >
+                          <option value="public">Public</option>
+                          <option value="private">Private</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="current_class" className={labelClasses}>Current Class</label>
+                        <select
+                          id="current_class"
+                          name="current_class"
+                          value={candidateData.current_class}
+                          onChange={handleCandidateChange}
+                          className={inputClasses}
+                        >
+                          <option value="SS1">SS1</option>
+                          <option value="SS2">SS2</option>
+                          <option value="SS3">SS3</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label htmlFor="document_type" className={labelClasses}>Document Type</label>
+                        <select
+                          id="document_type"
+                          name="document_type"
+                          value={candidateData.document_type}
+                          onChange={handleCandidateChange}
+                          className={inputClasses}
+                        >
+                          <option value="NIN">NIN</option>
+                          <option value="school result">School Result</option>
+                        </select>
+                      </div>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div>
-                      <label htmlFor="occupation" className={labelClasses}>Occupation</label>
-                      <input
-                        type="text"
-                        id="occupation"
-                        name="occupation"
-                        required
-                        value={volunteerData.occupation}
-                        onChange={handleVolunteerChange}
-                        className={inputClasses}
-                        placeholder="Teacher, Engineer, etc."
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="occupation" className={labelClasses}>Occupation</label>
+                        <input
+                          type="text"
+                          id="occupation"
+                          name="occupation"
+                          required
+                          value={volunteerData.occupation}
+                          onChange={handleVolunteerChange}
+                          className={inputClasses}
+                          placeholder="Teacher, Engineer, etc."
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="state" className={labelClasses}>State</label>
+                        <input
+                          type="text"
+                          id="state"
+                          name="state"
+                          required
+                          value={volunteerData.state}
+                          onChange={handleVolunteerChange}
+                          className={inputClasses}
+                          placeholder="Where are you currently?"
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <label htmlFor="state" className={labelClasses}>State</label>
-                      <input
-                        type="text"
-                        id="state"
-                        name="state"
-                        required
-                        value={volunteerData.state}
-                        onChange={handleVolunteerChange}
-                        className={inputClasses}
-                        placeholder="Where are you currently?"
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="document_type" className={labelClasses}>Document Type</label>
+                        <select
+                          id="document_type"
+                          name="document_type"
+                          value={volunteerData.document_type}
+                          onChange={handleVolunteerChange}
+                          className={inputClasses}
+                        >
+                          <option value="NIN">NIN</option>
+                          <option value="passport">Passport</option>
+                          <option value="drivers license">Drivers' License</option>
+                        </select>
+                      </div>
                     </div>
                   </>
                 )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="document_type" className={labelClasses}>Document Type</label>
-                    <select
-                      id="document_type"
-                      name="document_type"
-                      value={userType === 'candidate' ? candidateData.document_type : volunteerData.document_type}
-                      onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
-                      className={inputClasses}
-                    >
-                      <option value="NIN">NIN</option>
-                      <option value="school result">School Result</option>
-                    </select>
-                  </div>
-                </div>
 
                   <div>
                     <label htmlFor="document" className={labelClasses}>Document Upload</label>
@@ -342,14 +452,14 @@ const Register: React.FC = () => {
                 <div className="flex items-center space-x-3 bg-blue-50 p-4 rounded-2xl">
                   <input
                     type="checkbox"
-                    id="user_consent_given"
-                    name="user_consent_given"
-                    checked={userType === 'candidate' ? candidateData.user_consent_given : volunteerData.user_consent_given}
+                    id="consent"
+                    name="consent"
+                    checked={userType === 'candidate' ? candidateData.consent : volunteerData.consent}
                     onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
                     className="w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
                   />
-                  <label htmlFor="user_consent_given" className="text-sm font-medium text-brand-blue">
-                    By selecting "Register", you're confirming that you have read and agreed to Verboheit MLC's <a href="/VMLC T&C.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-800">Terms & Conditions</a> and <a href="/VMLC Privacy Policy.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-800">Privacy Policy</a>.
+                  <label htmlFor="consent" className="text-sm font-medium text-brand-blue">
+                    By selecting "Register", you're confirming that you have read and agreed to Verboheit MLC's <Link to="/terms-and-conditions" target="_blank" className="underline hover:text-blue-800">Terms & Conditions</Link> and <Link to="/privacy-policy" target="_blank" className="underline hover:text-blue-800">Privacy Policy</Link>.
                   </label>
                 </div>
 
@@ -363,7 +473,7 @@ const Register: React.FC = () => {
                   type="submit"
                   variant="primary"
                   fullWidth
-                  disabled={status === 'loading' || !(userType === 'candidate' ? candidateData.user_consent_given : volunteerData.user_consent_given)}
+                  disabled={status === 'loading' || !(userType === 'candidate' ? candidateData.consent : volunteerData.consent)}
                   className={status === 'loading' ? 'opacity-70 cursor-not-allowed' : 'py-4 shadow-lg shadow-blue-200'}
                 >
                   {status === 'loading' ? (
@@ -377,12 +487,13 @@ const Register: React.FC = () => {
                   ) : `Register as ${userType.charAt(0).toUpperCase() + userType.slice(1)}`}
                 </Button>
               </form>
-            </>
-          )}
-        </div>
+            )}
+          </>
+        )}
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Register;

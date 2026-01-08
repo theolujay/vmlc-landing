@@ -32,7 +32,7 @@ const Partners: React.FC = () => {
               of leaders and problem solvers.
             </p>
             <Button
-              href={`mailto:${email}`}
+              to="/support-us"
               variant="primary"
               className="bg-brand-blue text-white"
             >
@@ -49,7 +49,7 @@ const Partners: React.FC = () => {
               meaningful difference in the lives of school students in Nigeria?
             </p>
             <Button
-              href={`${portalUrl}/register/staff`}
+              to="/register?type=volunteer"
               variant="primary"
               className="bg-brand-blue text-white"
             >

@@ -38,9 +38,9 @@ const Header: React.FC = () => {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center space-x-3 xl:space-x-6">
-            <a href={`mailto:${email}`} className="text-brand-blue font-bold text-sm xl:text-base hover:underline">
-              Become a sponsor
-            </a>
+            <Link to="/support-us" className="text-brand-blue font-bold text-sm xl:text-base hover:underline">
+              Support Us
+            </Link>
             <Button to="/register" variant="primary" className="px-4 py-2 text-sm xl:px-6 xl:py-2.5 xl:text-base font-bold">
               Register
             </Button>
@@ -59,68 +59,74 @@ const Header: React.FC = () => {
       </div>
 
       {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
-            <Link
-              to="/#about"
+      <div
+        className={`lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg transition-all duration-300 ease-in-out origin-top ${
+          isMenuOpen
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 -translate-y-4 pointer-events-none'
+        }`}
+      >
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
+          <Link
+            to="/#about"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
+          >
+            About the competition
+          </Link>
+          <Link
+            to="/#stages"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
+          >
+            Competition stages
+          </Link>
+          <Link
+            to="/faqs"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
+          >
+            FAQs
+          </Link>
+          <Link
+            to="/pre-register"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
+          >
+            Pre-register
+          </Link>
+          <Link
+            to="/#footer"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
+          >
+            Contact us
+          </Link>
+          <div className="mt-4 w-full flex flex-col gap-3 px-3">
+            <Button
+              to="/support-us"
+              variant="ghost"
+              fullWidth
+              className="justify-center border border-brand-blue"
               onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
             >
-              About the competition
-            </Link>
-            <Link
-              to="/#stages"
+              Support Us
+            </Button>
+            <Button
+              to="/register"
+              variant="primary"
+              fullWidth
+              className="justify-center"
               onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
             >
-              Competition stages
-            </Link>
-            <Link
-              to="/faqs"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
-            >
-              FAQs
-            </Link>
-            <Link
-              to="/pre-register"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
-            >
-              Pre-register
-            </Link>
-            <Link
-              to="/#footer"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
-            >
-              Contact us
-            </Link>
-            <div className="mt-4 w-full flex flex-col gap-3 px-3">
-              <Button
-                href={`mailto:${email}`}
-                variant="ghost"
-                fullWidth
-                className="justify-center border border-brand-blue"
-              >
-                Become a sponsor
-              </Button>
-              <Button
-                to="/register"
-                variant="primary"
-                fullWidth
-                className="justify-center"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Register
-              </Button>
-            </div>
+              Register
+            </Button>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 };
 
 export default Header;
+

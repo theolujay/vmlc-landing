@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { PreRegisterData } from '../types';
+import { extractErrorMessage } from '../utils/api';
+import { validateEmail, validatePhoneNumber } from '../utils/validation';
 
 const PreRegister: React.FC = () => {
   const [formData, setFormData] = useState<PreRegisterData>({
     full_name: '',
     email: '',
     phone_number: '',
-    user_type: 'candidate',
+    interest_type: 'candidate',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
@@ -22,9 +24,23 @@ const PreRegister: React.FC = () => {
     setStatus('loading');
     setMessage('');
 
+    // Validation
+    if (!validateEmail(formData.email)) {
+      setStatus('error');
+      setMessage('Please enter a valid email address.');
+      return;
+    }
+
+    if (!validatePhoneNumber(formData.phone_number)) {
+      setStatus('error');
+      setMessage('Please enter a valid phone number (e.g. 091-XXXX-XXXX).');
+      return;
+    }
+
     try {
-      const apiKey = import.meta.env.VITE_PRE_REGISTER_API_KEY;
-      const response = await fetch('/pre-register', {
+      const apiKey = import.meta.env.VITE_API_KEY;
+      const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+      const response = await fetch(`${baseApiUrl}/v2/pre-register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,21 +49,26 @@ const PreRegister: React.FC = () => {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json().catch(() => ({}));
+
       if (response.ok) {
         setStatus('success');
-        setMessage('Thank you for pre-registering!');
+        setMessage(data.message || 'Please check your email');
         setFormData({
           full_name: '',
           email: '',
           phone_number: '',
-          user_type: 'candidate',
+          interest_type: 'candidate',
         });
       } else {
-        const errorData = await response.json().catch(() => ({}));
         setStatus('error');
-        setMessage(errorData.message || 'Something went wrong. Please try again.');
+        if (data.errors) {
+          setMessage(extractErrorMessage(data.errors));
+        } else {
+          setMessage(extractErrorMessage(data));
+        }
       }
-    } catch (err) {
+    } catch {
       setStatus('error');
       setMessage('Failed to connect to the server. Please check your internet connection.');
     }
@@ -57,9 +78,9 @@ const PreRegister: React.FC = () => {
     <div className="py-20 bg-white min-h-[60vh] animate-fade-in">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          {/* <div className="inline-block px-1 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
+          <div className="inline-block px-2 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
             <span style={{ fontFamily: 'Helvetica, sans-serif' }}>Get Involved</span>
-          </div> */}
+          </div>
           <h1
             className="font-black text-4xl md:text-5xl text-gray-900 mb-6"
             style={{ fontFamily: 'Segoe UI, sans-serif' }}
@@ -79,10 +100,10 @@ const PreRegister: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Registration Successful!</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Successful!</h2>
               <p className="text-gray-600 mb-6">{message}</p>
               <Button onClick={() => setStatus('idle')} variant="primary">
-                Register Another
+                Register another
               </Button>
             </div>
           ) : (
@@ -131,18 +152,18 @@ const PreRegister: React.FC = () => {
                   value={formData.phone_number}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
-                  placeholder="+2348012345678"
+                  placeholder="091-XXXX-XXXX"
                 />
               </div>
 
               <div>
-                <label htmlFor="user_type" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="interest_type" className="block text-sm font-semibold text-gray-700 mb-2">
                   I want to become a
                 </label>
                 <select
-                  id="user_type"
-                  name="user_type"
-                  value={formData.user_type}
+                  id="interest_type"
+                  name="interest_type"
+                  value={formData.interest_type}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all bg-white"
                 >
@@ -164,7 +185,7 @@ const PreRegister: React.FC = () => {
                 disabled={status === 'loading'}
                 className={status === 'loading' ? 'opacity-70 cursor-not-allowed' : ''}
               >
-                {status === 'loading' ? 'Submitting...' : 'Pre-register Now'}
+                {status === 'loading' ? 'Submitting...' : 'Submit'}
               </Button>
             </form>
           )}
