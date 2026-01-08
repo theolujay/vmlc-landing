@@ -121,7 +121,7 @@ const Register: React.FC = () => {
 
     // Validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\+234\d{10}$/;
+    const phoneRegex = /^\d{11}$/;
 
     if (!emailRegex.test(userData.email)) {
       setStatus('error');
@@ -131,7 +131,7 @@ const Register: React.FC = () => {
 
     if (!phoneRegex.test(userData.phone_number)) {
       setStatus('error');
-      setMessage('Please enter a valid phone number (+234xxxxxxxxxx).');
+      setMessage('Please enter a valid phone number (091-XXXX-XXXX).');
       return;
     }
 
@@ -305,7 +305,7 @@ const Register: React.FC = () => {
                       value={userType === 'candidate' ? candidateData.phone_number : volunteerData.phone_number}
                       onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
                       className={inputClasses}
-                      placeholder="+234..."
+                      placeholder="091-XXXX-XXXX"
                     />
                   </div>
                 </div>

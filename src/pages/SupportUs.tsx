@@ -160,7 +160,7 @@ const SupportUs: React.FC = () => {
                     value={formData.phone_number}
                     onChange={handleChange}
                     className={inputClasses}
-                    placeholder="+234..."
+                    placeholder="091-XXXX-XXXX"
                   />
                 </div>
               </div>

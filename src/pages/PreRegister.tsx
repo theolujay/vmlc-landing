@@ -25,7 +25,7 @@ const PreRegister: React.FC = () => {
 
     // Validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\+234\d{10}$/;
+    const phoneRegex = /^\d{11}$/;
 
     if (!emailRegex.test(formData.email)) {
       setStatus('error');
@@ -35,7 +35,7 @@ const PreRegister: React.FC = () => {
 
     if (!phoneRegex.test(formData.phone_number)) {
       setStatus('error');
-      setMessage('Please enter a valid Nigerian phone number (+234 followed by 10 digits).');
+      setMessage('Please enter a valid phone number (e.g. 091-XXXX-XXXX).');
       return;
     }
 
@@ -154,7 +154,7 @@ const PreRegister: React.FC = () => {
                   value={formData.phone_number}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
-                  placeholder="+2348012345678"
+                  placeholder="091-XXXX-XXXX"
                 />
               </div>
 
