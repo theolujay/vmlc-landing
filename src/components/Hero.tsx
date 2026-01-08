@@ -4,7 +4,7 @@ import Button from './ui/Button';
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative bg-white overflow-hidden">
+    <section className="relative bg-gray-900 text-white overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img
           src="/assets/hero.png"
