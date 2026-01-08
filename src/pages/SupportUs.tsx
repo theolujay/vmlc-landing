@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
-import { Link } from 'react-router-dom';
-import { extractErrorMessage } from '../utils/api';
+import { validateEmail, validatePhoneNumber } from '../utils/validation';
 
 type SupportType = 'financial' | 'partnership' | 'media' | 'mentorship' | 'other';
 
@@ -39,6 +38,19 @@ const SupportUs: React.FC = () => {
     setStatus('loading');
     setMessage('');
 
+    // Validation
+    if (!validateEmail(formData.email)) {
+      setStatus('error');
+      setMessage('Please enter a valid email address.');
+      return;
+    }
+
+    if (formData.phone_number && !validatePhoneNumber(formData.phone_number)) {
+      setStatus('error');
+      setMessage('Please enter a valid phone number (091-XXXX-XXXX).');
+      return;
+    }
+
     const apiKey = import.meta.env.VITE_API_KEY;
     const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
@@ -69,7 +81,7 @@ const SupportUs: React.FC = () => {
         setStatus('error');
         setMessage(errorData.message || 'Something went wrong. Please try again.');
       }
-    } catch (err) {
+    } catch {
       setStatus('error');
       setMessage("Something's off. Please check your internet connection.");
     }

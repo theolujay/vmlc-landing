@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { PreRegisterData } from '../types';
 import { extractErrorMessage } from '../utils/api';
+import { validateEmail, validatePhoneNumber } from '../utils/validation';
 
 const PreRegister: React.FC = () => {
   const [formData, setFormData] = useState<PreRegisterData>({
@@ -24,16 +25,13 @@ const PreRegister: React.FC = () => {
     setMessage('');
 
     // Validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\d{11}$/;
-
-    if (!emailRegex.test(formData.email)) {
+    if (!validateEmail(formData.email)) {
       setStatus('error');
       setMessage('Please enter a valid email address.');
       return;
     }
 
-    if (!phoneRegex.test(formData.phone_number)) {
+    if (!validatePhoneNumber(formData.phone_number)) {
       setStatus('error');
       setMessage('Please enter a valid phone number (e.g. 091-XXXX-XXXX).');
       return;
@@ -70,7 +68,7 @@ const PreRegister: React.FC = () => {
           setMessage(extractErrorMessage(data));
         }
       }
-    } catch (err) {
+    } catch {
       setStatus('error');
       setMessage('Failed to connect to the server. Please check your internet connection.');
     }
