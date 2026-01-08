@@ -1,0 +1,181 @@
+import React, { useState, useRef, useEffect } from 'react';
+import Button from './ui/Button';
+
+interface FacialCaptureModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: (file: File) => void;
+}
+
+const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose, onConfirm }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [error, setError] = useState<string>('');
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [isCapturing, setIsCapturing] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      startCamera();
+    } else {
+      stopCamera();
+    }
+    // Cleanup: Ensure stream is stopped when component unmounts
+    return () => stopCamera();
+  }, [isOpen]);
+
+  const startCamera = async () => {
+    setCapturedImage(null);
+    setError('');
+    setIsCapturing(true);
+
+    // Requirement: Provide fallback for devices without camera support
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setError('Camera API is not supported on this device or browser. Please try a different device.');
+        setIsCapturing(false);
+        return;
+    }
+
+    try {
+      // Requirement: Use device's front-facing camera
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' },
+        audio: false,
+      });
+      setStream(mediaStream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+      }
+    } catch (err) {
+      console.error("Camera access denied:", err);
+      // Requirement: clear, human-readable error message
+      setError('Camera access denied. Please allow camera permissions in your browser settings to continue.');
+    } finally {
+        setIsCapturing(false);
+    }
+  };
+
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+  };
+
+  const handleCapture = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+
+      if (context) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Capture still image (JPEG)
+        const imageUrl = canvas.toDataURL('image/jpeg', 0.8);
+        setCapturedImage(imageUrl);
+      }
+    }
+  };
+
+  const handleRetake = () => {
+    setCapturedImage(null);
+  };
+
+  const handleConfirm = () => {
+    if (capturedImage) {
+        // Convert base64 to File object
+        fetch(capturedImage)
+            .then(res => res.blob())
+            .then(blob => {
+                const file = new File([blob], "face_capture.jpg", { type: "image/jpeg" });
+                
+                // Requirement: Max size 5MB
+                if (file.size > 5 * 1024 * 1024) {
+                    setError("Image is too large (max 5MB). Please retake.");
+                    return;
+                }
+                
+                onConfirm(file);
+                onClose();
+            });
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" role="dialog" aria-modal="true">
+      <div className="bg-white rounded-3xl p-6 w-full max-w-lg shadow-2xl overflow-hidden relative">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">Facial Verification</h2>
+        
+        {!error ? (
+           <>
+             {!capturedImage ? (
+                <div className="space-y-4">
+                    <div className="relative aspect-video bg-gray-100 rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center">
+                        <video 
+                            ref={videoRef} 
+                            autoPlay 
+                            playsInline 
+                            className="w-full h-full object-cover transform scale-x-[-1]" 
+                            muted
+                        />
+                         {isCapturing && <div className="absolute inset-0 flex items-center justify-center bg-white/50"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-blue"></div></div>}
+                    </div>
+                    
+                    <div className="bg-blue-50 p-4 rounded-xl text-sm text-blue-800">
+                        <p className="font-semibold mb-1">Instructions:</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                            <li>Ensure good lighting on your face</li>
+                            <li>Remove face coverings (glasses/masks) if possible</li>
+                            <li>Face the camera directly</li>
+                            <li>No filters or screenshots</li>
+                        </ul>
+                    </div>
+
+                    <div className="flex justify-center space-x-4 mt-4">
+                         <Button variant="ghost" onClick={onClose}>Cancel</Button>
+                         <Button onClick={handleCapture} disabled={isCapturing}>Capture Photo</Button>
+                    </div>
+                </div>
+             ) : (
+                <div className="space-y-4">
+                    <div className="relative aspect-video bg-gray-100 rounded-2xl overflow-hidden border-2 border-brand-blue">
+                         <img src={capturedImage} alt="Captured" className="w-full h-full object-cover transform scale-x-[-1]" />
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-3 sm:space-y-0 mt-4">
+                        <Button variant="ghost" onClick={handleRetake}>Retake Photo</Button>
+                        <Button onClick={handleConfirm}>Confirm & Use Photo</Button>
+                    </div>
+                </div>
+             )}
+           </>
+        ) : (
+            <div className="text-center py-8">
+                <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                     </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Camera Error</h3>
+                <p className="text-gray-600 mb-6">{error}</p>
+                 <Button onClick={startCamera} variant="outline" className="text-brand-blue border-brand-blue hover:bg-blue-50">Try Again</Button>
+                 <div className="mt-4">
+                    <Button variant="ghost" onClick={onClose}>Cancel</Button>
+                 </div>
+            </div>
+        )}
+        
+        {/* Hidden Canvas for capture */}
+        <canvas ref={canvasRef} className="hidden" />
+      </div>
+    </div>
+  );
+};
+
+export default FacialCaptureModal;
