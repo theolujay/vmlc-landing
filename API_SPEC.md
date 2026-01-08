@@ -16,9 +16,9 @@ Requests require an API key passed in the `x-api-key` header.
 
 | Endpoint | Environment Variable | Header Key |
 | :--- | :--- | :--- |
-| `/register/` | `VITE_API_KEY` | `x-api-key` |
-| `/support-us/` | `VITE_API_KEY` | `x-api-key` |
-| `/pre-register/` | `VITE_PRE_REGISTER_API_KEY` | `x-api-key` |
+| `/v2/register/` | `VITE_API_KEY` | `x-api-key` |
+| `/v2/support-us/` | `VITE_API_KEY` | `x-api-key` |
+| `/v2/pre-register/` | `VITE_API_KEY` | `x-api-key` |
 
 ---
 
@@ -117,15 +117,19 @@ Returned when a registration or pre-registration is successfully created.
 Returned when input data fails validation (e.g., invalid email, missing fields).
 ```json
 {
-  "email": [
-    "A user with this email already exists."
-  ],
-  "phone_number": [
-    "Enter a valid Nigerian phone number."
-  ],
-  "non_field_errors": [
-    "Global error message if applicable."
-  ]
+  "status": "error",
+  "message": "Validation failed.",
+  "errors": {
+    "email": [
+      "A user with this email already exists."
+    ],
+    "phone_number": [
+      "Enter a valid Nigerian phone number."
+    ],
+    "non_field_errors": [
+      "Global error message if applicable."
+    ]
+  }
 }
 ```
 

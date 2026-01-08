@@ -64,7 +64,11 @@ const PreRegister: React.FC = () => {
         });
       } else {
         setStatus('error');
-        setMessage(extractErrorMessage(data));
+        if (data.errors) {
+          setMessage(extractErrorMessage(data.errors));
+        } else {
+          setMessage(extractErrorMessage(data));
+        }
       }
     } catch (err) {
       setStatus('error');
