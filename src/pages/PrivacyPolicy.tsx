@@ -12,7 +12,7 @@ const PrivacyPolicy: React.FC = () => {
             className="font-black text-4xl md:text-5xl text-gray-900 mb-6"
             style={{ fontFamily: 'Segoe UI, sans-serif' }}
           >
-            Privacy <span className="text-brand-blue">Policy</span>
+            Privacy <span className="text-brand-blue">Legal</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Effective Date: 1st of December, 2025

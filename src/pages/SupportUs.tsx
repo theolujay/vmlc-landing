@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
+import { extractErrorMessage } from '../utils/api';
 
 type SupportType = 'financial' | 'partnership' | 'media' | 'mentorship' | 'other';
 
@@ -81,6 +82,9 @@ const SupportUs: React.FC = () => {
     <div className="py-20 bg-gray-50 min-h-screen animate-fade-in">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
+          <div className="inline-block px-2 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
+            <span style={{ fontFamily: 'Helvetica, sans-serif' }}>You count</span>
+          </div>
           <h1 className="font-black text-4xl md:text-5xl text-gray-900 mb-6" style={{ fontFamily: 'Segoe UI, sans-serif' }}>
             Support <span className="text-brand-blue">Verboheit</span>
           </h1>

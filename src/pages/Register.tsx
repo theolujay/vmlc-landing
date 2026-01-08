@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Button from '../components/ui/Button';
 import { Link, useSearchParams } from 'react-router-dom';
+import { extractErrorMessage } from '../utils/api';
 
 type UserType = 'candidate' | 'volunteer';
 
@@ -157,18 +158,19 @@ const Register: React.FC = () => {
         body: formData,
       });
 
+      const data = await response.json().catch(() => ({}));
+
       if (response.ok) {
         setStatus('success');
-        setMessage(`Registration successful as a ${userType}.\nWe sent you an email.`);
+        setMessage(data.message || `Registration successful as a ${userType}.\nWe sent you an email.`);
         // Reset forms
         setCandidateData(initialCandidateData);
         setVolunteerData(initialVolunteerData);
         setDocumentFile(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
       } else {
-        const errorData = await response.json().catch(() => ({}));
         setStatus('error');
-        setMessage(errorData.message || "Something went wrong. Please try again.");
+        setMessage(extractErrorMessage(data));
       }
     } catch (err) {
       setStatus('error');
@@ -184,7 +186,7 @@ const Register: React.FC = () => {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <div className="inline-block px-2 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
-            <span style={{ fontFamily: 'Helvetica, sans-serif' }}>Let's Begin</span>
+            <span style={{ fontFamily: 'Helvetica, sans-serif' }}>We are live</span>
           </div>
           <h1 className="font-black text-4xl md:text-5xl text-gray-900 mb-6" style={{ fontFamily: 'Segoe UI, sans-serif' }}>
             Register <span className="text-brand-blue">Today</span>

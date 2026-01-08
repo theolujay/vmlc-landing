@@ -8,7 +8,7 @@ This documentation outlines the backend API integration for the VMLC landing pag
 
 ### Base URL
 The API base URL is configured via environment variables.
-- **Base URL:** Defined by `VITE_PORTAL_URL` (e.g., `https://api.verboheit.org/v1`).
+- **Base URL:** Defined by `VITE_PORTAL_URL` (e.g., `https://api.verboheit.org/v2`).
 - **Sanitization:** The frontend strips trailing slashes from this URL before appending endpoints.
 
 ### Authentication
@@ -18,7 +18,7 @@ Requests require an API key passed in the `x-api-key` header.
 | :--- | :--- | :--- |
 | `/register/` | `VITE_API_KEY` | `x-api-key` |
 | `/support-us/` | `VITE_API_KEY` | `x-api-key` |
-| `/pre-register` | `VITE_API_KEY` | `x-api-key` |
+| `/pre-register/` | `VITE_PRE_REGISTER_API_KEY` | `x-api-key` |
 
 ---
 
@@ -40,9 +40,10 @@ Registers a new user as either a **Candidate** or a **Volunteer**.
 | `last_name` | `string` | User's last name. |
 | `email` | `string` | Valid email address. |
 | `phone_number`| `string` | Phone number (e.g., `+234...`). |
+| `state` | `string` | State of residence (e.g., Lagos, Ogun, etc). |
 | `document` | `file` | ID or Result upload (Max 5MB). |
 | `document_type`| `string` | `NIN` or `school result` (Candidate) / `NIN`, `passport`, or `drivers license` (Volunteer). |
-| `consent` | `string` | `"true"` or `"false"` (Boolean sent as string in FormData). |
+| `consent` | `string` | `"true"` (Boolean sent as string in FormData). Must be true to proceed. |
 
 #### Candidate-Specific Fields (Required if `user_type` is `candidate`)
 | Key | Type | Description |
@@ -50,13 +51,11 @@ Registers a new user as either a **Candidate** or a **Volunteer**.
 | `school_name` | `string` | Full name of the secondary school. |
 | `school_type` | `string` | `public` or `private`. |
 | `current_class`| `string` | `SS1`, `SS2`, or `SS3`. |
-| `state` | `string` | State of residence (e.g., Lagos, Ogun, etc). |
 
 #### Volunteer-Specific Fields (Required if `user_type` is `volunteer`)
 | Key | Type | Description |
 | :--- | :--- | :--- |
 | `occupation` | `string` | Current profession or status. |
-| `state` | `string` | Current location. |
 
 ---
 
@@ -85,7 +84,7 @@ For sponsorships, partnerships, and other forms of support.
 
 Lead collection for interested participants.
 
-- **Endpoint:** `/pre-register`
+- **Endpoint:** `/pre-register/`
 - **Method:** `POST`
 - **Content-Type:** `application/json`
 
@@ -101,9 +100,10 @@ Lead collection for interested participants.
 
 ## 5. Response Formats
 
-The API should return consistent JSON responses.
+The API returns JSON responses.
 
-### Success (200 OK)
+### Success (201 Created)
+Returned when a registration or pre-registration is successfully created.
 ```json
 {
   "status": "success",
@@ -111,11 +111,29 @@ The API should return consistent JSON responses.
 }
 ```
 
-### Error (400 Bad Request / 500 Internal Server Error)
+### Error Responses
+
+#### Validation Error (400 Bad Request)
+Returned when input data fails validation (e.g., invalid email, missing fields).
 ```json
 {
-  "status": "error",
-  "message": "Specific error message to be displayed to the user."
+  "email": [
+    "A user with this email already exists."
+  ],
+  "phone_number": [
+    "Enter a valid Nigerian phone number."
+  ],
+  "non_field_errors": [
+    "Global error message if applicable."
+  ]
+}
+```
+
+#### Permission / General Error (403 Forbidden / 400 Bad Request)
+Returned when an action is not allowed (e.g., registration closed, already authenticated) or for other generic errors.
+```json
+{
+  "detail": "Registration is currently closed."
 }
 ```
 
