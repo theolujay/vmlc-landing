@@ -191,6 +191,8 @@ const Register: React.FC = () => {
         setCandidateData(initialCandidateData);
         setVolunteerData(initialVolunteerData);
         setDocumentFile(null);
+        setCapturedImage(null);
+        setCapturedPreview(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
       } else {
         setStatus('error');
