@@ -3,7 +3,7 @@ import Button from '../components/ui/Button';
 
 import FacialCaptureModal from '../components/FacialCaptureModal';
 import { Link, useSearchParams } from 'react-router-dom';
-import { extractErrorMessage } from '../utils/api';
+import { extractErrorMessage, handleNetworkError } from '../utils/api';
 import { validateEmail, validatePhoneNumber } from '../utils/validation';
 
 type UserType = 'candidate' | 'volunteer';
@@ -200,7 +200,7 @@ const Register: React.FC = () => {
       }
     } catch {
       setStatus('error');
-      setMessage("Something's off. Please check your internet");
+      setMessage(handleNetworkError());
     }
   };
 
@@ -488,7 +488,7 @@ const Register: React.FC = () => {
 
                 {/* Facial Capture Section */}
                 <div>
-                    <label className={labelClasses}>Facial Verification</label>
+                    <label className={labelClasses}>Face Capture</label>
                     <div className={`${inputClasses} flex items-center justify-between py-2 h-[58px]`}>
                         <div className="flex items-center">
                             <button 
