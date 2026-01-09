@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { validateEmail, validatePhoneNumber } from '../utils/validation';
 
-type SupportType = 'financial' | 'partnership' | 'media' | 'mentorship' | 'other';
+type SupportType = 'sponsorship' | 'partnership' | 'media_publicity' | 'other';
 
 interface SupportFormData {
   full_name: string;
@@ -19,7 +19,7 @@ const SupportUs: React.FC = () => {
     full_name: '',
     email: '',
     organization: '',
-    support_type: 'financial',
+    support_type: 'sponsorship',
     phone_number: '',
     message: '',
     consent: false,
@@ -55,7 +55,7 @@ const SupportUs: React.FC = () => {
     const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
     try {
-      const response = await fetch(`${baseApiUrl}/support-us/`, {
+      const response = await fetch(`${baseApiUrl}/v2/support-us/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const SupportUs: React.FC = () => {
           full_name: '',
           email: '',
           organization: '',
-          support_type: 'financial',
+          support_type: 'sponsorship',
           phone_number: '',
           message: '',
           consent: false,
@@ -116,7 +116,7 @@ const SupportUs: React.FC = () => {
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Message Sent!</h2>
               <p className="text-lg text-gray-600 mb-8">{message}</p>
               <Button onClick={() => setStatus('idle')} variant="primary">
-                Send Another Inquiry
+                Send another inquiry
               </Button>
             </div>
           ) : (
@@ -186,10 +186,9 @@ const SupportUs: React.FC = () => {
                   onChange={handleChange}
                   className={inputClasses}
                 >
-                  <option value="financial">Financial Support</option>
+                  <option value="sponsorship">Sponsorship</option>
                   <option value="partnership">Partnership</option>
                   <option value="media">Media/Publicity</option>
-                  {/* <option value="mentorship">Mentorship</option> */}
                   <option value="other">Other</option>
                 </select>
               </div>

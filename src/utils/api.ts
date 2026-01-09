@@ -40,8 +40,20 @@ export const extractErrorMessage = (errorData: any): string => {
       if (typeof errorMsg === 'string') {
         return errorMsg;
       }
-    }
-  }
-
-  return 'Something went wrong. Please try again.';
-};
+        }
+      }
+    
+      return 'Something went wrong. Please try again.';
+    };
+    
+    /**
+     * Returns a specific error message for network/server connection issues.
+     * Distinguishes between "No Internet" and "Server Unreachable".
+     */
+    export const handleNetworkError = (): string => {
+      if (!navigator.onLine) {
+        return 'You are offline. Please check your internet connection.';
+      }
+      return "Something's not right on our end. Please try again...";
+    };
+    
