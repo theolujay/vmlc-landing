@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Button from '../components/ui/Button';
+
+import FacialCaptureModal from '../components/FacialCaptureModal';
 import { Link, useSearchParams } from 'react-router-dom';
 import { extractErrorMessage } from '../utils/api';
 import { validateEmail, validatePhoneNumber } from '../utils/validation';
@@ -81,6 +83,12 @@ const Register: React.FC = () => {
   const [candidateData, setCandidateData] = useState(initialCandidateData);
   const [volunteerData, setVolunteerData] = useState(initialVolunteerData);
   const [documentFile, setDocumentFile] = useState<File | null>(null);
+  
+  // Facial Capture State
+  // Note: capturedImage is kept in memory (File) to avoid sensitive data persistence (Security)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [capturedImage, setCapturedImage] = useState<File | null>(null);
+  const [capturedPreview, setCapturedPreview] = useState<string | null>(null);
 
   const handleCandidateChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
@@ -113,6 +121,12 @@ const Register: React.FC = () => {
     }
   };
 
+  const handleFaceCaptureConfirm = (file: File) => {
+    setCapturedImage(file);
+    const objectUrl = URL.createObjectURL(file);
+    setCapturedPreview(objectUrl);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
@@ -133,6 +147,12 @@ const Register: React.FC = () => {
       return;
     }
 
+    if (!capturedImage) {
+      setStatus('error');
+      setMessage('Please capture your face for verification.');
+      return;
+    }
+
     const apiKey = import.meta.env.VITE_API_KEY;
     const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
@@ -146,6 +166,12 @@ const Register: React.FC = () => {
 
       if (documentFile) {
         formData.append('document', documentFile);
+      }
+      
+      // Requirement: Append captured image as 'face_capture'
+      // Note: Image is stored in memory (File object) and not localStorage for security
+      if (capturedImage) {
+        formData.append('face_capture', capturedImage);
       }
 
       const response = await fetch(`${baseApiUrl}/v2/register/`, {
@@ -175,6 +201,15 @@ const Register: React.FC = () => {
       setMessage("Something's off. Please check your internet");
     }
   };
+
+  // Cleanup preview URL on unmount or when it changes
+  useEffect(() => {
+    return () => {
+      if (capturedPreview) {
+        URL.revokeObjectURL(capturedPreview);
+      }
+    };
+  }, [capturedPreview]);
 
   const inputClasses = "w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all";
   const labelClasses = "block text-sm font-semibold text-gray-700 mb-2";
@@ -428,13 +463,12 @@ const Register: React.FC = () => {
                         >
                           <option value="NIN">NIN</option>
                           <option value="passport">Passport</option>
-                          <option value="drivers license">Drivers' License</option>
+                          <option value="drivers license">Drivers&apos; License</option>
                         </select>
                       </div>
                     </div>
                   </>
                 )}
-
                   <div>
                     <label htmlFor="document" className={labelClasses}>Document Upload</label>
                     <input
@@ -449,18 +483,61 @@ const Register: React.FC = () => {
                     />
                     <p className="mt-2 text-xs text-gray-500">Accepted formats: PDF, JPG, PNG (Max 5MB)</p>
                   </div>
-                <div className="flex items-center space-x-3 bg-blue-50 p-4 rounded-2xl">
-                  <input
-                    type="checkbox"
-                    id="consent"
-                    name="consent"
-                    checked={userType === 'candidate' ? candidateData.consent : volunteerData.consent}
-                    onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
-                    className="w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
-                  />
-                  <label htmlFor="consent" className="text-sm font-medium text-brand-blue">
-                    By selecting "Register", you're confirming that you have read and agreed to Verboheit MLC's <Link to="/terms-and-conditions" target="_blank" className="underline hover:text-blue-800">Terms & Conditions</Link> and <Link to="/privacy-policy" target="_blank" className="underline hover:text-blue-800">Privacy Policy</Link>.
-                  </label>
+
+                {/* Facial Capture Section */}
+                <div>
+                    <label className={labelClasses}>Facial Verification</label>
+                    <div className={`${inputClasses} flex items-center justify-between py-2 h-[58px]`}>
+                        <div className="flex items-center">
+                            <button 
+                                type="button" 
+                                onClick={() => setIsModalOpen(true)}
+                                className="mr-4 py-2 px-4 rounded-full border-0 text-sm font-semibold bg-brand-accent text-brand-blue hover:bg-blue-200 transition-colors focus:outline-none"
+                            >
+                                {capturedImage ? 'Recapture' : 'Capture'}
+                            </button>
+                            <span className={`text-sm truncate ${capturedImage ? 'text-green-600 font-medium' : 'text-gray-400'}`}>
+                                {capturedImage ? 'Photo captured successfully' : 'No photo taken'}
+                            </span>
+                        </div>
+                        
+                        {capturedPreview && (
+                            <div className="flex-shrink-0 relative">
+                                <div className="h-10 w-10 rounded-full overflow-hidden border border-brand-blue shadow-sm">
+                                    <img src={capturedPreview} alt="Face Preview" className="h-full w-full object-cover" />
+                                </div>
+                                <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-0.5 border border-white">
+                                    <svg className="w-2 h-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                     <p className="mt-2 text-xs text-gray-500">Required for identity verification. Please ensure your face is clearly visible.</p>
+                </div>
+
+                <FacialCaptureModal 
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    onConfirm={handleFaceCaptureConfirm}
+                />
+
+                <div className="space-y-4 bg-blue-50 p-4 rounded-2xl">
+                  {/* Terms & Privacy Consent */}
+                  <div className="flex items-start space-x-3">
+                    <input
+                        type="checkbox"
+                        id="consent"
+                        name="consent"
+                        checked={userType === 'candidate' ? candidateData.consent : volunteerData.consent}
+                        onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
+                        className="mt-1 w-5 h-5 text-brand-blue border-gray-300 rounded focus:ring-brand-blue"
+                    />
+                    <label htmlFor="consent" className="text-sm font-medium text-brand-blue">
+                        By selecting &quot;Register&quot;, you&apos;re confirming that you have read and agreed to Verboheit MLC&apos;s <Link to="/terms-and-conditions" target="_blank" className="underline hover:text-blue-800">Terms & Conditions</Link> and <Link to="/privacy-policy" target="_blank" className="underline hover:text-blue-800">Privacy Policy</Link>.
+                    </label>
+                  </div>
                 </div>
 
                 {status === 'error' && (

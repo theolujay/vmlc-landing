@@ -3,11 +3,8 @@ import { Link } from 'react-router-dom';
 import Button from './ui/Button';
 
 const Hero: React.FC = () => {
-  const portalUrl = import.meta.env.VITE_PORTAL_URL
-  const email = import.meta.env.VITE_EMAIL
   return (
     <section className="relative bg-gray-900 text-white overflow-hidden">
-      {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
           src="/assets/hero.png"
@@ -17,7 +14,7 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/0 mix-blend-multiply"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 lg:py-40">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 lg:py-40 text-white">
         <div className="max-w-3xl">
           <h1 className="font-serif font-bold text-[56px] leading-[68px] tracking-[-0.02em] mb-6">
             Showcase your math skills <br />

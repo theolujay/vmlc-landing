@@ -2,10 +2,8 @@ import React from 'react';
 import Button from './ui/Button';
 
 const Partners: React.FC = () => {
-  const portalUrl = import.meta.env.VITE_PORTAL_URL
-  const email = import.meta.env.VITE_EMAIL
   return (
-    <section className="py-20 bg-white">
+    <section className="py-12 bg-white border-y border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <h2 className="text-4xl font-serif font-bold text-gray-900 mb-12">Partner with us</h2>
