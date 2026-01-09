@@ -4,7 +4,7 @@ import Button from '../components/ui/Button';
 import FacialCaptureModal from '../components/FacialCaptureModal';
 import { Link, useSearchParams } from 'react-router-dom';
 import { extractErrorMessage, handleNetworkError } from '../utils/api';
-import { validateEmail, validatePhoneNumber } from '../utils/validation';
+import { validateEmail, validatePhone } from '../utils/validation';
 
 type UserType = 'candidate' | 'volunteer';
 
@@ -141,7 +141,7 @@ const Register: React.FC = () => {
       return;
     }
 
-    if (!validatePhoneNumber(userData.phone_number)) {
+    if (!validatePhone(userData.phone_number)) {
       setStatus('error');
       setMessage('Please enter a valid phone number (091-XXXX-XXXX).');
       return;

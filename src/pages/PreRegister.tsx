@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { PreRegisterData } from '../types';
 import { extractErrorMessage } from '../utils/api';
-import { validateEmail, validatePhoneNumber } from '../utils/validation';
+import { validateEmail, validatePhone } from '../utils/validation';
 
 const PreRegister: React.FC = () => {
   const [formData, setFormData] = useState<PreRegisterData>({
@@ -31,7 +31,7 @@ const PreRegister: React.FC = () => {
       return;
     }
 
-    if (!validatePhoneNumber(formData.phone_number)) {
+    if (!validatePhone(formData.phone_number)) {
       setStatus('error');
       setMessage('Please enter a valid phone number (e.g. 091-XXXX-XXXX).');
       return;
