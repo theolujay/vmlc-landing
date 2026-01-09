@@ -7,7 +7,9 @@ export const extractErrorMessage = (errorData: any): string => {
   if (!errorData || typeof errorData !== 'object') {
     return 'Something went wrong. Please try again.';
   }
-
+  if (errorData.errors && typeof errorData.errors === 'object') {
+    return errorData.errors[0][0];
+  }
   // Direct detail or message fields
   if (errorData.detail && typeof errorData.detail === 'string') {
     return errorData.detail;

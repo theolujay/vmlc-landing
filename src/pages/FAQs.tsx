@@ -115,9 +115,9 @@ const FAQs: React.FC = () => {
               <h3 className="text-xl font-bold text-gray-900 mb-3" style={{ fontFamily: 'Segoe UI, sans-serif' }}>
                 {faq.question}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <div className="text-gray-600 leading-relaxed">
                 {faq.answer}
-              </p>
+              </div>
             </div>
           ))}
         </div>
