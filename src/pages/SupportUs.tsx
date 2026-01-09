@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
-import { validateEmail, validatePhoneNumber } from '../utils/validation';
+import { validateEmail, validatePhone } from '../utils/validation';
 
 type SupportType = 'sponsorship' | 'partnership' | 'media_publicity' | 'other';
 
@@ -9,7 +9,7 @@ interface SupportFormData {
   email: string;
   organization?: string;
   support_type: SupportType;
-  phone_number?: string;
+  phone?: string;
   message: string;
   consent: boolean;
 }
@@ -20,7 +20,7 @@ const SupportUs: React.FC = () => {
     email: '',
     organization: '',
     support_type: 'sponsorship',
-    phone_number: '',
+    phone: '',
     message: '',
     consent: false,
   });
@@ -45,7 +45,7 @@ const SupportUs: React.FC = () => {
       return;
     }
 
-    if (formData.phone_number && !validatePhoneNumber(formData.phone_number)) {
+    if (formData.phone && !validatePhone(formData.phone)) {
       setStatus('error');
       setMessage('Please enter a valid phone number (091-XXXX-XXXX).');
       return;
@@ -72,7 +72,7 @@ const SupportUs: React.FC = () => {
           email: '',
           organization: '',
           support_type: 'sponsorship',
-          phone_number: '',
+          phone: '',
           message: '',
           consent: false,
         });
@@ -164,12 +164,12 @@ const SupportUs: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone_number" className={labelClasses}>Phone Number (Optional)</label>
+                  <label htmlFor="phone" className={labelClasses}>Phone Number (Optional)</label>
                   <input
                     type="tel"
-                    id="phone_number"
-                    name="phone_number"
-                    value={formData.phone_number}
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
                     onChange={handleChange}
                     className={inputClasses}
                     placeholder="091-XXXX-XXXX"

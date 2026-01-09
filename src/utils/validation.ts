@@ -3,7 +3,7 @@ export const validateEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
-export const validatePhoneNumber = (phone: string): boolean => {
+export const validatePhone = (phone: string): boolean => {
   const phoneRegex = /^\d{11}$/;
   return phoneRegex.test(phone);
 };
