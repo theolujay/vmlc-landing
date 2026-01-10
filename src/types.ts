@@ -20,6 +20,6 @@ export interface StageSectionProps {
 export interface PreRegisterData {
   full_name: string;
   email: string;
-  phone_number: string;
+  phone: string;
   interest_type: 'candidate' | 'volunteer';
 }

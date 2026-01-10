@@ -8,7 +8,7 @@ const PreRegister: React.FC = () => {
   const [formData, setFormData] = useState<PreRegisterData>({
     full_name: '',
     email: '',
-    phone_number: '',
+    phone: '',
     interest_type: 'candidate',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -31,7 +31,7 @@ const PreRegister: React.FC = () => {
       return;
     }
 
-    if (!validatePhone(formData.phone_number)) {
+    if (!validatePhone(formData.phone)) {
       setStatus('error');
       setMessage('Please enter a valid phone number (e.g. 091-XXXX-XXXX).');
       return;
@@ -57,7 +57,7 @@ const PreRegister: React.FC = () => {
         setFormData({
           full_name: '',
           email: '',
-          phone_number: '',
+          phone: '',
           interest_type: 'candidate',
         });
       } else {
@@ -141,15 +141,15 @@ const PreRegister: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="phone_number" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
                   Phone Number
                 </label>
                 <input
                   type="tel"
-                  id="phone_number"
-                  name="phone_number"
+                  id="phone"
+                  name="phone"
                   required
-                  value={formData.phone_number}
+                  value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
                   placeholder="091-XXXX-XXXX"
