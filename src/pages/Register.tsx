@@ -60,7 +60,7 @@ const Register: React.FC = () => {
     first_name: '',
     last_name: '',
     email: '',
-    phone_number: '',
+    phone: '',
     school_name: '',
     school_type: 'public',
     current_class: 'SS1',
@@ -73,7 +73,7 @@ const Register: React.FC = () => {
     first_name: '',
     last_name: '',
     email: '',
-    phone_number: '',
+    phone: '',
     occupation: '',
     state: '',
     document_type: 'NIN',
@@ -141,7 +141,7 @@ const Register: React.FC = () => {
       return;
     }
 
-    if (!validatePhone(userData.phone_number)) {
+    if (!validatePhone(userData.phone)) {
       setStatus('error');
       setMessage('Please enter a valid phone number (091-XXXX-XXXX).');
       return;
@@ -331,13 +331,13 @@ const Register: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="phone_number" className={labelClasses}>Phone Number</label>
+                    <label htmlFor="phone" className={labelClasses}>Phone Number</label>
                     <input
                       type="tel"
-                      id="phone_number"
-                      name="phone_number"
+                      id="phone"
+                      name="phone"
                       required
-                      value={userType === 'candidate' ? candidateData.phone_number : volunteerData.phone_number}
+                      value={userType === 'candidate' ? candidateData.phone : volunteerData.phone}
                       onChange={userType === 'candidate' ? handleCandidateChange : handleVolunteerChange}
                       className={inputClasses}
                       placeholder="091-XXXX-XXXX"
