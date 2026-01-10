@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { PreRegisterData } from '../types';
-import { extractErrorMessage } from '../utils/api';
+import { extractErrorMessage, handleNetworkError } from '../utils/api';
 import { validateEmail, validatePhone } from '../utils/validation';
 
 const PreRegister: React.FC = () => {
@@ -62,15 +62,11 @@ const PreRegister: React.FC = () => {
         });
       } else {
         setStatus('error');
-        if (data.errors) {
-          setMessage(extractErrorMessage(data.errors));
-        } else {
-          setMessage(extractErrorMessage(data));
-        }
+        setMessage(extractErrorMessage(data));
       }
     } catch {
       setStatus('error');
-      setMessage('Failed to connect to the server. Please check your internet connection.');
+      setMessage(handleNetworkError());
     }
   };
 

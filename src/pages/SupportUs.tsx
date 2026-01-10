@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { validateEmail, validatePhone } from '../utils/validation';
+import { extractErrorMessage, handleNetworkError } from '../utils/api';
 
 type SupportType = 'sponsorship' | 'partnership' | 'media_publicity' | 'other';
 
@@ -79,11 +80,11 @@ const SupportUs: React.FC = () => {
       } else {
         const errorData = await response.json().catch(() => ({}));
         setStatus('error');
-        setMessage(errorData.message || 'Something went wrong. Please try again.');
+        setMessage(extractErrorMessage(errorData));
       }
     } catch {
       setStatus('error');
-      setMessage("Something's off. Please check your internet connection.");
+      setMessage(handleNetworkError());
     }
   };
 
