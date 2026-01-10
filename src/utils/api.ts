@@ -21,15 +21,39 @@ export const extractErrorMessage = (errorData: any): string => {
     return errorData.non_field_errors[0];
   }
 
-  // Handle field-specific errors: { "email": ["error message"] }
+  // Handle field-specific errors from errors object: { "errors": { "email": ["error message"] } }
+  if (errorData.errors && typeof errorData.errors === 'object') {
+    for (const key in errorData.errors) {
+      if (Array.isArray(errorData.errors[key]) && errorData.errors[key].length > 0) {
+        const errorMsg = errorData.errors[key][0];
+        if (typeof errorMsg === 'string') {
+          return errorMsg;
+        }
+      }
+    }
+  }
+
+  // Handle field-specific errors directly on errorData: { "email": ["error message"] }
   for (const key in errorData) {
     if (Array.isArray(errorData[key]) && errorData[key].length > 0) {
       const errorMsg = errorData[key][0];
       if (typeof errorMsg === 'string') {
         return errorMsg;
       }
-    }
-  }
-
-  return 'Something went wrong. Please try again.';
-};
+        }
+      }
+    
+      return 'Something went wrong. Please try again.';
+    };
+    
+    /**
+     * Returns a specific error message for network/server connection issues.
+     * Distinguishes between "No Internet" and "Server Unreachable".
+     */
+    export const handleNetworkError = (): string => {
+      if (!navigator.onLine) {
+        return 'You are offline. Please check your internet connection.';
+      }
+      return "Something's not right on our end. Please try again...";
+    };
+    
