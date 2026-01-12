@@ -11,13 +11,24 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ScrollToTop from './components/ScrollToTop';
 
+// App.tsx acts as the root component and typically handles Routing.
+// Think of this as the central router definition in a backend framework (like defining routes in Flask or Gin).
+
 function App() {
   return (
+    // <Router> enables client-side routing, allowing URL changes without full page reloads.
     <Router>
       <ScrollToTop />
+      {/* 
+        This div is the main layout container.
+        Classes like 'min-h-screen' (Tailwind CSS) ensure it takes up at least the full viewport height.
+      */}
       <div className="min-h-screen bg-white font-sans text-slate-800">
+        {/* Header stays persistent across all pages because it's outside <Routes> */}
         <Header />
+        
         <main>
+          {/* <Routes> works like a switch statement for URLs. It renders the first <Route> that matches the current path. */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/faqs" element={<FAQs />} />
@@ -28,6 +39,8 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Routes>
         </main>
+        
+        {/* Footer also stays persistent */}
         <Footer />
       </div>
     </Router>

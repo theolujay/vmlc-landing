@@ -5,6 +5,9 @@
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const extractErrorMessage = (errorData: any): string => {
+  // 'any' is a TypeScript type that opts out of type checking.
+  // We use it here because the error response from the server could be one of several different shapes.
+  
   if (!errorData || typeof errorData !== 'object') {
     return 'Something went wrong. Please try again.';
   }
@@ -20,6 +23,7 @@ export const extractErrorMessage = (errorData: any): string => {
 
   // 2. Handle field-specific errors from errors object: { "errors": { "email": ["error message"] } }
   if (errorData.errors && typeof errorData.errors === 'object') {
+    // Iterating over object keys (similar to 'for key in dict' in Python)
     for (const key in errorData.errors) {
       if (Array.isArray(errorData.errors[key]) && errorData.errors[key].length > 0) {
         const errorMsg = errorData.errors[key][0];
@@ -59,6 +63,7 @@ export const extractErrorMessage = (errorData: any): string => {
      * Distinguishes between "No Internet" and "Server Unreachable".
      */
     export const handleNetworkError = (): string => {
+      // 'navigator.onLine' is a browser API that returns true if the browser is connected to the network.
       if (!navigator.onLine) {
         return 'You are offline. Please check your internet connection.';
       }

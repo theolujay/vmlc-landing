@@ -5,9 +5,14 @@ import Button from './ui/Button';
 import Logo from './Logo';
 
 const Header: React.FC = () => {
+  // useState Hook: Manages local state.
+  // 'isMenuOpen' is the state variable (current value).
+  // 'setIsMenuOpen' is the setter function to update it.
+  // false is the initial value.
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   return (
+    // 'sticky top-0' makes the header stick to the top when scrolling.
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
@@ -17,6 +22,7 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
+          {/* 'hidden lg:flex': Hidden on small screens, Flexbox on large (lg) screens and up. This is how we make it responsive. */}
           <nav className="hidden lg:flex space-x-4 xl:space-x-8 items-center">
             <Link to="/#about" className="text-gray-900 hover:text-brand-blue font-medium text-sm xl:text-base">
               About
@@ -46,11 +52,13 @@ const Header: React.FC = () => {
           </div>
 
           {/* Mobile menu button */}
+          {/* 'lg:hidden': Visible on small screens, hidden on large screens. */}
           <div className="lg:hidden flex items-center">
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => setIsMenuOpen(!isMenuOpen)} // Toggle state on click
               className="text-gray-500 hover:text-brand-blue focus:outline-none"
             >
+              {/* Conditional rendering: Show X if open, Menu (hamburger) if closed */}
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -60,6 +68,7 @@ const Header: React.FC = () => {
       {/* Mobile Menu */}
       <div
         className={`lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg transition-all duration-300 ease-in-out origin-top ${
+          // Dynamic classes based on state to animate the menu
           isMenuOpen
             ? 'opacity-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 -translate-y-4 pointer-events-none'
@@ -68,7 +77,7 @@ const Header: React.FC = () => {
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
           <Link
             to="/#about"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={() => setIsMenuOpen(false)} // Close menu when a link is clicked
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-blue hover:bg-gray-50"
           >
             About the competition

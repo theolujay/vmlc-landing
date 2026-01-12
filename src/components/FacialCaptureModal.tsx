@@ -10,8 +10,12 @@ interface FacialCaptureModalProps {
 }
 
 const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose, onConfirm }) => {
+  // useRef allows us to access actual DOM elements directly.
+  // We need this for <video> and <canvas> to control playback and drawing, 
+  // which React's declarative model doesn't handle directly.
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [error, setError] = useState<string>('');
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -30,9 +34,11 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
     initModels();
   }, []);
 
+  // Effect to handle camera start/stop when modal opens/closes
   useEffect(() => {
     if (isOpen) {
       startCamera();
+      // Prevent background scrolling when modal is open
       document.body.style.overflow = 'hidden';
     } else {
       stopCamera();
@@ -77,6 +83,7 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
     setError('');
     setIsCapturing(true);
 
+    // Feature detection for browser support
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         setError('Camera API is not supported on this device or browser. Please try a different device.');
         setIsCapturing(false);
@@ -84,13 +91,14 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
     }
 
     try {
+      // Accessing the camera hardware (requires permission from user)
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user' },
+        video: { facingMode: 'user' }, // Request front-facing camera
         audio: false,
       });
       setStream(mediaStream);
       if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
+        videoRef.current.srcObject = mediaStream; // Connect stream to video element
       }
     } catch (err) {
       console.error("Camera access denied:", err);
@@ -103,6 +111,7 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
   const stopCamera = () => {
     stopFaceDetection();
     if (stream) {
+      // Stop all tracks (video/audio) to release the hardware
       stream.getTracks().forEach((track) => track.stop());
       setStream(null);
     }
@@ -112,13 +121,16 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
       const canvas = canvasRef.current;
-      const context = canvas.getContext('2d');
+      const context = canvas.getContext('2d'); // Get 2D drawing context
 
       if (context) {
+        // Match canvas size to video size
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
+        // Draw the current video frame onto the canvas
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         
+        // Convert canvas content to a base64 Data URL (image/jpeg)
         const imageUrl = canvas.toDataURL('image/jpeg', 0.8);
         setCapturedImage(imageUrl);
         stopFaceDetection();
@@ -132,6 +144,7 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
 
   const handleConfirm = () => {
     if (capturedImage) {
+        // Convert Data URL back to Blob/File for upload
         fetch(capturedImage)
             .then(res => res.blob())
             .then(blob => {
@@ -150,6 +163,9 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
 
   if (!isOpen) return null;
 
+  // createPortal renders this component's HTML outside the parent component's DOM hierarchy.
+  // It appends it directly to document.body.
+  // This is crucial for modals to ensure they float above everything else (z-index) and aren't clipped by parent containers.
   return createPortal(
     <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm overflow-hidden" role="dialog" aria-modal="true">
       <div className="absolute inset-0 -z-10" onClick={onClose} />
