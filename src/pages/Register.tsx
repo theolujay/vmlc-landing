@@ -430,7 +430,7 @@ const Register: React.FC = () => {
                       <div>
                         <label htmlFor="document_type" className={labelClasses}>Document Type
                           <span className="text-gray-500 font-normal text-xs ml-1">
-                            (School ID card/Report card/NIN)
+                            (School ID card / Report card / NIN)
                           </span>
                         </label>
                         <select
@@ -481,7 +481,7 @@ const Register: React.FC = () => {
                       <div>
                         <label htmlFor="document_type" className={labelClasses}>Document Type
                           <span className="text-gray-500 font-normal text-xs ml-1">
-                            (NIN/Passport/Driver&apos;s License)
+                            (NIN / Passport / Driver&apos;s License)
                           </span>
                         </label>
                         <select
