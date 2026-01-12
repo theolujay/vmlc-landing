@@ -428,7 +428,11 @@ const Register: React.FC = () => {
                         </select>
                       </div>
                       <div>
-                        <label htmlFor="document_type" className={labelClasses}>Document Type</label>
+                        <label htmlFor="document_type" className={labelClasses}>Document Type
+                          <span className="text-gray-500 font-normal text-xs ml-1">
+                            (NIN/School result)
+                          </span>
+                        </label>
                         <select
                           id="document_type"
                           name="document_type"
@@ -474,7 +478,11 @@ const Register: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label htmlFor="document_type" className={labelClasses}>Document Type</label>
+                        <label htmlFor="document_type" className={labelClasses}>Document Type
+                          <span className="text-gray-500 font-normal text-xs ml-1">
+                            (NIN/Passport/Driver&apos;s License)
+                          </span>
+                        </label>
                         <select
                           id="document_type"
                           name="document_type"
@@ -484,7 +492,7 @@ const Register: React.FC = () => {
                         >
                           <option value="NIN">NIN</option>
                           <option value="passport">Passport</option>
-                          <option value="drivers license">Drivers&apos; License</option>
+                          <option value="drivers license">Driver&apos;s License</option>
                         </select>
                       </div>
                     </div>
