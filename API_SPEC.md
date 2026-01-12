@@ -62,7 +62,7 @@ Registers a new user as either a **Candidate** or a **Volunteer**.
 | `phone`| `string` | Phone number (e.g., `091-XXXX-XXXX`). |
 | `state` | `string` | State of residence (e.g., `Lagos` for Candidate, free text for Volunteer). |
 | `document` | `file` | ID or Result upload (Max 5MB). |
-| `document_type`| `string` | `NIN`, `school result` (Candidate) / `NIN`, `passport`, `drivers license` (Volunteer). |
+| `document_type`| `string` | `school ID card`, `report card`, `NIN` (Candidate) / `NIN`, `passport`, `drivers license` (Volunteer). |
 | `face_capture` | `file` | Facial verification image (Max 5MB). |
 | `consent` | `string` | `"true"` or `"false"` (Boolean sent as string). Must be "true" to proceed. |
 

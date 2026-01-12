@@ -73,7 +73,7 @@ const Register: React.FC = () => {
     school_type: 'public',
     current_class: 'SS1',
     state: 'Lagos',
-    document_type: 'NIN',
+    document_type: 'school ID card',
     consent: false,
   };
 
@@ -430,7 +430,7 @@ const Register: React.FC = () => {
                       <div>
                         <label htmlFor="document_type" className={labelClasses}>Document Type
                           <span className="text-gray-500 font-normal text-xs ml-1">
-                            (NIN/School result)
+                            (School ID card/Report card/NIN)
                           </span>
                         </label>
                         <select
@@ -440,8 +440,9 @@ const Register: React.FC = () => {
                           onChange={handleCandidateChange}
                           className={inputClasses}
                         >
+                          <option value="school ID card">School ID Card</option>
+                          <option value="report card">Report Card</option>
                           <option value="NIN">NIN</option>
-                          <option value="school result">School Result</option>
                         </select>
                       </div>
                     </div>

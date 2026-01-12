@@ -12,14 +12,14 @@ const faqs = [
       <span>
         To register, visit:{' '}
         <a
-          href="https://portal.verboheit.org/register"
+          href="https://verboheit.org/register"
           target="_blank"
           rel="noopener noreferrer"
           className="text-brand-blue underline hover:opacity-80 transition-opacity"
         >
-          https://portal.verboheit.org/register
+          https://verboheit.org/register
         </a>
-        . A copy of NIN or your last school result will be required to be uploaded to complete your
+        . A copy of your School ID card, Report card or NIN will be required to be uploaded to complete your
         registration.
       </span>
     ),
