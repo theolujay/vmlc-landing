@@ -4,18 +4,30 @@ import Button from './ui/Button';
 
 const Hero: React.FC = () => {
   return (
+    // 'relative' creates a positioning context for children with 'absolute'.
     <section className="relative bg-gray-900 text-white overflow-hidden">
+      {/* 
+         Background Layer:
+         'absolute inset-0' stretches this div to fill the entire parent <section>.
+         'z-0' places it behind other content.
+      */}
       <div className="absolute inset-0 z-0">
         <img
           src="/assets/hero.png"
           alt="Past winners"
           className="w-full h-full object-cover opacity-40"
         />
+        {/* Gradient Overlay: Adds a dark fade to make text more readable over the image. */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/0 mix-blend-multiply"></div>
       </div>
 
+      {/* 
+         Content Layer:
+         'relative z-10' places this ON TOP of the background layer.
+      */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 lg:py-40 text-white">
         <div className="max-w-3xl">
+          {/* Responsive Typography: 'text-[56px]' is a custom size. */}
           <h1 className="font-serif font-bold text-[56px] leading-[68px] tracking-[-0.02em] mb-6">
             Showcase your math skills <br />
             for a chance to win <br />
