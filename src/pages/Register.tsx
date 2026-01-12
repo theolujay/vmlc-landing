@@ -11,11 +11,16 @@ type UserType = 'candidate' | 'volunteer';
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 const Register: React.FC = () => {
+  // useSearchParams: Access URL query parameters (e.g., ?type=volunteer).
   const [searchParams] = useSearchParams();
   const initialType = (searchParams.get('type') as UserType) === 'volunteer' ? 'volunteer' : 'candidate';
+  
+  // State for form mode and status
   const [userType, setUserType] = useState<UserType>(initialType);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  
+  // useRef: References a DOM element directly. Here, used to clear the file input field programmatically.
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [regStatus, setRegStatus] = useState<{
@@ -25,9 +30,12 @@ const Register: React.FC = () => {
   } | null>(null);
   const [fetchingRegStatus, setFetchingRegStatus] = useState(true);
 
+  // useEffect: Runs code after the component renders.
+  // The empty dependency array [] means this runs only once when the component "mounts" (loads).
   useEffect(() => {
     const fetchRegStatus = async () => {
       try {
+        // Accessing environment variables (like os.environ in Python)
         const apiKey = import.meta.env.VITE_API_KEY;
         const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
         const response = await fetch(`${baseApiUrl}/v1/registration`, {
@@ -65,7 +73,7 @@ const Register: React.FC = () => {
     school_type: 'public',
     current_class: 'SS1',
     state: 'Lagos',
-    document_type: 'NIN',
+    document_type: 'school ID card',
     consent: false,
   };
 
@@ -80,6 +88,7 @@ const Register: React.FC = () => {
     consent: false,
   };
 
+  // Multiple state variables for different form data sets
   const [candidateData, setCandidateData] = useState(initialCandidateData);
   const [volunteerData, setVolunteerData] = useState(initialVolunteerData);
   const [documentFile, setDocumentFile] = useState<File | null>(null);
@@ -90,9 +99,14 @@ const Register: React.FC = () => {
   const [capturedImage, setCapturedImage] = useState<File | null>(null);
   const [capturedPreview, setCapturedPreview] = useState<string | null>(null);
 
+  // "Controlled Component" pattern:
+  // The React state is the "single source of truth". When input changes, we update state.
+  // The input value is always read from state.
   const handleCandidateChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
     const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    // Functional state update: prev represents the previous state.
+    // We use spread syntax (...prev) to copy old data and overwrite only the changed field [name].
     setCandidateData((prev) => ({ ...prev, [name]: val }));
   };
 
@@ -128,7 +142,7 @@ const Register: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default HTML form submission (page reload)
     setStatus('loading');
     setMessage('');
 
@@ -157,6 +171,8 @@ const Register: React.FC = () => {
     const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
     try {
+      // FormData: Native browser API for constructing multipart/form-data requests.
+      // Essential for file uploads.
       const formData = new FormData();
       formData.append('user_type', userType);
       
@@ -174,10 +190,13 @@ const Register: React.FC = () => {
         formData.append('face_capture', capturedImage);
       }
 
+      // Fetch API: Native JavaScript function for making network requests.
       const response = await fetch(`${baseApiUrl}/v2/register/`, {
         method: 'POST',
         headers: {
           'x-api-key': apiKey,
+          // Note: Content-Type header is NOT set manually for FormData.
+          // The browser automatically sets it with the correct boundary.
         },
         body: formData,
       });
@@ -204,7 +223,7 @@ const Register: React.FC = () => {
     }
   };
 
-  // Cleanup preview URL on unmount or when it changes
+  // Cleanup preview URL on unmount or when it changes to prevent memory leaks.
   useEffect(() => {
     return () => {
       if (capturedPreview) {
@@ -213,7 +232,7 @@ const Register: React.FC = () => {
     };
   }, [capturedPreview]);
 
-  const inputClasses = "w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all";
+  const inputClasses = "w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all bg-white";
   const labelClasses = "block text-sm font-semibold text-gray-700 mb-2";
 
   return (
@@ -409,7 +428,11 @@ const Register: React.FC = () => {
                         </select>
                       </div>
                       <div>
-                        <label htmlFor="document_type" className={labelClasses}>Document Type</label>
+                        <label htmlFor="document_type" className={labelClasses}>Document Type
+                          <span className="text-gray-500 font-normal text-xs ml-1">
+                            (School ID card / Report card / NIN)
+                          </span>
+                        </label>
                         <select
                           id="document_type"
                           name="document_type"
@@ -417,8 +440,9 @@ const Register: React.FC = () => {
                           onChange={handleCandidateChange}
                           className={inputClasses}
                         >
+                          <option value="school ID card">School ID Card</option>
+                          <option value="report card">Report Card</option>
                           <option value="NIN">NIN</option>
-                          <option value="school result">School Result</option>
                         </select>
                       </div>
                     </div>
@@ -455,7 +479,11 @@ const Register: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label htmlFor="document_type" className={labelClasses}>Document Type</label>
+                        <label htmlFor="document_type" className={labelClasses}>Document Type
+                          <span className="text-gray-500 font-normal text-xs ml-1">
+                            (NIN / Passport / Driver&apos;s License)
+                          </span>
+                        </label>
                         <select
                           id="document_type"
                           name="document_type"
@@ -465,7 +493,7 @@ const Register: React.FC = () => {
                         >
                           <option value="NIN">NIN</option>
                           <option value="passport">Passport</option>
-                          <option value="drivers license">Drivers&apos; License</option>
+                          <option value="drivers license">Driver&apos;s License</option>
                         </select>
                       </div>
                     </div>

@@ -27,7 +27,7 @@ const PrivacyPolicy: React.FC = () => {
             </h2>
             <p className="mb-4 text-gray-600 leading-relaxed">When you use this platform, we may collect:</p>
             <ul className="list-disc pl-12 space-y-2 text-gray-600 leading-relaxed">
-              <li><span className="font-bold text-gray-800">Personal details:</span> Name, email, school, phone number, ID card, facial scan, school result for candidates, utility bill for staff.</li>
+              <li><span className="font-bold text-gray-800">Personal details:</span> Name, email, school, phone number, ID card, facial scan, school ID card or report card for candidates, utility bill for staff.</li>
               <li><span className="font-bold text-gray-800">Competition-related data:</span> Registration info, exam performance.</li>
               <li><span className="font-bold text-gray-800">Technical data:</span> IP address, device type, browser.</li>
             </ul>

@@ -88,7 +88,7 @@ const SupportUs: React.FC = () => {
     }
   };
 
-  const inputClasses = "w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all";
+  const inputClasses = "w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all bg-white";
   const labelClasses = "block text-sm font-semibold text-gray-700 mb-2";
 
   return (
