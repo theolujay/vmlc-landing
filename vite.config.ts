@@ -12,7 +12,7 @@ export default defineConfig(() => {
     server: {
       port: 3000,
       host: '0.0.0.0', // Expose to network (similar to binding to 0.0.0.0 in Python servers)
-      allowedHosts: ['6b745342ab74.ngrok-free.app'],
+      // allowedHosts: ['3c5340c087fe.ngrok-free.app'],
     },
     // Plugins extend Vite's functionality. Here we add React support.
     plugins: [react()],

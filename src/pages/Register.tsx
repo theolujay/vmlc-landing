@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Button from '../components/ui/Button';
 
 import FacialCaptureModal from '../components/FacialCaptureModal';
@@ -98,6 +99,23 @@ const Register: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState<File | null>(null);
   const [capturedPreview, setCapturedPreview] = useState<string | null>(null);
+
+  const [showPreRegisterPopup, setShowPreRegisterPopup] = useState(false);
+
+  useEffect(() => {
+    if (fetchingRegStatus) return;
+
+    const isRegistrationClosed = regStatus && ((userType === 'candidate' && !regStatus.is_candidate_reg_open) || (userType === 'volunteer' && !regStatus.is_staff_reg_open));
+    
+    // Don't show if closed (they see the big message) or if successful
+    if (isRegistrationClosed || status === 'success') return;
+
+    const timer = setTimeout(() => {
+        setShowPreRegisterPopup(true);
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, [fetchingRegStatus, regStatus, userType, status]);
 
   // "Controlled Component" pattern:
   // The React state is the "single source of truth". When input changes, we update state.
@@ -303,6 +321,16 @@ const Register: React.FC = () => {
                   <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
                     {userType === 'candidate' ? 'Candidate' : 'Volunteer'} registration is currently not open. Please reach out to <a href={`mailto:${regStatus.support_email}`} className="text-brand-blue font-semibold hover:underline">{regStatus.support_email}</a> if you have inquiries
                   </p>
+                  <div className="mt-8 p-6 bg-blue-50 rounded-2xl border border-blue-100 max-w-lg mx-auto">
+                    <p className="text-brand-blue font-semibold mb-4">
+                      Would you like to be notified as soon as it opens?
+                    </p>
+                    <Link to="/pre-register">
+                      <Button variant="primary" className="shadow-none">
+                        Pre-register for Updates
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -553,6 +581,11 @@ const Register: React.FC = () => {
                     onConfirm={handleFaceCaptureConfirm}
                 />
 
+                <PreRegisterPopup 
+                    isOpen={showPreRegisterPopup}
+                    onClose={() => setShowPreRegisterPopup(false)}
+                />
+
                 <div className="space-y-4 bg-blue-50 p-4 rounded-2xl">
                   {/* Terms & Privacy Consent */}
                   <div className="flex items-start space-x-3">
@@ -593,6 +626,16 @@ const Register: React.FC = () => {
                     </span>
                   ) : `Register as ${userType.charAt(0).toUpperCase() + userType.slice(1)}`}
                 </Button>
+
+                <div className="mt-8 pt-6 border-t border-gray-100 text-center">
+                  <p className="text-sm text-gray-500">
+                    Can&apos;t complete the full registration right now?{' '}
+                    <Link to="/pre-register" className="text-brand-blue font-bold hover:underline">
+                      Pre-register
+                    </Link>{' '}
+                    to receive updates.
+                  </p>
+                </div>
               </form>
             )}
           </>
@@ -601,6 +644,51 @@ const Register: React.FC = () => {
     </div>
   </div>
 );
+};
+
+const PreRegisterPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4 sm:p-6 bg-black/50 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl relative animate-in slide-in-from-bottom-10 fade-in duration-300">
+        <button 
+            onClick={onClose} 
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        
+        <div className="text-center">
+            <div className="w-12 h-12 bg-blue-100 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Not ready to register?</h3>
+            <p className="text-gray-600 mb-6">
+                If you don't have all your documents yet, you can <span className="text-brand-blue font-semibold">Pre-register</span> to stay updated and complete your registration later.
+            </p>
+            <div className="flex flex-col space-y-3">
+                <Link to="/pre-register" className="w-full">
+                    <Button variant="primary" fullWidth onClick={onClose}>
+                        Go to Pre-registration
+                    </Button>
+                </Link>
+                <button 
+                    onClick={onClose}
+                    className="text-gray-500 hover:text-gray-700 font-medium text-sm py-2"
+                >
+                    I'll continue registering
+                </button>
+            </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
 };
 
 export default Register;
