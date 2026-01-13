@@ -70,8 +70,8 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate, label = "Closes in:" 
 
   if (!targetDate) {
     return (
-      <div className="flex flex-col items-center mt-6 mb-8 animate-fade-in">
-        <div className="bg-brand-accent text-brand-blue px-6 py-2 rounded-full font-bold text-sm uppercase tracking-wide shadow-sm border border-blue-100">
+      <div className="flex flex-col items-center mt-2 mb-6">
+        <div className="bg-green-50 text-green-600 px-4 py-1 rounded-full font-bold text-[10px] uppercase tracking-widest border border-green-100">
           Registration Open
         </div>
       </div>
@@ -83,29 +83,28 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate, label = "Closes in:" 
   }
 
   const TimeUnit: React.FC<{ value: number; unit: string }> = ({ value, unit }) => (
-    <div className="flex flex-col items-center mx-2">
-      <span className="font-mono text-xl md:text-2xl font-bold text-brand-blue leading-none">
+    <div className="flex items-baseline space-x-1">
+      <span className="font-mono text-lg font-bold text-brand-blue">
         {value.toString().padStart(2, '0')}
       </span>
-      <span className="text-[10px] uppercase tracking-wider text-gray-500 font-medium mt-1">
-        {unit}
+      <span className="text-[9px] uppercase tracking-tighter text-gray-400 font-bold">
+        {unit.charAt(0)}
       </span>
     </div>
   );
 
   return (
-    <div className="flex flex-col items-center mt-6 mb-8">
-      <span className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">
-        {label}
-      </span>
-      <div className="flex items-center bg-white px-4 py-3 rounded-xl shadow-sm border border-blue-100">
-        <TimeUnit value={timeLeft.days} unit="Days" />
-        <span className="text-gray-300 text-xl font-light mb-4">:</span>
-        <TimeUnit value={timeLeft.hours} unit="Hrs" />
-        <span className="text-gray-300 text-xl font-light mb-4">:</span>
-        <TimeUnit value={timeLeft.minutes} unit="Mins" />
-        <span className="text-gray-300 text-xl font-light mb-4">:</span>
-        <TimeUnit value={timeLeft.seconds} unit="Secs" />
+    <div className="flex flex-col items-center mt-2 mb-6">
+      <div className="flex items-center space-x-3 bg-gray-50/50 px-3 py-1.5 rounded-full border border-gray-100">
+        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mr-1">
+          {label}
+        </span>
+        <div className="flex items-center space-x-2">
+          <TimeUnit value={timeLeft.days} unit="Days" />
+          <TimeUnit value={timeLeft.hours} unit="Hrs" />
+          <TimeUnit value={timeLeft.minutes} unit="Mins" />
+          <TimeUnit value={timeLeft.seconds} unit="Secs" />
+        </div>
       </div>
     </div>
   );
