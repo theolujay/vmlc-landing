@@ -16,7 +16,7 @@ Requests require an API key passed in the `x-api-key` header.
 
 | Endpoint | Environment Variable | Header Key |
 | :--- | :--- | :--- |
-| `/v1/registration` | `VITE_API_KEY` | `x-api-key` |
+| `/v2/registration` | `VITE_API_KEY` | `x-api-key` |
 | `/v2/register/` | `VITE_API_KEY` | `x-api-key` |
 | `/v2/support-us/` | `VITE_API_KEY` | `x-api-key` |
 | `/v2/pre-register/` | `VITE_API_KEY` | `x-api-key` |
@@ -25,20 +25,39 @@ Requests require an API key passed in the `x-api-key` header.
 
 ## 2. Registration Status
 
-Checks if registration is currently open for candidates or volunteers.
+Check if registration is currently open for candidates and staff, and see scheduled closing dates.
 
-- **Endpoint:** `/v1/registration`
+- **Endpoint:** `/v2/registration/`
 - **Method:** `GET`
-- **Headers:** `x-api-key`
+- **Content-Type:** `application/json`
+- **Authentication:** None (Public)
 
-### Response (JSON)
+### Success Response (200 OK)
 ```json
 {
-  "is_candidate_reg_open": true,
-  "is_staff_reg_open": true,
+  "candidate_registration": {
+    "is_open": true,
+    "closing_date": "2026-01-20T23:59:59Z"
+  },
+  "staff_registration": {
+    "is_open": true,
+    "closing_date": null
+  },
   "support_email": "support@verboheit.org"
 }
 ```
+
+| Key | Type | Description |
+| :--- | :--- | :--- |
+| `candidate_registration` | `object` | Status for candidate registration. |
+| `staff_registration` | `object` | Status for volunteer/staff registration. |
+| `support_email` | `string` | System support email address. |
+
+#### Detailed Status Object
+| Key | Type | Description |
+| :--- | :--- | :--- |
+| `is_open` | `boolean` | `true` if registration is active. |
+| `closing_date` | `string | null` | ISO 8601 timestamp of scheduled auto-close, or `null` if not set. |
 
 ---
 
