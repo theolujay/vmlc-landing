@@ -326,7 +326,7 @@ const Register: React.FC = () => {
                 </button>
               </div>
 
-              {regStatus && (
+              {regStatus && (userType === 'candidate' ? regStatus.candidate_registration.is_open : regStatus.staff_registration.is_open) && (
                 <Countdown 
                   targetDate={
                     (userType === 'candidate' 
