@@ -3,7 +3,8 @@ import { createPortal } from 'react-dom';
 import Button from '../components/ui/Button';
 
 import FacialCaptureModal from '../components/FacialCaptureModal';
-import { Link, useSearchParams } from 'react-router-dom';
+import Countdown from '../components/Countdown';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { extractErrorMessage, handleNetworkError } from '../utils/api';
 import { validateEmail, validatePhone } from '../utils/validation';
 
@@ -14,6 +15,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const Register: React.FC = () => {
   // useSearchParams: Access URL query parameters (e.g., ?type=volunteer).
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const initialType = (searchParams.get('type') as UserType) === 'volunteer' ? 'volunteer' : 'candidate';
   
   // State for form mode and status
@@ -21,15 +23,33 @@ const Register: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   
+  // Intercept back button to ensure it goes to Home
+  useEffect(() => {
+    // Push the current state to history so "Back" stays within the app context initially
+    // and triggers our popstate handler
+    window.history.pushState(null, '', window.location.href);
+
+    const handlePopState = () => {
+      navigate('/', { replace: true });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [navigate]);
+  
   // useRef: References a DOM element directly. Here, used to clear the file input field programmatically.
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [regStatus, setRegStatus] = useState<{
-    is_candidate_reg_open: boolean;
-    is_staff_reg_open: boolean;
+    candidate_registration: { is_open: boolean; closing_date: string | null };
+    staff_registration: { is_open: boolean; closing_date: string | null };
     support_email: string;
   } | null>(null);
   const [fetchingRegStatus, setFetchingRegStatus] = useState(true);
+  const [regStatusError, setRegStatusError] = useState(false);
 
   // useEffect: Runs code after the component renders.
   // The empty dependency array [] means this runs only once when the component "mounts" (loads).
@@ -39,7 +59,7 @@ const Register: React.FC = () => {
         // Accessing environment variables (like os.environ in Python)
         const apiKey = import.meta.env.VITE_API_KEY;
         const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
-        const response = await fetch(`${baseApiUrl}/v1/registration`, {
+        const response = await fetch(`${baseApiUrl}/v2/registration/`, {
           headers: {
             'x-api-key': apiKey,
           },
@@ -47,9 +67,12 @@ const Register: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setRegStatus(data);
+        } else {
+            setRegStatusError(true);
         }
       } catch (error) {
         console.error('Failed to fetch registration status', error);
+        setRegStatusError(true);
       } finally {
         setFetchingRegStatus(false);
       }
@@ -105,7 +128,7 @@ const Register: React.FC = () => {
   useEffect(() => {
     if (fetchingRegStatus) return;
 
-    const isRegistrationClosed = regStatus && ((userType === 'candidate' && !regStatus.is_candidate_reg_open) || (userType === 'volunteer' && !regStatus.is_staff_reg_open));
+    const isRegistrationClosed = regStatus && ((userType === 'candidate' && !regStatus.candidate_registration.is_open) || (userType === 'volunteer' && !regStatus.staff_registration.is_open));
     
     // Don't show if closed (they see the big message) or if successful
     if (isRegistrationClosed || status === 'success') return;
@@ -303,6 +326,16 @@ const Register: React.FC = () => {
                 </button>
               </div>
 
+              {regStatus && (
+                <Countdown 
+                  targetDate={
+                    (userType === 'candidate' 
+                      ? regStatus.candidate_registration.closing_date 
+                      : regStatus.staff_registration.closing_date) || ''
+                  } 
+                />
+              )}
+
               {fetchingRegStatus ? (
                 <div className="flex justify-center py-12">
                   <svg className="animate-spin h-10 w-10 text-brand-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -310,7 +343,22 @@ const Register: React.FC = () => {
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
                 </div>
-              ) : regStatus && ((userType === 'candidate' && !regStatus.is_candidate_reg_open) || (userType === 'volunteer' && !regStatus.is_staff_reg_open)) ? (
+              ) : regStatusError ? (
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Connection Error</h2>
+                  <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
+                    We couldn't check the registration status. Please check your internet connection and try again.
+                  </p>
+                  <Button onClick={() => window.location.reload()} variant="primary">
+                    Refresh Page
+                  </Button>
+                </div>
+              ) : regStatus && ((userType === 'candidate' && !regStatus.candidate_registration.is_open) || (userType === 'volunteer' && !regStatus.staff_registration.is_open)) ? (
                 <div className="text-center py-12">
                   <div className="w-20 h-20 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
