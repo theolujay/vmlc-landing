@@ -1,6 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from "@tailwindcss/vite";
 
 // Vite is the build tool and development server for this project.
 // Think of it as a combination of a compiler (like 'go build') and a live-reloading server (like 'uvicorn' or 'flask run').
@@ -12,10 +13,13 @@ export default defineConfig(() => {
     server: {
       port: 3000,
       host: '0.0.0.0', // Expose to network (similar to binding to 0.0.0.0 in Python servers)
-      // allowedHosts: ['3c5340c087fe.ngrok-free.app'],
+      // allowedHosts: ['34ec49998820.ngrok-free.app'],
     },
     // Plugins extend Vite's functionality. Here we add React support.
-    plugins: [react()],
+    plugins: [
+      react(),
+      tailwindcss(),
+    ],
     // Resolve aliases allow us to use '@' as a shortcut for the './src' directory.
     // This avoids long relative paths like '../../../components' (similar to configuring PYTHONPATH or Go modules).
     resolve: {
