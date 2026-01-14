@@ -276,6 +276,24 @@ const Register: React.FC = () => {
   const inputClasses = "w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all bg-white";
   const labelClasses = "block text-sm font-semibold text-gray-700 mb-2";
 
+  // Subtle path-specific theme configuration
+  const theme = {
+    isVolunteer: userType === 'volunteer',
+    cardBg: userType === 'volunteer' ? 'bg-blue-50/30' : 'bg-white',
+    accentColor: userType === 'volunteer' ? 'brand-cyan' : 'brand-blue', 
+    accentText: userType === 'volunteer' ? 'text-brand-blue' : 'text-brand-blue', // Keeping it blue for now as requested subtle
+    toggleActive: userType === 'volunteer' ? 'bg-blue-50/50 text-brand-blue shadow-sm' : 'bg-white text-brand-blue shadow-sm',
+    fileBtn: userType === 'volunteer' 
+      ? 'file:bg-blue-50/50 file:text-brand-blue hover:file:bg-blue-100/50' 
+      : 'file:bg-brand-accent file:text-brand-blue hover:file:bg-blue-200',
+    captureBtn: userType === 'volunteer'
+      ? 'bg-blue-50/50 text-brand-blue hover:bg-blue-100/50'
+      : 'bg-brand-accent text-brand-blue hover:bg-blue-200',
+    consentBg: userType === 'volunteer' ? 'bg-blue-50/20' : 'bg-blue-50',
+    submitShadow: userType === 'volunteer' ? 'shadow-blue-100/50' : 'shadow-blue-200',
+    spinnerColor: 'text-brand-blue', 
+  };
+
   return (
     <div className="py-20 bg-gray-50 min-h-screen animate-fade-in">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -291,7 +309,7 @@ const Register: React.FC = () => {
           </p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-3xl p-8 shadow-sm">
+        <div className={`border border-gray-200 rounded-3xl p-8 shadow-sm transition-colors duration-500 ${theme.cardBg}`}>
           {status === 'success' ? (
             <div className="text-center py-12">
               <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -311,7 +329,7 @@ const Register: React.FC = () => {
                 <button
                   onClick={() => { setUserType('candidate'); setStatus('idle'); }}
                   className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all ${
-                    userType === 'candidate' ? 'bg-white text-brand-blue shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                    userType === 'candidate' ? theme.toggleActive : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
                   Candidate
@@ -319,7 +337,7 @@ const Register: React.FC = () => {
                 <button
                   onClick={() => { setUserType('volunteer'); setStatus('idle'); }}
                   className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all ${
-                    userType === 'volunteer' ? 'bg-white text-brand-blue shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                    userType === 'volunteer' ? theme.toggleActive : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
                   Volunteer
@@ -332,13 +350,15 @@ const Register: React.FC = () => {
                     (userType === 'candidate' 
                       ? regStatus.candidate_registration.closing_date 
                       : regStatus.staff_registration.closing_date) || ''
-                  } 
+                  }
+                  accentColor={theme.accentColor}
                 />
               )}
 
+
               {fetchingRegStatus ? (
                 <div className="flex justify-center py-12">
-                  <svg className="animate-spin h-10 w-10 text-brand-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg className={`animate-spin h-10 w-10 ${theme.spinnerColor}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
@@ -350,9 +370,9 @@ const Register: React.FC = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Connection Error</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Something&apos;s not right!</h2>
                   <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
-                    We couldn&apos;t check the registration status. Please check your internet connection and try again.
+                    Registration status is currently unavailable. <br></br>Please refresh... or contact us support.
                   </p>
                   <Button onClick={() => window.location.reload()} variant="primary">
                     Refresh Page
@@ -369,7 +389,7 @@ const Register: React.FC = () => {
                   <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
                     {userType === 'candidate' ? 'Candidate' : 'Volunteer'} registration is currently not open. Please reach out to <a href={`mailto:${regStatus.support_email}`} className="text-brand-blue font-semibold hover:underline">{regStatus.support_email}</a> if you have inquiries
                   </p>
-                  <div className="mt-8 p-6 bg-blue-50 rounded-2xl border border-blue-100 max-w-lg mx-auto">
+                  <div className={`mt-8 p-6 ${theme.consentBg} border-blue-100 rounded-2xl border max-w-lg mx-auto`}>
                     <p className="text-brand-blue font-semibold mb-4">
                       Would you like to be notified as soon as it opens?
                     </p>
@@ -584,7 +604,7 @@ const Register: React.FC = () => {
                       required
                       ref={fileInputRef}
                       onChange={handleFileChange}
-                      className={`${inputClasses} file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-accent file:text-brand-blue hover:file:bg-blue-200`}
+                      className={`${inputClasses} file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold ${theme.fileBtn}`}
                       accept=".pdf,.jpg,.jpeg,.png"
                     />
                     <p className="mt-2 text-xs text-gray-500">Accepted formats: PDF, JPG, PNG (Max 5MB)</p>
@@ -598,7 +618,7 @@ const Register: React.FC = () => {
                             <button 
                                 type="button" 
                                 onClick={() => setIsModalOpen(true)}
-                                className="mr-4 py-2 px-4 rounded-full border-0 text-sm font-semibold bg-brand-accent text-brand-blue hover:bg-blue-200 transition-colors focus:outline-none"
+                                className={`mr-4 py-2 px-4 rounded-full border-0 text-sm font-semibold transition-colors focus:outline-none ${theme.captureBtn}`}
                             >
                                 {capturedImage ? 'Recapture' : 'Capture'}
                             </button>
@@ -609,7 +629,7 @@ const Register: React.FC = () => {
                         
                         {capturedPreview && (
                             <div className="flex-shrink-0 relative">
-                                <div className="h-10 w-10 rounded-full overflow-hidden border border-brand-blue shadow-sm">
+                                <div className={`h-10 w-10 rounded-full overflow-hidden border border-${theme.accentColor} shadow-sm`}>
                                     <img src={capturedPreview} alt="Face Preview" className="h-full w-full object-cover" />
                                 </div>
                                 <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-0.5 border border-white">
@@ -632,9 +652,10 @@ const Register: React.FC = () => {
                 <PreRegisterPopup 
                     isOpen={showPreRegisterPopup}
                     onClose={() => setShowPreRegisterPopup(false)}
+                    userType={userType}
                 />
 
-                <div className="space-y-4 bg-blue-50 p-4 rounded-2xl">
+                <div className={`space-y-4 p-4 rounded-2xl ${theme.consentBg}`}>
                   {/* Terms & Privacy Consent */}
                   <div className="flex items-start space-x-3">
                     <input
@@ -662,7 +683,7 @@ const Register: React.FC = () => {
                   variant="primary"
                   fullWidth
                   disabled={status === 'loading' || !(userType === 'candidate' ? candidateData.consent : volunteerData.consent)}
-                  className={status === 'loading' ? 'opacity-70 cursor-not-allowed' : 'py-4 shadow-lg shadow-blue-200'}
+                  className={status === 'loading' ? 'opacity-70 cursor-not-allowed' : `py-4 shadow-lg ${theme.submitShadow}`}
                 >
                   {status === 'loading' ? (
                     <span className="flex items-center">
@@ -694,7 +715,7 @@ const Register: React.FC = () => {
 );
 };
 
-const PreRegisterPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const PreRegisterPopup: React.FC<{ isOpen: boolean; onClose: () => void; userType: UserType }> = ({ isOpen, onClose, userType }) => {
   if (!isOpen) return null;
 
   return createPortal(
@@ -710,7 +731,7 @@ const PreRegisterPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ 
         </button>
         
         <div className="text-center">
-            <div className="w-12 h-12 bg-blue-100 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className={`w-12 h-12 ${userType === 'volunteer' ? 'bg-blue-50/50 text-brand-blue' : 'bg-blue-100 text-brand-blue'} rounded-full flex items-center justify-center mx-auto mb-4`}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
