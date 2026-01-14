@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 interface CountdownProps {
   targetDate: string;
   label?: string;
+  accentColor?: 'brand-blue' | 'brand-cyan';
 }
 
 interface TimeLeft {
@@ -12,7 +13,7 @@ interface TimeLeft {
   seconds: number;
 }
 
-const Countdown: React.FC<CountdownProps> = ({ targetDate, label = "Closes in:" }) => {
+const Countdown: React.FC<CountdownProps> = ({ targetDate, label = "Closes in:", accentColor = 'brand-blue' }) => {
   const parseDate = (dateString: string): number => {
     if (!dateString) return 0;
 
@@ -71,7 +72,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate, label = "Closes in:" 
   if (!targetDate) {
     return (
       <div className="flex flex-col items-center mt-2 mb-6">
-        <div className="bg-green-50 text-green-600 px-4 py-1 rounded-full font-bold text-[10px] uppercase tracking-widest border border-green-100">
+        <div className={`${accentColor === 'brand-cyan' ? 'bg-cyan-50 text-brand-cyan border-cyan-100' : 'bg-green-50 text-green-600 border-green-100'} px-4 py-1 rounded-full font-bold text-[10px] uppercase tracking-widest border transition-colors duration-500`}>
           Registration Open
         </div>
       </div>
@@ -95,7 +96,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate, label = "Closes in:" 
 
   return (
     <div className="flex flex-col items-center mt-2 mb-6">
-      <div className="flex items-center space-x-3 bg-gray-50/50 px-3 py-1.5 rounded-full border border-gray-100">
+      <div className={`flex items-center space-x-3 ${accentColor === 'brand-cyan' ? 'bg-cyan-50/50 border-cyan-100' : 'bg-gray-50/50 border-gray-100'} px-3 py-1.5 rounded-full border transition-colors duration-500`}>
         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mr-1">
           {label}
         </span>
@@ -108,6 +109,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate, label = "Closes in:" 
       </div>
     </div>
   );
+
 };
 
 export default Countdown;
