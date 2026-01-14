@@ -38,13 +38,13 @@ const PreRegister: React.FC = () => {
     }
 
     try {
-      const apiKey = import.meta.env.VITE_API_KEY;
+      // const apiKey = import.meta.env.VITE_API_KEY;
       const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
       const response = await fetch(`${baseApiUrl}/v2/pre-register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': apiKey,
+          // 'x-api-key': apiKey,
         },
         body: JSON.stringify(formData),
       });
