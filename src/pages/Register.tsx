@@ -57,11 +57,11 @@ const Register: React.FC = () => {
     const fetchRegStatus = async () => {
       try {
         // Accessing environment variables (like os.environ in Python)
-        const apiKey = import.meta.env.VITE_API_KEY;
+        // const apiKey = import.meta.env.VITE_API_KEY;
         const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
         const response = await fetch(`${baseApiUrl}/v2/registration/`, {
           headers: {
-            'x-api-key': apiKey,
+            // 'x-api-key': apiKey,
           },
         });
         if (response.ok) {
