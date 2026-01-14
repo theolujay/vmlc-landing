@@ -86,7 +86,7 @@ const faqs = [
   },
   {
     question: 'Who can I contact if I have more questions?',
-    answer: 'For additional questions, you can send us a message on Facebook and Instagram.',
+    answer: 'For additional questions, you can send us a message on Facebook, Instagram, WhatsApp or e-mail. Find the details down the page.',
   },
 ];
 

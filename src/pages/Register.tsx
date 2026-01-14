@@ -352,7 +352,7 @@ const Register: React.FC = () => {
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-4">Connection Error</h2>
                   <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
-                    We couldn't check the registration status. Please check your internet connection and try again.
+                    We couldn&apos;t check the registration status. Please check your internet connection and try again.
                   </p>
                   <Button onClick={() => window.location.reload()} variant="primary">
                     Refresh Page
@@ -717,7 +717,7 @@ const PreRegisterPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ 
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Not ready to register?</h3>
             <p className="text-gray-600 mb-6">
-                If you don't have all your documents yet, you can <span className="text-brand-blue font-semibold">Pre-register</span> to stay updated and complete your registration later.
+                If you don&apos;t have all your documents yet, you can <span className="text-brand-blue font-semibold">Pre-register</span> to stay updated and complete your registration later.
             </p>
             <div className="flex flex-col space-y-3">
                 <Link to="/pre-register" className="w-full">
@@ -729,7 +729,7 @@ const PreRegisterPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ 
                     onClick={onClose}
                     className="text-gray-500 hover:text-gray-700 font-medium text-sm py-2"
                 >
-                    I'll continue registering
+                    I&apos;ll continue registering
                 </button>
             </div>
         </div>
