@@ -38,13 +38,13 @@ const PreRegister: React.FC = () => {
     }
 
     try {
-      const apiKey = import.meta.env.VITE_API_KEY;
+      // const apiKey = import.meta.env.VITE_API_KEY;
       const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
       const response = await fetch(`${baseApiUrl}/v2/pre-register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': apiKey,
+          // 'x-api-key': apiKey,
         },
         body: JSON.stringify(formData),
       });
@@ -70,8 +70,15 @@ const PreRegister: React.FC = () => {
     }
   };
 
+  const isVolunteer = formData.interest_type === 'volunteer';
+  const theme = {
+    cardBg: isVolunteer ? 'bg-blue-50/30' : 'bg-white',
+    inputRing: 'focus:ring-brand-blue',
+    accentText: 'text-brand-blue',
+  };
+
   return (
-    <div className="py-20 bg-white min-h-[60vh] animate-fade-in">
+    <div className="py-20 bg-gray-50 min-h-screen animate-fade-in">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <div className="inline-block px-2 py-1 bg-brand-accent rounded-full text-brand-blue text-sm font-bold tracking-wide uppercase mb-4">
@@ -88,7 +95,7 @@ const PreRegister: React.FC = () => {
           </p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+        <div className={`border border-gray-200 rounded-2xl p-8 shadow-sm transition-colors duration-500 ${theme.cardBg}`}>
           {status === 'success' ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -115,7 +122,7 @@ const PreRegister: React.FC = () => {
                   required
                   value={formData.full_name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
+                  className={`w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 ${theme.inputRing} focus:border-transparent outline-none transition-all bg-white`}
                   placeholder="Jane Doe"
                 />
               </div>
@@ -131,7 +138,7 @@ const PreRegister: React.FC = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
+                  className={`w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 ${theme.inputRing} focus:border-transparent outline-none transition-all bg-white`}
                   placeholder="jane.doe@example.com"
                 />
               </div>
@@ -147,7 +154,7 @@ const PreRegister: React.FC = () => {
                   required
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
+                  className={`w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 ${theme.inputRing} focus:border-transparent outline-none transition-all bg-white`}
                   placeholder="091-XXXX-XXXX"
                 />
               </div>
@@ -161,7 +168,7 @@ const PreRegister: React.FC = () => {
                   name="interest_type"
                   value={formData.interest_type}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all bg-white"
+                  className={`w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 ${theme.inputRing} focus:border-transparent outline-none transition-all bg-white`}
                 >
                   <option value="candidate">Candidate</option>
                   <option value="volunteer">Volunteer</option>

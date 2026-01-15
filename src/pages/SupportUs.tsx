@@ -52,7 +52,7 @@ const SupportUs: React.FC = () => {
       return;
     }
 
-    const apiKey = import.meta.env.VITE_API_KEY;
+    // const apiKey = import.meta.env.VITE_API_KEY;
     const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
     try {
@@ -60,7 +60,7 @@ const SupportUs: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': apiKey,
+          // 'x-api-key': apiKey,
         },
         body: JSON.stringify(formData),
       });
