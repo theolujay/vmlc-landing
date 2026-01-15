@@ -279,9 +279,9 @@ const Register: React.FC = () => {
   // Subtle path-specific theme configuration
   const theme = {
     isVolunteer: userType === 'volunteer',
-    cardBg: userType === 'volunteer' ? 'bg-blue-50/30' : 'bg-white',
+    cardBg: userType === 'volunteer' ? 'bg-cyan-50/30' : 'bg-white',
     accentColor: userType === 'volunteer' ? 'brand-cyan' : 'brand-blue', 
-    accentText: userType === 'volunteer' ? 'text-brand-blue' : 'text-brand-blue', // Keeping it blue for now as requested subtle
+    accentText: userType === 'volunteer' ? 'text-brand-cyan' : 'text-brand-blue',
     toggleActive: userType === 'volunteer' ? 'bg-blue-50/50 text-brand-blue shadow-sm' : 'bg-white text-brand-blue shadow-sm',
     fileBtn: userType === 'volunteer' 
       ? 'file:bg-blue-50/50 file:text-brand-blue hover:file:bg-blue-100/50' 
