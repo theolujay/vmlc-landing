@@ -202,11 +202,13 @@ const Register: React.FC = () => {
       return;
     }
 
+    /*
     if (!capturedImage) {
       setStatus('error');
       setMessage('Please capture your face for verification.');
       return;
     }
+    */
 
     const apiKey = import.meta.env.VITE_API_KEY;
     const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
@@ -372,7 +374,7 @@ const Register: React.FC = () => {
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-4">Something&apos;s not right!</h2>
                   <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
-                    Registration status is currently unavailable. <br></br>Please refresh... or contact us support.
+                    Registration status is currently unavailable. <br></br>Please refresh... or contact us.
                   </p>
                   <Button onClick={() => window.location.reload()} variant="primary">
                     Refresh Page
