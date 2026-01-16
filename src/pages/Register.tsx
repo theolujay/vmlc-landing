@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Button from '../components/ui/Button';
 
-import FacialCaptureModal from '../components/FacialCaptureModal';
+// import FacialCaptureModal from '../components/FacialCaptureModal';
 import Countdown from '../components/Countdown';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { extractErrorMessage, handleNetworkError } from '../utils/api';
@@ -119,9 +119,11 @@ const Register: React.FC = () => {
   
   // Facial Capture State
   // Note: capturedImage is kept in memory (File) to avoid sensitive data persistence (Security)
+  /*
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState<File | null>(null);
   const [capturedPreview, setCapturedPreview] = useState<string | null>(null);
+  */
 
   const [showPreRegisterPopup, setShowPreRegisterPopup] = useState(false);
 
@@ -176,11 +178,13 @@ const Register: React.FC = () => {
     }
   };
 
+  /*
   const handleFaceCaptureConfirm = (file: File) => {
     setCapturedImage(file);
     const objectUrl = URL.createObjectURL(file);
     setCapturedPreview(objectUrl);
   };
+  */
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default HTML form submission (page reload)
@@ -229,9 +233,11 @@ const Register: React.FC = () => {
       
       // Requirement: Append captured image as 'face_capture'
       // Note: Image is stored in memory (File object) and not localStorage for security
+      /*
       if (capturedImage) {
         formData.append('face_capture', capturedImage);
       }
+      */
 
       // Fetch API: Native JavaScript function for making network requests.
       const response = await fetch(`${baseApiUrl}/v2/register/`, {
@@ -253,8 +259,10 @@ const Register: React.FC = () => {
         setCandidateData(initialCandidateData);
         setVolunteerData(initialVolunteerData);
         setDocumentFile(null);
+        /*
         setCapturedImage(null);
         setCapturedPreview(null);
+        */
         if (fileInputRef.current) fileInputRef.current.value = '';
       } else {
         setStatus('error');
@@ -267,6 +275,7 @@ const Register: React.FC = () => {
   };
 
   // Cleanup preview URL on unmount or when it changes to prevent memory leaks.
+  /*
   useEffect(() => {
     return () => {
       if (capturedPreview) {
@@ -274,6 +283,7 @@ const Register: React.FC = () => {
       }
     };
   }, [capturedPreview]);
+  */
 
   const inputClasses = "w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all bg-white";
   const labelClasses = "block text-sm font-semibold text-gray-700 mb-2";
@@ -288,9 +298,11 @@ const Register: React.FC = () => {
     fileBtn: userType === 'volunteer' 
       ? 'file:bg-blue-50/50 file:text-brand-blue hover:file:bg-blue-100/50' 
       : 'file:bg-brand-accent file:text-brand-blue hover:file:bg-blue-200',
+    /*
     captureBtn: userType === 'volunteer'
       ? 'bg-blue-50/50 text-brand-blue hover:bg-blue-100/50'
       : 'bg-brand-accent text-brand-blue hover:bg-blue-200',
+    */
     consentBg: userType === 'volunteer' ? 'bg-blue-50/20' : 'bg-blue-50',
     submitShadow: userType === 'volunteer' ? 'shadow-blue-100/50' : 'shadow-blue-200',
     spinnerColor: 'text-brand-blue', 
@@ -528,7 +540,7 @@ const Register: React.FC = () => {
                       <div>
                         <label htmlFor="document_type" className={labelClasses}>Document Type
                           <span className="text-gray-500 font-normal text-xs ml-1">
-                            (School ID card / Report card / NIN)
+                            (School ID / Report card / NIN)
                           </span>
                         </label>
                         <select
@@ -613,6 +625,7 @@ const Register: React.FC = () => {
                   </div>
 
                 {/* Facial Capture Section */}
+                {/* 
                 <div>
                     <label className={labelClasses}>Face Capture</label>
                     <div className={`${inputClasses} flex items-center justify-between py-2 h-[58px]`}>
@@ -650,6 +663,7 @@ const Register: React.FC = () => {
                     onClose={() => setIsModalOpen(false)}
                     onConfirm={handleFaceCaptureConfirm}
                 />
+                */}
 
                 <PreRegisterPopup 
                     isOpen={showPreRegisterPopup}

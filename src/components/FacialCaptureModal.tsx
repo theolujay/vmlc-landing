@@ -1,3 +1,4 @@
+/*
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Button from './ui/Button';
@@ -187,7 +188,7 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
                         />
                          {isCapturing && <div className="absolute inset-0 flex items-center justify-center bg-white/50"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-blue"></div></div>}
                          
-                         {/* Face Detection Status Indicator */}
+                         {/ * Face Detection Status Indicator * /}
                          {!isModelLoading && !isCapturing && (
                              <div className={`absolute bottom-4 px-3 py-1 rounded-full text-xs font-bold shadow-sm transition-all duration-300 ${
                                  isFaceDetected 
@@ -253,7 +254,7 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
             </div>
         )}
         
-        {/* Hidden Canvas for capture */}
+        {/ * Hidden Canvas for capture * /}
         <canvas ref={canvasRef} className="hidden" />
       </div>
     </div>,
@@ -262,3 +263,5 @@ const FacialCaptureModal: React.FC<FacialCaptureModalProps> = ({ isOpen, onClose
 };
 
 export default FacialCaptureModal;
+*/
+export default () => null;

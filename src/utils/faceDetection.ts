@@ -1,3 +1,4 @@
+/*
 import * as faceapi from '@vladmandic/face-api';
 
 // This file handles the integration with a client-side AI library (face-api.js).
@@ -52,3 +53,7 @@ export const detectFace = async (videoElement: HTMLVideoElement): Promise<boolea
     return false;
   }
 };
+*/
+
+export const loadFaceDetectionModels = async () => {};
+export const detectFace = async () => false;
