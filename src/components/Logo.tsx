@@ -4,9 +4,9 @@ export default function Logo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
-      width="211"
-      height="48"
-      viewBox="0 0 211 48"
+      width="170"
+      height="50"
+      viewBox="0 0 220 50"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
