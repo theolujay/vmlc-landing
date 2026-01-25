@@ -503,7 +503,7 @@ const Register: React.FC = () => {
                           <option value="Lagos">Lagos</option>
                           <option value="Ogun">Ogun</option>
                           <option value="Rivers">Rivers</option>
-                          <option value="Cross River">Cross River</option>
+                          {/* <option value="Cross River">Cross River</option> */}
                           <option value="Abuja">Abuja</option>
                         </select>
                       </div>
