@@ -254,7 +254,7 @@ const Register: React.FC = () => {
 
       if (response.ok) {
         setStatus('success');
-        setMessage(data.message || `Registration successful as a ${userType}.\nWe sent you an email.`);
+        setMessage(data.message || `Please check your email for your login credentials and next steps as a ${userType}.`);
         // Reset forms
         setCandidateData(initialCandidateData);
         setVolunteerData(initialVolunteerData);
@@ -331,12 +331,14 @@ const Register: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Success!</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Successful</h2>
               <p className="text-lg text-gray-600 mb-8">{message}</p>
+            {/*
               <Button onClick={() => setStatus('idle')} variant="primary">
-                Register another person
+                Go to mail
               </Button>
             </div>
+            */}
           ) : (
             <>
               <div className="flex p-1 bg-gray-100 rounded-2xl mb-10">
