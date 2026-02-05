@@ -135,11 +135,11 @@ const Register: React.FC = () => {
     // Don't show if closed (they see the big message) or if successful
     if (isRegistrationClosed || status === 'success') return;
 
-    const timer = setTimeout(() => {
-        setShowPreRegisterPopup(true);
-    }, 10000);
+    // const timer = setTimeout(() => {
+    //     setShowPreRegisterPopup(true);
+    // }, 10000);
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
   }, [fetchingRegStatus, regStatus, userType, status]);
 
   // "Controlled Component" pattern:
