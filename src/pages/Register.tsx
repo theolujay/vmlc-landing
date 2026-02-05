@@ -226,7 +226,7 @@ const Register: React.FC = () => {
 
       if (response.ok) {
         setStatus('success');
-        setMessage('Registration successful! Please check your email to verify your account.');
+        setMessage('Registration successful! Please check your email for your login credentials.');
       } else {
         const errorData = await response.json();
         setStatus('error');
