@@ -254,7 +254,7 @@ const Register: React.FC = () => {
 
       if (response.ok) {
         setStatus('success');
-        setMessage(data.message || `Registration successful as a ${userType}.\nWe sent you an email.`);
+        setMessage(data.message || 'Acknowledged');
         // Reset forms
         setCandidateData(initialCandidateData);
         setVolunteerData(initialVolunteerData);
@@ -325,16 +325,21 @@ const Register: React.FC = () => {
 
         <div className={`border border-gray-200 rounded-3xl p-8 shadow-sm transition-colors duration-500 ${theme.cardBg}`}>
           {status === 'success' ? (
-            <div className="text-center py-12">
-              <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="text-center py-10">
+              <div className="w-20 h-20 bg-green-100 text-green-600  shadow rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Success!</h2>
-              <p className="text-lg text-gray-600 mb-8">{message}</p>
-              <Button onClick={() => setStatus('idle')} variant="primary">
-                Register another person
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Successful</h2>
+                <p className="text-lg text-gray-500 italic mb-8">Please check your email for your portal login credentials.</p>
+              </div>
+              <Button 
+                onClick={() => window.open(import.meta.env.VITE_PORTAL_URL, '_blank', 'noopener,noreferrer')} 
+                variant="primary"
+              >
+                Go to Portal
               </Button>
             </div>
           ) : (
