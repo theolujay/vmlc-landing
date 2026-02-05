@@ -1,0 +1,56 @@
+[33mcommit ee8084694655048d50797fff6102ba67354be8fd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/release[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Joseph Ezekiel <theolujay@gmail.com>
+Date:   Thu Feb 5 06:35:44 2026 +0100
+
+    Update Register.tsx
+
+[33mcommit f80c70414784f5de6efcbc230d858f9ed4c1b88f[m
+Merge: eb1d867 1786680
+Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+Date:   Thu Feb 5 03:37:02 2026 +0000
+
+    [Automated] Merged release into main
+
+[33mcommit eb1d8676ce92e3879d9ed908b6311a2bd25e3adf[m
+Merge: f9f3638 e46046d
+Author: Verboheit Consulting <olujay.dev@gmail.com>
+Date:   Thu Feb 5 04:36:48 2026 +0100
+
+    Merge pull request #21 from verboheit/dev
+    
+    feat: remove preReg popup
+
+[33mcommit 178668070c3b1f4a39473cd975913e7b3cb228f2[m
+Merge: d73c9c2 e46046d
+Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+Date:   Thu Feb 5 03:36:21 2026 +0000
+
+    [Automated] Merged dev into release
+
+[33mcommit e46046d9d807ce3a44ab9ac7be4e4dd6ffb4e6c3[m
+Author: Joseph Ezekiel <theolujay@gmail.com>
+Date:   Thu Feb 5 04:36:01 2026 +0100
+
+    feat: remove preReg popup
+
+[33mcommit f9f363852c4981e24b42edb22e3fa4982aeea931[m
+Merge: b623983 d73c9c2
+Author: Verboheit Consulting <olujay.dev@gmail.com>
+Date:   Sun Jan 25 20:35:31 2026 +0100
+
+    Merge pull request #20 from verboheit/release
+    
+    Release
+
+[33mcommit d73c9c281bb82ac9295873dbc18e46a191f63436[m
+Merge: 002edd3 760521c
+Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+Date:   Sun Jan 25 19:32:39 2026 +0000
+
+    [Automated] Merged dev into release
+
+[33mcommit 760521c5a7952a0af49c480684c09e1f09eb2df9[m
+Author: Joseph Ezekiel <theolujay@gmail.com>
+Date:   Sun Jan 25 20:32:22 2026 +0100
+
+    feat: remove Cross River from candidate registration form
