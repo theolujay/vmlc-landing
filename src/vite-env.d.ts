@@ -5,6 +5,7 @@ interface ImportMetaEnv {
     readonly VITE_API_KEY: string;
     readonly VITE_PRE_REGISTER_API_KEY: string;
     readonly VITE_API_URL: string;
+    readonly VITE_WA_GC: string;
 }
 
 interface ImportMeta {

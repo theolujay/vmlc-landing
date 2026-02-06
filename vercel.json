@@ -1,3 +1,10 @@
 {
+  "redirects": [
+    {
+      "source": "/join-group-chat",
+      "destination": "https://chat.whatsapp.com/FuSA7Oi8ETc8WGPLotjibE",
+      "permanent": false
+    }
+  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

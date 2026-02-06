@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -15,6 +15,18 @@ import ScrollToTop from './components/ScrollToTop';
 
 // App.tsx acts as the root component and typically handles Routing.
 // Think of this as the central router definition in a backend framework (like defining routes in Flask or Gin).
+
+const JoinGroupChat = () => {
+  useEffect(() => {
+    const url = import.meta.env.VITE_WA_GC;
+    if (url) {
+      window.location.replace(url);
+    } else {
+      window.location.replace('/');
+    }
+  }, []);
+  return null;
+};
 
 function App() {
   return (
@@ -39,6 +51,7 @@ function App() {
             <Route path="/support-us" element={<SupportUs />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/join-group-chat" element={<JoinGroupChat />} />
           </Routes>
         </main>
         
