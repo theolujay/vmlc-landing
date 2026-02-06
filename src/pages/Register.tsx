@@ -22,6 +22,7 @@ const Register: React.FC = () => {
   const [userType, setUserType] = useState<UserType>(initialType);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const [registeredEmail, setRegisteredEmail] = useState('');
   
   // Intercept back button to ensure it goes to Home
   useEffect(() => {
@@ -253,6 +254,7 @@ const Register: React.FC = () => {
       const data = await response.json().catch(() => ({}));
 
       if (response.ok) {
+        setRegisteredEmail(userType === 'candidate' ? candidateData.email : volunteerData.email);
         setStatus('success');
         setMessage(data.message || `Registration successful.`);
         // Reset forms
@@ -333,7 +335,7 @@ const Register: React.FC = () => {
               </div>
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Successful</h2>
-                <p className="text-lg text-gray-500 italic mb-8">Please check your email for your portal login credentials.</p>
+                <p className="text-lg text-gray-500 mb-8">Please check <span className="font-semibold text-gray-900 not-italic">{registeredEmail}</span> for your portal login credentials.</p>
               </div>
               <Button 
                 onClick={() => window.open(import.meta.env.VITE_PORTAL_URL, '_blank', 'noopener,noreferrer')} 
