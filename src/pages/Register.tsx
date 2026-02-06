@@ -338,10 +338,10 @@ const Register: React.FC = () => {
                 <p className="text-lg text-gray-500 mb-8">Please check <span className="font-semibold text-gray-900 not-italic">{registeredEmail}</span> for your portal login credentials.</p>
               </div>
               <Button 
-                onClick={() => window.open(import.meta.env.VITE_PORTAL_URL, '_blank', 'noopener,noreferrer')} 
+                onClick={() => window.open(import.meta.env.VITE_WA_GC, '_blank', 'noopener,noreferrer')} 
                 variant="primary"
               >
-                Go to Portal
+                Join Group Chat
               </Button>
             </div>
           ) : (
