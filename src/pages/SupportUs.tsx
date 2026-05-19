@@ -56,7 +56,7 @@ const SupportUs: React.FC = () => {
     const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
     try {
-      const response = await fetch(`${baseApiUrl}/v2/support-us/`, {
+      const response = await fetch(`${baseApiUrl}/v1/support-us/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
