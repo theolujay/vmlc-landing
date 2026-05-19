@@ -60,7 +60,7 @@ const Register: React.FC = () => {
         // Accessing environment variables (like os.environ in Python)
         // const apiKey = import.meta.env.VITE_API_KEY;
         const baseApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
-        const response = await fetch(`${baseApiUrl}/v2/registration/`, {
+        const response = await fetch(`${baseApiUrl}/v1/registration/`, {
           headers: {
             // 'x-api-key': apiKey,
           },
@@ -241,7 +241,7 @@ const Register: React.FC = () => {
       */
 
       // Fetch API: Native JavaScript function for making network requests.
-      const response = await fetch(`${baseApiUrl}/v2/register/`, {
+      const response = await fetch(`${baseApiUrl}/v1/register/`, {
         method: 'POST',
         headers: {
           'x-api-key': apiKey,
