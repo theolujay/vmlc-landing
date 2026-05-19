@@ -1,50 +1,102 @@
-# Verboheit Mathematics League Competition - Landing Page
+# VMLC Landing
 
-This project is the landing page for the Verboheit Mathematics League Competition, an annual event for senior secondary school students.
+> Public landing page for the **Verboheit Mathematics League Competition** (VMLC), a free annual mathematics competition for senior secondary school students (SS1–SS3) across Nigeria.
 
-## Getting Started
+This Vite + React application serves as the marketing and information hub for the competition. Visitors can learn about the competition stages, register their interest, apply as volunteers, and find support resources.
 
-Follow these instructions to get a local copy of the project up and running for development purposes.
+---
+
+## Table of Contents
+
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Quick Start](#quick-start)
+- [Available Scripts](#available-scripts)
+- [Build & Deploy](#build--deploy)
+- [Contributing](#contributing)
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | React 19, Vite |
+| Styling | Tailwind CSS 4 |
+| Routing | React Router 7 |
+| Icons | Lucide React |
+| Face Detection | @vladmandic/face-api |
+| Linting | ESLint + Prettier |
+| Analytics | Vercel Analytics, Speed Insights |
+
+---
+
+## Project Structure
+
+```
+src/
+├── pages/              Route pages (Home, About, Register, Support, etc.)
+├── components/         Reusable UI components (Header, Footer, Cards, etc.)
+├── utils/              Utility functions
+├── App.tsx             Application root with routing
+├── index.tsx           Entry point
+└── index.css           Global styles (Tailwind imports)
+
+dist/                   Production build output
+public/                 Static assets (images, favicon, etc.)
+```
+
+---
+
+## Quick Start
 
 ### Prerequisites
 
-You need to have Node.js and npm (or a compatible package manager) installed on your system.
+- Node.js 20+
+- npm (or pnpm, yarn)
 
-### Installation
+### Installation & Development
 
-1.  Clone the repository:
-    ```sh
-    git clone <repository-url>
-    ```
-2.  Navigate to the project directory:
-    ```sh
-    cd vmlc-landing-ui
-    ```
-3.  Install the dependencies:
-    ```sh
-    npm install
-    ```
-
-### Running the Development Server
-
-To run the app in development mode, use the following command. This will start a local development server.
-
-```sh
+```bash
+npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) (or the address shown in your terminal) to view it in the browser. The page will reload if you make edits.
+The development server starts at [http://localhost:5173](http://localhost:5173).
 
-## Building for Production
+---
 
-To create a production-ready build of the application, run the following command:
+## Build & Deploy
 
-```sh
+### Production Build
+
+```bash
 npm run build
 ```
 
-This command bundles the application and outputs the static files to the `dist/` directory.
+Static files are output to `dist/` and can be served by any web server or static hosting provider.
 
-## Deployment
+### Deployment
 
-To deploy this application, upload the contents of the `dist/` directory to your web server or static hosting provider. This directory contains the optimized, static assets for your site.
+The application is deployed to **Vercel** via GitHub Actions. Pushes to `dev` trigger an automatic deployment.
+
+---
+
+## Contributing
+
+Branch from `main`, make your changes, then open a pull request against `release`.
+
+```bash
+git checkout -b feat/your-feature-name
+```
+
+Before submitting:
+
+```bash
+npm run lint
+npm run build
+```
+
+---
+
+Built for Verboheit · [verboheit.org](https://verboheit.org)
